@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Maths Homework Helper</string>
+
+    <integer name="one">1</integer>
+    <integer name="two">2</integer>
+    <integer name="three">3</integer>
+    <integer name="four">4</integer>
+    <integer name="five">5</integer>
+    <integer name="six">6</integer>
+    <integer name="seven">7</integer>
+    <integer name="eight">8</integer>
+    <integer name="nine">9</integer>
+    <integer name="zero">0</integer>
+    <string name="backspace">"\u232B"</string>
+    <string name="clear">C</string>
+    <string name="add">+</string>
+    <string name="minus">-</string>
+    <string name="mult">x</string>
+    <string name="div">/</string>
+    <string name="equal">ANSWER</string>
+    <string name="equal1">ADD</string>
+    <string name="equal3">SUBTRACT</string>
+    <string name="equal4">MULTIPLY</string>
+    <string name="equal5">DIVIDE</string>
+    <string name="equal6">ORDER</string>
+    <string name="equal7">LCM</string>
+    <string name="equal9">CUBE</string>
+    <string name="equal11">CUBEROOT</string>
+    <string name="equal12">SQUARE</string>
+    <string name="equal13">SQUAREROOT</string>
+    <string name="equal8">HCF</string>
+    <string name="equal10">.</string>
+    <string name="table">Tables Number: </string>
+    <string name="back">&lt; Back</string>
+    <string name="hintq">Enter the Number</string>
+    <string name="equal2">SHOW TABLES</string>
+    <string name="div2">"\u00F7"</string>
+    <string name="inf">infiniy</string>
+    <string name="exc1">Divisor exceeds maximum digits(4)</string>
+    <string name="exc2">Dividend exceeds maximum digits(10)</string>
+    <string name="enter">Enter</string>
+    <string name="hintq2">To Separate Numbers press Enter("\u21B2")</string>
+
+    <string name="m1">MULTIPLICATION TABLE</string>
+    <string name="m2">ADDITION</string>
+    <string name="m3">SUBTRACTION</string>
+    <string name="m4">MULTIPLICATION</string>
+    <string name="m5">DIVISION</string>
+    <string name="m6">ASCENDING ORDER</string>
+    <string name="m7">DESCENDING ORDER</string>
+    <string name="m8">LCM</string>
+    <string name="m9">HCF/GCD</string>
+    <string name="m10">SQUARE</string>
+    <string name="m11">CUBE</string>
+    <string name="m12">SQUARE ROOT</string>
+    <string name="m13">CUBE ROOT</string>
+    <string name="m14">EVEN NUMBERS</string>
+    <string name="m15">ODD NUMBERS</string>
+    <string name="m16">PRIME NUMBERS</string>
+
+
+    <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
+
+</resources>
