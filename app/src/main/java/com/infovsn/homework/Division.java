@@ -186,14 +186,6 @@ public class Division extends AppCompatActivity {
                 kt.setMovementMethod(new ScrollingMovementMethod());
                 qt=(TextView) findViewById(R.id.quot);
                 qt.setMovementMethod(new ScrollingMovementMethod());
-                back=(Button) findViewById(R.id.bck);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        startActivity(getIntent());
-                    }
-                });
 
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
