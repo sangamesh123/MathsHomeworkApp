@@ -60,5 +60,6 @@
 
 
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
+    <string name="result_label">RESULT</string>
 
 </resources>

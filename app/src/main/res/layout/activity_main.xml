@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/backgroundLight"
     tools:context="com.infovsn.homework.MainActivity">
 
     <ScrollView
@@ -19,223 +19,39 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button1"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m1"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m2"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <!-- Each row: two HomeMenuButton styled buttons -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button1" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m1" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button2" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m2" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m3"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m4"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button3" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m3" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button4" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m4" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m5"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button6"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m6"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button5" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m5" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button6" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m6" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 4 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button16"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m7"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button7"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m8"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button16" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m7" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button7" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m8" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 5 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button8"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m9"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button9"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m10"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button8" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m9" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button9" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m10" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 6 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button10"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m11"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button11"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m12"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button10" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m11" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button11" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m12" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 7 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button12"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m13"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button13"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m14"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button12" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m13" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button13" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m14" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- Row 8 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
-                <Button
-                    android:id="@+id/button14"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m15"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginEnd="8dp" />
-                <Button
-                    android:id="@+id/button15"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:text="@string/m16"
-                    android:textAllCaps="true"
-                    android:textColor="#3C3C3C"
-                    android:background="@drawable/btn_pink_bg"
-                    android:layout_marginStart="8dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                <Button android:id="@+id/button14" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m15" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button15" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m16" android:layout_marginStart="8dp" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

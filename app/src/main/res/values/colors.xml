@@ -7,4 +7,10 @@
     <color name="white">#FFFFFF</color>
     <!-- Keep for possible future per–screen variants -->
     <color name="additionRed">#F44336</color>
+
+    <!-- Modernized neutral surfaces -->
+    <color name="backgroundDark">#303030</color>
+    <color name="keypadButton">#424242</color>
+    <color name="keypadButtonStroke">#616161</color>
+    <color name="backgroundLight">#FAFAFA</color>
 </resources>
