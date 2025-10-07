@@ -1,11 +1,30 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <!-- Global application theme using unified red primary color -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="actionBarStyle">@style/RedActionBar</item>
+        <item name="colorControlNormal">@color/white</item> <!-- White icons for ActionBar -->
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Black text for content -->
+        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item> <!-- Ensure back button matches pasted_image_2.png -->
     </style>
+
+    <!-- Custom ActionBar style applying red background and white title/icons -->
+    <style name="RedActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/colorPrimary</item>
+        <item name="titleTextStyle">@style/RedActionBarTitleText</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item> <!-- Refined back button styling -->
+        <item name="elevation">4dp</item>
+    </style>
+
+    <style name="RedActionBarTitleText" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- Placeholder if later you want per-screen variants -->
+    <style name="Theme.Addition" parent="AppTheme" />
 
 </resources>

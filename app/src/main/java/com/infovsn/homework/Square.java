@@ -172,14 +172,8 @@ public class Square extends AppCompatActivity {
                 setContentView(R.layout.added);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                back=(Button) findViewById(R.id.bck);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        startActivity(getIntent());
-                    }
-                });
+                // Removed custom back button setup
+
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Square.this));

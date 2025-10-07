@@ -171,14 +171,6 @@ public class DecrOrder extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 
-                back=(Button) findViewById(R.id.bck);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        startActivity(getIntent());
-                    }
-                });
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(DecrOrder.this));
