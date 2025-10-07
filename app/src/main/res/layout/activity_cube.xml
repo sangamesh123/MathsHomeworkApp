@@ -226,16 +226,16 @@
                 android:layout_gravity="fill_vertical"
                 android:text="@string/equal9"
                 android:paddingBottom="5dp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 android:paddingTop="5dp"
                 android:textSize="24sp"
                 android:textColor="#FFFFFF"
-
-                android:background="#FF9800"
+                android:background="#424242"
+                android:elevation="4dp"
+                android:letterSpacing="0.1"
+                android:fontFamily="sans-serif-medium"
                 />
         </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
-
-
