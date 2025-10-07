@@ -3,6 +3,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#424242"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,9 +17,12 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/first"
         android:gravity="right|center_vertical|bottom"
+        android:padding="12dp"
         android:paddingRight="20dp"
+        android:background="#FFFFFF"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
+        android:textColor="#000000"
         android:maxLines = "50"
         android:scrollbars = "vertical"
         android:focusable="true"
@@ -226,16 +230,16 @@
                 android:layout_gravity="fill_vertical"
                 android:text="@string/equal5"
                 android:paddingBottom="5dp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 android:paddingTop="5dp"
                 android:textSize="24sp"
                 android:textColor="#FFFFFF"
-
-                android:background="#FF9800"
+                android:background="#424242"
+                android:elevation="4dp"
+                android:letterSpacing="0.1"
+                android:fontFamily="sans-serif-medium"
                 />
         </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
-
-
