@@ -11,44 +11,74 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/adView">
+        android:layout_above="@id/adView"
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
+            <!-- Header Section -->
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="28sp"
+                android:textColor="@color/textPrimary"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.02"
+                android:paddingBottom="4dp" />
+
+            <TextView
+                android:id="@+id/headerSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Choose a topic to start practicing"
+                android:textSize="14sp"
+                android:textColor="@color/textSecondary"
+                android:paddingBottom="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/menuButtonStroke"
+                android:alpha="0.7"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Button Grid Rows -->
             <!-- Each row: two HomeMenuButton styled buttons -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button1" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m1" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button2" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m2" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button3" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m3" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button4" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m4" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button5" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m5" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button6" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m6" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button16" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m7" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button7" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m8" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button8" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m9" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button9" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m10" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button10" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m11" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button11" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m12" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button12" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m13" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button13" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m14" android:layout_marginStart="8dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
                 <Button android:id="@+id/button14" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m15" android:layout_marginEnd="8dp" />
                 <Button android:id="@+id/button15" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m16" android:layout_marginStart="8dp" />
             </LinearLayout>
