@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="64dp"
+    android:viewportWidth="300"
+    android:viewportHeight="100">
+    <!-- Elongated white right arrow with 3:1 aspect ratio to fill wide RESULT key space -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M0,20 L200,20 L200,0 L300,50 L200,100 L200,80 L0,80 Z" />
+</vector>
+

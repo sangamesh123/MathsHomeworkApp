@@ -17,9 +17,9 @@ import java.util.List;
 
 public class Fraction extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr,beq,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr,back;
     TextView et;
-    ImageButton bsp,badd;
+    ImageButton bsp,badd,beq;
     TextView at;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class Fraction extends AppCompatActivity {
         badd=(ImageButton) findViewById(R.id.add);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
+        beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
         b1.setOnClickListener(new View.OnClickListener() {

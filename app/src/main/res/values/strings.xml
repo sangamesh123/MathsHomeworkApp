@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Maths Homework Helper</string>
 
+    <!-- Digit strings for button labels (avoid using integer resources for android:text) -->
+    <string name="digit_0">0</string>
+    <string name="digit_1">1</string>
+    <string name="digit_2">2</string>
+    <string name="digit_3">3</string>
+    <string name="digit_4">4</string>
+    <string name="digit_5">5</string>
+    <string name="digit_6">6</string>
+    <string name="digit_7">7</string>
+    <string name="digit_8">8</string>
+    <string name="digit_9">9</string>
+
+    <!-- (Legacy integer definitions retained but no longer used for text) -->
     <integer name="one">1</integer>
     <integer name="two">2</integer>
     <integer name="three">3</integer>
@@ -11,35 +24,37 @@
     <integer name="eight">8</integer>
     <integer name="nine">9</integer>
     <integer name="zero">0</integer>
-    <string name="backspace">"\u232B"</string>
+    <!-- Use actual unicode characters instead of escape sequences with quotes -->
+    <string name="backspace">⌫</string>
     <string name="clear">C</string>
     <string name="add">+</string>
     <string name="minus">-</string>
     <string name="mult">x</string>
     <string name="div">/</string>
-    <string name="equal">Result</string>
-    <string name="equal1">Result</string>
-    <string name="equal3">Result</string>
-    <string name="equal4">Result</string>
-    <string name="equal5">Result</string>
-    <string name="equal6">Result</string>
-    <string name="equal7">Result</string>
-    <string name="equal9">Result</string>
-    <string name="equal11">Result</string>
-    <string name="equal12">Result</string>
-    <string name="equal13">Result</string>
-    <string name="equal8">Result</string>
+    <!-- Send-style arrow used instead of the word Result on equal buttons -->
+    <string name="equal">➤</string>
+    <string name="equal1">➤</string>
+    <string name="equal3">➤</string>
+    <string name="equal4">➤</string>
+    <string name="equal5">➤</string>
+    <string name="equal6">➤</string>
+    <string name="equal7">➤</string>
+    <string name="equal9">➤</string>
+    <string name="equal11">➤</string>
+    <string name="equal12">➤</string>
+    <string name="equal13">➤</string>
+    <string name="equal8">➤</string>
     <string name="equal10">.</string>
     <string name="table">Tables Number: </string>
     <string name="back">&lt; Back</string>
     <string name="hintq">Enter the Number</string>
-    <string name="equal2">Result</string>
-    <string name="div2">"\u00F7"</string>
-    <string name="inf">infiniy</string>
+    <string name="equal2">➤</string>
+    <string name="div2">÷</string>
+    <string name="inf">infinity</string>
     <string name="exc1">Divisor exceeds maximum digits(4)</string>
     <string name="exc2">Dividend exceeds maximum digits(10)</string>
     <string name="enter">Enter</string>
-    <string name="hintq2">To Separate Numbers press Enter("\u21B2")</string>
+    <string name="hintq2">To Separate Numbers press Enter(↲)</string>
 
     <string name="m1">TABLES</string>
     <string name="m2">ADDITION</string>
@@ -61,5 +76,13 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
     <string name="result_label">RESULT</string>
+    <string name="send">Send</string>
 
+    <!-- Newly added for LCM screen validation -->
+    <string name="error_max_digits">Maximum digits(%1$d) exceeded</string>
+    <!-- Removed single quotes around placeholder to avoid any formatting parser quirks -->
+    <string name="error_invalid_number">Invalid number: %1$s</string>
+    <string name="error_enter_numbers_first">Enter numbers first</string>
+    <string name="error_overflow">Result too large (overflow)</string>
+    <string name="label_lcm">LCM : %1$s</string>
 </resources>

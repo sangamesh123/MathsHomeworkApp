@@ -19,12 +19,17 @@
     <color name="menuButtonStroke">#FFD0DC</color>
     <color name="menuButtonRipple">#33FF6F88</color> <!-- 20% alpha ripple tint -->
 
-    <!-- Keypad colors switched to neutral gray -->
+    <!-- Keypad colors (neutral gray) -->
     <color name="keypadButton">#F2F3F5</color>
     <color name="keypadButtonStroke">#D5D8DC</color>
     <color name="keypadButtonStart">#FFFFFFFF</color>
     <color name="keypadButtonEnd">#F2F3F5</color>
     <color name="keypadRipple">#26000000</color>
+    <!-- New deeper gray variant for former primary (equals / action) buttons -->
+    <color name="keypadPrimaryStart">#ECEDEF</color>
+    <color name="keypadPrimaryEnd">#DADCE0</color>
+    <color name="keypadPrimaryStroke">#C5C8CC</color>
+    <color name="keypadIconTint">#333333</color>
 
     <!-- Text / on-surface colors -->
     <color name="textPrimary">#222222</color>

@@ -15,6 +15,7 @@
         android:paddingRight="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
+        android:fontFamily="monospace"
         android:maxLines = "50"
         android:scrollbars = "vertical"
         android:focusable="true"

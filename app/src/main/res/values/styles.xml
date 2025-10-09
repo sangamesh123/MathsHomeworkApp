@@ -6,7 +6,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/actionBarRedDark</item>
-        <item name="android:windowLightStatusBar">false</item>
         <item name="android:textColorPrimary">@color/textPrimary</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
@@ -50,7 +49,7 @@
 
     <style name="KeypadButton.Primary" parent="KeypadButton">
         <item name="android:background">@drawable/keypad_button_primary_bg</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/keypadIconTint</item>
     </style>
 
     <style name="DisplayText" parent="TextAppearance.AppCompat.Large">
@@ -68,8 +67,26 @@
 
     <style name="KeypadIconButton" parent="KeypadButton">
         <item name="android:padding">0dp</item>
-        <item name="android:scaleType">center</item>
+        <item name="android:scaleType">centerInside</item>
         <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <!-- New primary variant for icon buttons (e.g. send/equals arrow) -->
+    <style name="KeypadIconButton.Primary" parent="KeypadIconButton">
+        <item name="android:background">@drawable/keypad_button_primary_bg</item>
+        <item name="android:tint">@color/keypadIconTint</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <!-- Dedicated result (send) button: square arrow icon, centered -->
+    <style name="KeypadResultButton" parent="KeypadIconButton.Primary">
+        <!-- Provide comfortable touch target while keeping icon visually balanced -->
+        <item name="android:padding">8dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+        <!-- Use tint inheritance for adaptability; can null out if pure white asset used -->
+        <item name="android:tint">@color/keypadIconTint</item>
     </style>
 
     <!-- Home menu button style updated for light background -->

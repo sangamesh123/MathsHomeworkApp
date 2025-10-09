@@ -2,13 +2,13 @@ package com.infovsn.homework;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,260 +21,173 @@ import java.util.List;
 
 public class Lcm extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr,beq,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // numeric + clear
     TextView et;
-    ImageButton bsp,badd;
+    ImageButton bsp,badd,beq;
     TextView at;
+
+    private static final int MAX_DIGITS = 15;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lcm);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
 
-
-
-        b1=(Button) findViewById(R.id.one);
-        b2=(Button) findViewById(R.id.two);
-        b3=(Button) findViewById(R.id.three);
-        b4=(Button) findViewById(R.id.four);
-        b5=(Button) findViewById(R.id.five);
-        b6=(Button) findViewById(R.id.six);
-        b7=(Button) findViewById(R.id.seven);
-        b8=(Button) findViewById(R.id.eight);
-        b9=(Button) findViewById(R.id.nine);
-        b0=(Button) findViewById(R.id.zero);
-        badd=(ImageButton) findViewById(R.id.add);
-        bsp=(ImageButton) findViewById(R.id.backspace);
-        bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
-        et=(TextView) findViewById(R.id.txtScreen);
+        // find views (no casts needed with API 26+ compile + androidx)
+        b1 = findViewById(R.id.one);
+        b2 = findViewById(R.id.two);
+        b3 = findViewById(R.id.three);
+        b4 = findViewById(R.id.four);
+        b5 = findViewById(R.id.five);
+        b6 = findViewById(R.id.six);
+        b7 = findViewById(R.id.seven);
+        b8 = findViewById(R.id.eight);
+        b9 = findViewById(R.id.nine);
+        b0 = findViewById(R.id.zero);
+        badd = findViewById(R.id.add);
+        bsp = findViewById(R.id.backspace);
+        bclr = findViewById(R.id.clear);
+        beq = findViewById(R.id.equal);
+        et = findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"1");
+
+        // Digit listeners (explicit for readability)
+        b1.setOnClickListener(v -> appendDigit("1"));
+        b2.setOnClickListener(v -> appendDigit("2"));
+        b3.setOnClickListener(v -> appendDigit("3"));
+        b4.setOnClickListener(v -> appendDigit("4"));
+        b5.setOnClickListener(v -> appendDigit("5"));
+        b6.setOnClickListener(v -> appendDigit("6"));
+        b7.setOnClickListener(v -> appendDigit("7"));
+        b8.setOnClickListener(v -> appendDigit("8"));
+        b9.setOnClickListener(v -> appendDigit("9"));
+        b0.setOnClickListener(v -> appendDigit("0"));
+
+        badd.setOnClickListener(v -> et.append("\n"));
+        bclr.setOnClickListener(v -> et.setText(""));
+
+        bsp.setOnClickListener(v -> {
+            String smp = et.getText().toString();
+            if (smp.isEmpty()) return;
+            smp = smp.substring(0, smp.length()-1); // remove last char
+            while (smp.endsWith("\n\n")) { // collapse extra trailing newlines
+                smp = smp.substring(0, smp.length()-1);
             }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"2");
-            }
-        });
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"3");
-            }
-        });
-        b4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"4");
-            }
-        });
-        b5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"5");
-            }
-        });
-        b6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"6");
-            }
-        });
-        b7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"7");
-            }
-        });
-        b8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"8");
-            }
-        });
-        b9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"9");
-            }
-        });
-        b0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                et.setText(et.getText()+"0");
-            }
+            et.setText(smp);
         });
 
+        beq.setOnClickListener(v -> {
+            // Capture input BEFORE switching layout
+            String raw = et.getText().toString();
 
-        badd.setOnClickListener(new View.OnClickListener() {
+            setContentView(R.layout.added);
+            at = findViewById(R.id.txtScr);
+            at.setMovementMethod(new ScrollingMovementMethod());
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
 
-            @Override
-            public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
-                et.setText(et.getText()+"\n");
-            }
-        });
+            String[] lines = raw.split("\n");
+            List<Long> nums = new ArrayList<>();
+            boolean error = false;
+            StringBuilder echo = new StringBuilder();
 
-        bclr.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
-                et.setText(null);
-            }
-        });
-
-        bsp.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
-                String smp = et.getText().toString();
-                if (smp.length() > 1) {
-                    char qq2=smp.charAt(smp.length()-1);
-
-                    smp = smp.substring(0, smp.length() - 1);
-                    et.setText(smp);
-                    char qq=smp.charAt(smp.length()-1);
-                    if(qq=='\n')
-                    {
-                        smp = smp.substring(0, smp.length() - 1);
-                        et.setText(smp);
-                    }
-                } else if (smp.length() <= 1) {
-                    et.setText(null);
+            for (String line : lines) {
+                String trimmed = line.trim();
+                if (trimmed.isEmpty()) continue; // skip blanks
+                if (trimmed.length() > MAX_DIGITS) {
+                    at.setText(getString(R.string.error_max_digits, MAX_DIGITS));
+                    at.append("\n");
+                    error = true;
+                    break;
                 }
-
+                try {
+                    long value = Long.parseLong(trimmed);
+                    nums.add(value);
+                    echo.append(value).append('\n');
+                } catch (NumberFormatException nfe) {
+                    at.setText(getString(R.string.error_invalid_number, trimmed));
+                    at.append("\n");
+                    error = true;
+                    break;
+                }
             }
-        });
 
-        beq.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                setContentView(R.layout.added);
-                at=(TextView) findViewById(R.id.txtScr);
-                at.setMovementMethod(new ScrollingMovementMethod());
-
-                //ADDS BY GOOGLE
-                mAdView=(AdView)findViewById(R.id.adView);
-//                mAdView.setAdListener(new ToastAdListener(Lcm.this));
-                AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
-                String txt=et.getText()+"";
-                String[] split=txt.split("\n");
-                String fn="";
-                String sn="";
-                boolean trick=false;
-                long m=0,res=0;
-                List<Long> list = new ArrayList<>();
-                for(int i=0;i<split.length;i++)
-                {
-                    fn = split[i];
-                    if(fn.length()==0)
-                    {
-                        fn=0+"";
-                    }
-                    else if(fn.length()>15)
-                    {
-                        at.setText("Maximum digits(15) exceeded\n");
-                        trick=true;
-                        break;
-                    }
-                    else
-                    {
-                        m=Long.parseLong(fn);
-                        list.add(m);
-                    }
+            if (!error) {
+                if (nums.isEmpty()) {
+                    at.setText(getString(R.string.error_enter_numbers_first));
+                    at.append("\n\n");
+                    return;
                 }
-                if(list.size()==0)
-                {
-                    list.add(0L);
+                long result = lcmSafe(nums);
+                at.setText(echo.toString());
+                if (result == -1L) {
+                    at.append(getString(R.string.error_overflow));
+                    at.append("\n\n");
+                    return;
                 }
-                long n[]=new long[list.size()];
-                for(int i=0;i<list.size();i++)
-                {
-                    n[i]=list.get(i);
-                    sn=sn+n[i]+"\n";
-                }
-                at.setText(sn);
-                res=lcm(n);
-                if(res<0)
-                {
-                    trick=true;
-                }
-                sn="\n"+"LCM : "+res;
-                SpannableString ss1=new SpannableString(sn);
-                ss1.setSpan(new RelativeSizeSpan(1.2f),0,ss1.length(),0);
-                ss1.setSpan(new ForegroundColorSpan(Color.RED),0,ss1.length(),0);
+                SpannableString ss1 = new SpannableString("\n" + getString(R.string.label_lcm, String.valueOf(result)));
+                ss1.setSpan(new RelativeSizeSpan(1.2f), 0, ss1.length(), 0);
+                ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, ss1.length(), 0);
                 at.append(ss1);
-                if(trick)
-                {
-                    at.setText("Maximum digits(15) exceeded\n");
-                }
                 at.append("\n\n");
+            } else {
+                at.append("\n");
             }
         });
-
     }
+
+    private void appendDigit(String d) { et.append(d); }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
-    }
-    private static long gcd(long a, long b)
-    {
-        while(b>0)
-        {
-            long temp=b;
-            b=a%b;
-            a=temp;
-        }
-        return a;
+        return super.onOptionsItemSelected(item);
     }
 
-    private static long gcd(long[] input)
-    {
-        long result=input[0];
-        for(int i=1;i<input.length;i++)
-            result=gcd(result,input[i]);
+    // --- Math helpers ---
+    private static long gcd(long a, long b) {
+        while (b != 0) {
+            long t = b;
+            b = a % b;
+            a = t;
+        }
+        return Math.abs(a);
+    }
+
+    private static long lcmPair(long a, long b) {
+        if (a == 0 || b == 0) return 0;
+        long g = gcd(a, b);
+        return Math.abs(a / g * b);
+    }
+
+    @SuppressWarnings("unused")
+    private static long lcmArray(List<Long> nums) { // retained if future reuse needed
+        long result = nums.get(0);
+        for (int i = 1; i < nums.size(); i++) {
+            result = lcmPair(result, nums.get(i));
+        }
         return result;
     }
 
-    private static long lcm(long a,long b)
-    {
-        return a*(b/gcd(a,b));
-    }
-    private static long lcm(long[] input)
-    {
-        long result=input[0];
-        for(int i=1;i<input.length;i++)
-            result=lcm(result,input[i]);
+    private static long lcmSafe(List<Long> nums) {
+        long result = nums.get(0);
+        for (int i = 1; i < nums.size(); i++) {
+            long a = result;
+            long b = nums.get(i);
+            if (a == 0 || b == 0) { result = 0; continue; }
+            long g = gcd(a, b);
+            long divided = a / g;
+            if (divided != 0 && divided > Long.MAX_VALUE / Math.abs(b)) {
+                return -1L; // overflow
+            }
+            result = Math.abs(divided * b);
+        }
         return result;
     }
 }

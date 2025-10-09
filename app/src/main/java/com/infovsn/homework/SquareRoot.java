@@ -19,15 +19,17 @@ import com.google.android.gms.ads.AdView;
 public class SquareRoot extends AppCompatActivity {
     private AdView mAdView;
     int ex=0;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,beq,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
     TextView et;
-    ImageButton bsp;
+    ImageButton bsp, beq;
     TextView at;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square_root);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         b1=(Button) findViewById(R.id.one);
@@ -43,7 +45,7 @@ public class SquareRoot extends AppCompatActivity {
         badd=(Button) findViewById(R.id.add);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
+        beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.tabl);
         et.setMovementMethod(new ScrollingMovementMethod());
         b1.setOnClickListener(new View.OnClickListener() {

@@ -18,9 +18,9 @@ import com.google.android.gms.ads.AdView;
 
 public class Division extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,beq,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
     TextView et;
-    ImageButton bsp;
+    ImageButton bsp, beq;
     TextView at,kt,qt;
     long val1=0,val2=0;
     int move=0;
@@ -33,7 +33,9 @@ public class Division extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_division);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         b1=(Button) findViewById(R.id.one);
@@ -49,7 +51,7 @@ public class Division extends AppCompatActivity {
         badd=(Button) findViewById(R.id.add);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
+        beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
         b1.setOnClickListener(new View.OnClickListener() {
@@ -463,7 +465,7 @@ public class Division extends AppCompatActivity {
                 if(tm==6)
                 {
                     at.setText("0)");
-                    qt.setText("infiniy");
+                    qt.setText("infinity");
                     kt.setText(yn);
                 }
                 at.append("\n\n");

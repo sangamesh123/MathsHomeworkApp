@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="24dp"
+    android:viewportWidth="48"
+    android:viewportHeight="24">
+    <!-- Long horizontal arrow (tail + shaft + head) -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M2,9 L30,9 L30,5 L46,12 L30,19 L30,15 L2,15 Z"/>
+</vector>
+

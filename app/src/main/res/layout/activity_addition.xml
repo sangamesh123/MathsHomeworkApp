@@ -2,7 +2,6 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -136,15 +135,20 @@
                 style="@style/KeypadButton"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="@integer/zero" />
+                android:text="@string/digit_0" />
             <Button
-                android:id="@+id/equal"
-                style="@style/KeypadButton.Primary"
+                android:id="@+id/dot"
+                style="@style/KeypadButton"
                 android:layout_width="0dp"
-                android:layout_weight="3"
-                android:text="@string/equal1"
-                android:letterSpacing="0.05"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:text="." />
+            <ImageButton
+                android:id="@+id/equal"
+                style="@style/KeypadResultButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/send"
+                android:src="@drawable/ic_result_arrow" />
         </LinearLayout>
 
     </LinearLayout>

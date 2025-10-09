@@ -18,9 +18,9 @@ import com.google.android.gms.ads.AdView;
 
 public class Subtraction extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,beq;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr;
+    ImageButton bsp, beq;
     TextView et;
-    ImageButton bsp;
     TextView at;
     long val1=0,val2=0;
     boolean add;
@@ -45,7 +45,7 @@ public class Subtraction extends AppCompatActivity {
         badd=(Button) findViewById(R.id.add);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
+        beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
         b1.setOnClickListener(new View.OnClickListener() {

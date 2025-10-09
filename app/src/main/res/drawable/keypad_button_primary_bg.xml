@@ -4,11 +4,11 @@
     <item>
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="@color/actionBarRed"
-                android:endColor="@color/actionBarRedDark"
+                android:startColor="@color/keypadPrimaryStart"
+                android:endColor="@color/keypadPrimaryEnd"
                 android:angle="270" />
             <corners android:radius="@dimen/keypad_corner_radius" />
-            <stroke android:width="1dp" android:color="@color/actionBarRedDark" />
+            <stroke android:width="1dp" android:color="@color/keypadPrimaryStroke" />
         </shape>
     </item>
 </ripple>

@@ -29,31 +29,31 @@
 
         <!-- Row 1 -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/seven" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/seven" />
-            <Button android:id="@+id/eight" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/eight" />
-            <Button android:id="@+id/nine" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/nine" />
+            <Button android:id="@+id/seven" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_7" />
+            <Button android:id="@+id/eight" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_8" />
+            <Button android:id="@+id/nine" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_9" />
             <Button android:id="@+id/clear" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/clear" />
         </LinearLayout>
 
         <!-- Row 2 -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/four" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/four" />
-            <Button android:id="@+id/five" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/five" />
-            <Button android:id="@+id/six" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/six" />
+            <Button android:id="@+id/four" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_4" />
+            <Button android:id="@+id/five" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_5" />
+            <Button android:id="@+id/six" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_6" />
             <ImageButton android:id="@+id/backspace" style="@style/KeypadIconButton" android:layout_width="0dp" android:layout_weight="1" android:contentDescription="@string/backspace" android:src="@drawable/ic_backspace_black_24dp" />
         </LinearLayout>
 
         <!-- Row 3 -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/one" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/one" />
-            <Button android:id="@+id/two" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/two" />
-            <Button android:id="@+id/three" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/three" />
-            <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/zero" />
+            <Button android:id="@+id/one" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_1" />
+            <Button android:id="@+id/two" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_2" />
+            <Button android:id="@+id/three" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_3" />
         </LinearLayout>
 
-        <!-- Row 4 -->
+        <!-- Row 4 (zero + equal only for consistency) -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/equal" style="@style/KeypadButton.Primary" android:layout_width="0dp" android:layout_weight="4" android:text="@string/equal4" android:textStyle="bold" />
+            <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_0" />
+            <ImageButton android:id="@+id/equal" style="@style/KeypadResultButton" android:layout_width="0dp" android:layout_weight="1" android:contentDescription="@string/send" android:src="@drawable/ic_result_arrow" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
