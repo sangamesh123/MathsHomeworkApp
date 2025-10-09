@@ -12,18 +12,75 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.graphics.Typeface;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.math.BigInteger;
+
 public class Subtraction extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,bdot; // add dot
     ImageButton bsp, beq;
     TextView et;
     TextView at;
     long val1=0,val2=0;
     boolean add;
+
+    // Region: helpers for borrow computation and rendering
+    private static final char NBSP = '\u00A0';
+
+    // Build borrow markers for integer-like digit arrays (no dot).
+    // digits[0]..digits[L-1] are left->right digits of the minuend; subs[i] arrays same size for each subtrahend (already padded on the left with zeros).
+    private char[] computeBorrowMarkers(int[] top, int[][] subs) {
+        int L = top.length;
+        char[] mark = new char[L];
+        for (int i = 0; i < L; i++) mark[i] = NBSP;
+        int borrowIn = 0;
+        for (int k = L - 1; k >= 0; k--) {
+            int sumSub = 0;
+            for (int i = 0; i < subs.length; i++) sumSub += subs[i][k];
+            int available = top[k] - borrowIn;
+            if (available < sumSub) {
+                // borrow from next higher column -> place mark above that column (k-1)
+                if (k - 1 >= 0) mark[k - 1] = '1';
+                borrowIn = 1;
+            } else {
+                borrowIn = 0;
+            }
+        }
+        // LSD (rightmost) must never show a mark; ensure NBSP (already by initialization)
+        return mark;
+    }
+
+    // Convert a string of digits into an int array of digits left->right, padded on the left to length L with zeros
+    private int[] leftPadToDigits(String s, int L) {
+        int[] out = new int[L];
+        int offset = L - s.length();
+        for (int i = 0; i < offset; i++) out[i] = 0;
+        for (int i = 0; i < s.length(); i++) out[offset + i] = s.charAt(i) - '0';
+        return out;
+    }
+
+    // Build a display string for the borrow row with optional decimal point. The underline will be applied to the entire returned string.
+    private String buildBorrowRowString(char[] markers, int maxFrac) {
+        // markers length = intLen + maxFrac (digits only). We need to insert a NBSP placeholder for the decimal point if maxFrac>0
+        if (maxFrac <= 0) {
+            return new String(markers);
+        }
+        int L = markers.length; // = intLen + maxFrac
+        int intLen = L - maxFrac;
+        char[] out = new char[L + 1];
+        // copy integer part marks
+        System.arraycopy(markers, 0, out, 0, intLen);
+        // dot placeholder (NBSP so it doesn't draw a mark)
+        out[intLen] = NBSP;
+        // copy fractional part marks after the placeholder
+        System.arraycopy(markers, intLen, out, intLen + 1, maxFrac);
+        return new String(out);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +100,7 @@ public class Subtraction extends AppCompatActivity {
         b9=(Button) findViewById(R.id.nine);
         b0=(Button) findViewById(R.id.zero);
         badd=(Button) findViewById(R.id.add);
+        bdot=(Button) findViewById(R.id.dot);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
         beq=(ImageButton) findViewById(R.id.equal);
@@ -169,366 +227,213 @@ public class Subtraction extends AppCompatActivity {
             }
         });
 
+        // Dot button behavior (allow at most one '.' per current line)
+        if (bdot != null) {
+            bdot.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    String full = et.getText().toString();
+                    int ln = full.lastIndexOf('\n');
+                    String currentLine = (ln==-1)? full : full.substring(ln+1);
+                    if(currentLine.startsWith("- ")) currentLine = currentLine.substring(2);
+                    if(currentLine.contains(".")) return;
+                    if(full.endsWith("\n- ") || full.endsWith("- ") || currentLine.isEmpty()){
+                        et.append("0.");
+                    } else {
+                        et.append(".");
+                    }
+                }
+            });
+        }
+
         beq.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                String raw = et.getText()+"";
+                if(raw.trim().isEmpty()) return;
+                boolean hasDecimal = raw.contains(".");
+
+                if(!hasDecimal) {
+                    // Integer branch with correct borrow alignment
+                    setContentView(R.layout.added);
+                    at=(TextView) findViewById(R.id.txtScr);
+                    at.setMovementMethod(new ScrollingMovementMethod());
+                    at.setTypeface(Typeface.MONOSPACE);
+                    mAdView=(AdView)findViewById(R.id.adView);
+                    AdRequest adRequest =new AdRequest.Builder().build();
+                    mAdView.loadAd(adRequest);
+
+                    String[] lines = raw.split("\n");
+                    java.util.List<String> nums = new java.util.ArrayList<>();
+                    int L = 0;
+                    for(int i=0;i<lines.length;i++){
+                        String s = (i==0)? lines[i] : (lines[i].length()>=2? lines[i].substring(2):"");
+                        if(s.isEmpty()) s = "0";
+                        if(!s.matches("\\d+")) { at.setText("Invalid number format\n"); return; }
+                        if(s.length()>15){ at.setText("Maximum digits(15) exceeded\n"); return; }
+                        if(s.length()>L) L=s.length();
+                        nums.add(s);
+                    }
+                    // Show expression as typed
+                    StringBuilder expr = new StringBuilder();
+                    expr.append(nums.get(0));
+                    for(int i=1;i<nums.size();i++) expr.append("\n- ").append(nums.get(i));
+                    at.setText(expr.toString());
+
+                    // Prepare digits arrays (left-padded)
+                    int[] top = leftPadToDigits(nums.get(0), L);
+                    int[][] subs = new int[Math.max(0, nums.size()-1)][];
+                    for (int i=1; i<nums.size(); i++) subs[i-1] = leftPadToDigits(nums.get(i), L);
+
+                    // Compute borrow markers across integer columns
+                    char[] markers = computeBorrowMarkers(top, subs);
+                    String borrowRow = new String(markers); // digits-only width L
+
+                    // Compute numeric result (BigInteger)
+                    java.math.BigInteger minuend = new java.math.BigInteger(nums.get(0));
+                    java.math.BigInteger sub = java.math.BigInteger.ZERO;
+                    for(int i=1;i<nums.size();i++) sub = sub.add(new java.math.BigInteger(nums.get(i)));
+                    java.math.BigInteger resBI = minuend.subtract(sub);
+
+                    // Render borrow row (aligned to digits area only)
+                    if(resBI.signum()>=0) {
+                        at.append("\n");
+                        SpannableString ss2 = new SpannableString(borrowRow);
+                        ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
+                        ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
+                        at.append(ss2);
+                    } else {
+                        at.append("\n");
+                        // show only an underline with no carry digits
+                        char[] blanks = new char[borrowRow.length()];
+                        java.util.Arrays.fill(blanks, NBSP);
+                        SpannableString ss2 = new SpannableString(new String(blanks));
+                        ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
+                        ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
+                        at.append(ss2);
+                    }
+
+                    // Print result
+                    String out = resBI.toString();
+                    SpannableString ss1 = new SpannableString(out);
+                    ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
+                    at.append("\n");
+                    at.append(ss1);
+                    at.append("\n\n");
+                    return;
+                }
+
+                // DECIMAL BRANCH (normalize display and compute with scaled integers)
                 setContentView(R.layout.added);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-
-
-                //ADDS BY GOOGLE
+                at.setTypeface(Typeface.MONOSPACE);
                 mAdView=(AdView)findViewById(R.id.adView);
-//                mAdView.setAdListener(new ToastAdListener(Subtraction.this));
                 AdRequest adRequest =new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
-                String txt=et.getText()+"";
-                String[] split=txt.split("\n");
-                String fn="";
-                String sn="";
-                String dn="";
-                long m=0,n=0;
-                long rem_m,rem_n,sum=0;
-                int c1=0,c2=0,c3=0,c4=0,c5=0,c6=0,c7=0,c8=0,c9=0,c10=0,c11=0,c12=0,c13=0,c14=0,c15=0,c16=0,l=0;
-                int t1=0,t2=0,t3=0,t4=0,t5=0,t6=0,t7=0,t8=0,t9=0,t10=0,t11=0,t12=0,t13=0,t14=0,t15=0;
-                for(int i=0;i<split.length;i++)
-                {
-                    int round=1;
-                    if(i==0) {
-                        fn = split[i];
-                        dn=fn;
-                        l = fn.length();
-                        if(fn.length()==0)
-                        {
-                            fn=0+"";
-                        }
-                        if(l>15)
-                        {
-                            at.setText("Maximum digits(15) exceeded\n");
-                            break;
-                        }
-                    }
-                    if(i>0) {
-                        fn = split[i].substring(2);
-                        if(l<fn.length())
-                        {
-                            l=fn.length();
-                        }
-                        if(fn.length()==0)
-                        {
-                            fn=0+"";
-                        }
-                        if(l>15)
-                        {
-                            at.setText("Maximum digits(15) exceeded\n");
-                            break;
-                        }
-                    }
-                    val2=Long.parseLong(fn);
-                    n=val2;
-                    while(m!=0 && n!=0)
-                    {
-                        rem_m=m%10;
-                        rem_n=n%10;
 
-                        if (round == 1) {
-                            sum = rem_m - rem_n;
-                            if (sum < 0)
-                                c1++;
-                        }
-                        if (round == 2) {
-                            sum = rem_m - rem_n - c1;
-                            if (sum < 0)
-                                c2++;
-                        }
-                        if (round == 3) {
-                            sum = rem_m - rem_n - c2;
-                            if (sum <0)
-                                c3++;
-                        }
-                        if (round == 4) {
-                            sum = rem_m - rem_n - c3;
-                            if (sum <0)
-                                c4++;
-                        }
-                        if (round == 5) {
-                            sum = rem_m - rem_n - c4;
-                            if (sum <0)
-                                c5++;
-                        }
-                        if (round == 6) {
-                            sum = rem_m - rem_n - c5;
-                            if (sum <0)
-                                c6++;
-                        }
-                        if (round == 7) {
-                            sum = rem_m - rem_n - c6;
-                            if (sum <0)
-                                c7++;
-                        }
-                        if(round==8)
-                        {
-                            sum=rem_m-rem_n-c7;
-                            if(sum<0)
-                                c8++;
-                        }
-                        if(round==9)
-                        {
-                            sum=rem_m-rem_n-c8;
-                            if(sum<0)
-                                c9++;
-                        }
-                        if(round==10)
-                        {
-                            sum=rem_m-rem_n-c9;
-                            if(sum<0)
-                                c10++;
-                        }
-                        if(round==11)
-                        {
-                            sum=rem_m-rem_n-c10;
-                            if(sum<0)
-                                c11++;
-                        }
-                        if(round==12)
-                        {
-                            sum=rem_m-rem_n-c11;
-                            if(sum<0)
-                                c12++;
-                        }
-                        if(round==13)
-                        {
-                            sum=rem_m-rem_n-c12;
-                            if(sum<0)
-                                c13++;
-                        }
-                        if(round==14)
-                        {
-                            sum=rem_m-rem_n-c13;
-                            if(sum<0)
-                                c14++;
-                        }
-                        if(round==15)
-                        {
-                            sum=rem_m-rem_n-c14;
-                            if(sum<0)
-                                c15++;
-                        }
-                        if(round==16)
-                        {
-                            sum=rem_m-rem_n-c15;
-                            if(sum<0)
-                                c16++;
-                        }
-
-
-                        m=m/10;
-                        n=n/10;
-                        round++;
+                String[] lines = raw.split("\n");
+                java.util.List<String> original = new java.util.ArrayList<>();
+                java.util.List<String> ints = new java.util.ArrayList<>();
+                java.util.List<String> fracs = new java.util.ArrayList<>();
+                int maxFrac = 0;
+                int maxIntLen = 0;
+                for (int i=0;i<lines.length;i++){
+                    String s = (i==0)? lines[i] : (lines[i].length()>=2? lines[i].substring(2):"");
+                    if(s.isEmpty()) s="0";
+                    if(!s.matches("\\d+(\\.\\d+)?")) { at.setText("Invalid number format\n"); return; }
+                    original.add(s);
+                    int dot = s.indexOf('.');
+                    if(dot>=0) {
+                        String ip = s.substring(0,dot);
+                        String fp = s.substring(dot+1);
+                        ints.add(ip);
+                        fracs.add(fp);
+                        if(fp.length()>maxFrac) maxFrac=fp.length();
+                        if(ip.length()>maxIntLen) maxIntLen=ip.length();
                     }
-                    if(i==0)
-                        val1=val2;
-                    else
-                        val1=val1-val2;
-                    m=val1;
+                    else {
+                        ints.add(s);
+                        fracs.add("");
+                        if(s.length()>maxIntLen) maxIntLen=s.length();
+                    }
+                }
+                // Normalize fractional widths only for display
+                StringBuilder expr = new StringBuilder();
+                for(int i=0;i<original.size();i++){
+                    StringBuilder f = new StringBuilder(fracs.get(i));
+                    while(f.length()<maxFrac) f.append('0');
+                    String line = (maxFrac>0)? (ints.get(i)+"."+f) : ints.get(i);
+                    if(i==0) expr.append(line); else expr.append("\n- ").append(line);
+                }
+                at.setText(expr.toString());
+
+                // Prepare scaled integer strings for arithmetic (no trimming of leading zeros; just left-pad to equal length)
+                int L = maxIntLen + maxFrac; // digits only width (no dot)
+                java.util.List<String> scaled = new java.util.ArrayList<>();
+                for(int i=0;i<original.size();i++){
+                    String ip = ints.get(i);
+                    StringBuilder fp = new StringBuilder(fracs.get(i));
+                    while(fp.length()<maxFrac) fp.append('0');
+                    String s = ip + fp;
+                    // left pad to L to keep arrays same length
+                    StringBuilder pad = new StringBuilder();
+                    for(int k=0;k<L-s.length();k++) pad.append('0');
+                    scaled.add(pad + s);
                 }
 
+                // Convert to digit arrays
+                int[] top = leftPadToDigits(scaled.get(0), L);
+                int[][] subs = new int[Math.max(0, scaled.size()-1)][];
+                for (int i=1; i<scaled.size(); i++) subs[i-1] = leftPadToDigits(scaled.get(i), L);
 
-//              val2 = Integer.parseInt(et.getText() + "");
-//                if (add == true)
-//                    et.setText(null);
-//                    et.setText(val1 + val2 + "");
-//                    add = false;
-//                }
+                // Compute numeric result using BigInteger with scaling 10^maxFrac
+                BigInteger minuend = new BigInteger(scaled.get(0));
+                BigInteger sub = BigInteger.ZERO;
+                for(int i=1;i<scaled.size();i++) sub = sub.add(new BigInteger(scaled.get(i)));
+                BigInteger result = minuend.subtract(sub);
 
-                sn=sn+et.getText()+"\n";
-                at.setText(sn);
-                String s3="";
-                int flag=0;
-                int gr=8;
-                if(l>gr)
-                {
-                    gr=l-1;
-                }
-                for(int i=gr;i>0;i--)
-                {
-                    if(i==16)
-                    {
-                        if((c16>0)&&(i<=l-1)) {
-                            s3 = s3 + c16 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==15)
-                    {
-                        if((c15>0)&&(i<=l-1)) {
-                            s3 = s3 + c15 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==14)
-                    {
-                        if((c14>0)&&(i<=l-1)) {
-                            s3 = s3 + c14 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==13)
-                    {
-                        if((c13>0)&&(i<=l-1)) {
-                            s3 = s3 + c13 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==12)
-                    {
-                        if((c12>0)&&(i<=l-1)) {
-                            s3 = s3 + c12 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==11)
-                    {
-                        if((c11>0)&&(i<=l-1)) {
-                            s3 = s3 + c11 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==10)
-                    {
-                        if((c10>0)&&(i<=l-1)) {
-                            s3 = s3 + c10 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==9)
-                    {
-                        if((c9>0)&&(i<=l-1)) {
-                            s3 = s3 + c9 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==8)
-                    {
-                        if((c8>0)&&(i<=l-1)) {
-                            s3 = s3 + c8 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==7)
-                    {if((c7>0)&&(i<=l-1))
-                    {
-                        s3=s3+c7+"";
-                        flag=1;}
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==6)
-                    {if((c6>0)&&(i<=l-1)) {
-                        s3 = s3 + c6 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==5)
-                    {if((c5>0)&&(i<=l-1)) {
-                        s3 = s3 + c5 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==4)
-                    {if((c4>0)&&(i<=l-1)) {
-                        s3 = s3 + c4 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==3)
-                    {
-                        if((c3>0)&&(i<=l-1)) {
-                            s3 = s3 + c3 + "";
-                            flag = 1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==2)
-                    {if((c2>0)&&(i<=l-1))
-                    {
-                        s3=s3+c2+"";
-                        flag=1;}
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==1)
-                    {if((c1>0)&&(i<=l-1)) {
-                        s3 = s3 + c1 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
+                // Build borrow markers across integer and fractional columns
+                char[] markers = computeBorrowMarkers(top, subs); // length L
+                String borrowRow = buildBorrowRowString(markers, maxFrac); // length L (+1 if has dot)
 
-                }
-                s3=s3+"  ";
-                if(val1<0)
-                {
-                    flag=0;
-                }
-                if(flag==1) {
-                    SpannableString ss2 = new SpannableString(s3);
+                // Render borrow row with underline exactly across digits width (including dot placeholder)
+                if(result.signum()>=0) {
+                    at.append("\n");
+                    SpannableString ss2 = new SpannableString(borrowRow);
+                    ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
+                    ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
+                    at.append(ss2);
+                } else {
+                    at.append("\n");
+                    // show only an underline with no carry digits
+                    char[] blanks = new char[borrowRow.length()];
+                    java.util.Arrays.fill(blanks, NBSP);
+                    SpannableString ss2 = new SpannableString(new String(blanks));
                     ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
                     ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
                     at.append(ss2);
                 }
-                if(flag==0)
-                {
-                    s3="____________";
-                    at.append(s3);
-                }
-                at.append("\n");
-                sn=val1+"";
-                int we=sn.length();
-                if(we<dn.length())
-                {
-                    for(int i=0;i<(dn.length()-we);i++)
-                    {
-                        sn="0"+sn;
-                    }
-                }
-                SpannableString ss1=new SpannableString(sn);
-                ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
-                at.append(ss1);
 
-//             sn=sn+ss1+"\n"+val1;
-//                et.setText(sn);
-                if(l>15)
-                {
-                    at.setText("Maximum digits(15) exceeded\n");
-                }
+                // Format and append result with exactly maxFrac fractional digits
+                String sign = "";
+                if(result.signum()<0){ sign = "-"; result = result.negate(); }
+                String rs = result.toString();
+                while(maxFrac>0 && rs.length()<=maxFrac) rs = "0"+rs;
+                String out;
+                if(maxFrac>0){
+                    int split = rs.length()-maxFrac; if(split<0) split=0;
+                    String ip = rs.substring(0, split);
+                    String fp = rs.substring(split);
+                    if(ip.isEmpty()) ip="0";
+                    while(fp.length()<maxFrac) fp = fp+"0";
+                    out = sign + ip + "." + fp;
+                } else { out = sign + rs; }
+
+                at.append("\n");
+                SpannableString ss = new SpannableString(out);
+                ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss.length(),0);
+                at.append(ss);
                 at.append("\n\n");
             }
         });

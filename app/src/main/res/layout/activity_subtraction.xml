@@ -51,9 +51,10 @@
             <Button android:id="@+id/add" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/minus" />
         </LinearLayout>
 
-        <!-- Row 4 (standardized) -->
+        <!-- Row 4 (with dot) -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
             <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/zero" />
+            <Button android:id="@+id/dot" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/dot" />
             <ImageButton android:id="@+id/equal" style="@style/KeypadResultButton" android:layout_width="0dp" android:layout_weight="1" android:contentDescription="@string/send" android:src="@drawable/ic_result_arrow" />
         </LinearLayout>
     </LinearLayout>

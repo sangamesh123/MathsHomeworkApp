@@ -85,4 +85,5 @@
     <string name="error_enter_numbers_first">Enter numbers first</string>
     <string name="error_overflow">Result too large (overflow)</string>
     <string name="label_lcm">LCM : %1$s</string>
+    <string name="dot">.</string>
 </resources>
