@@ -12,18 +12,106 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import android.graphics.Typeface;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.text.Spanned;
+import android.text.style.ReplacementSpan;
 
 public class Multiplication extends AppCompatActivity {
     private AdView mAdView;
-    Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, badd, bclr, back;
+    Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, badd, bclr, back, bdot; // add dot
     TextView et;
     ImageButton bsp, beq;
     TextView at;
     long val1 = 0, val2 = 0;
     boolean add;
+
+    // helpers
+    private static final char NBSP = '\u00A0';
+
+    private static String digitsOnly(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= '0' && c <= '9') sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    private static int[] toDigitsLeftToRight(String s) {
+        int[] d = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) d[i] = s.charAt(i) - '0';
+        return d;
+    }
+
+    // Carry markers for multiplicand * single digit (0-9). markers placed above the next-left column
+    private static char[] computeCarryRowForSingleDigit(int[] multiplicand, int digit) {
+        int L = multiplicand.length;
+        char[] mark = new char[L];
+        for (int i = 0; i < L; i++) mark[i] = NBSP;
+        if (digit == 0) return mark;
+        int carry = 0;
+        for (int k = L - 1; k >= 0; k--) {
+            int prod = multiplicand[k] * digit + carry;
+            carry = prod / 10;
+            if (carry > 0 && k - 1 >= 0) {
+                int v = carry % 10; // fit a single digit carry in the cell
+                mark[k - 1] = (char) ('0' + v);
+            }
+        }
+        return mark;
+    }
+
+    // Carry markers for column-wise addition of multiple numeric strings (right-aligned, digits only strings with optional right-shift zeros already applied)
+    private static char[] computeAdditionCarryMarkers(List<String> nums) {
+        int maxLen = 0;
+        for (String s : nums) if (s.length() > maxLen) maxLen = s.length();
+        char[] mark = new char[maxLen];
+        for (int i = 0; i < maxLen; i++) mark[i] = NBSP;
+        int carry = 0;
+        for (int idx = maxLen - 1; idx >= 0; idx--) {
+            int sum = carry;
+            for (String s : nums) {
+                int j = s.length() - 1 - (maxLen - 1 - idx);
+                if (j >= 0 && j < s.length()) sum += s.charAt(j) - '0';
+            }
+            carry = sum / 10;
+            if (carry > 0 && idx - 1 >= 0) {
+                int v = carry % 10;
+                mark[idx - 1] = (char) ('0' + v);
+            }
+        }
+        return mark;
+    }
+
+    private static String insertDotPlaceholder(char[] markers, int dotIndex) {
+        if (dotIndex < 0) return new String(markers);
+        char[] out = new char[markers.length + 1];
+        System.arraycopy(markers, 0, out, 0, dotIndex);
+        out[dotIndex] = NBSP; // placeholder for dot
+        System.arraycopy(markers, dotIndex, out, dotIndex + 1, markers.length - dotIndex);
+        return new String(out);
+    }
+
+    private static String padRightZeros(String s, int n) {
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < n; i++) sb.append('0');
+        return sb.toString();
+    }
+
+    private static String ensureMinLengthLeft(String s, int minLen, char pad) {
+        if (s.length() >= minLen) return s;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < minLen - s.length(); i++) sb.append(pad);
+        sb.append(s);
+        return sb.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,78 +131,70 @@ public class Multiplication extends AppCompatActivity {
         b9 = (Button) findViewById(R.id.nine);
         b0 = (Button) findViewById(R.id.zero);
         badd = (Button) findViewById(R.id.add);
+        bdot = (Button) findViewById(R.id.dot);
         bsp = (ImageButton) findViewById(R.id.backspace);
         bclr = (Button) findViewById(R.id.clear);
         beq = (ImageButton) findViewById(R.id.equal);
         et = (TextView) findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
+        et.setTypeface(Typeface.MONOSPACE);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "1");
             }
         });
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "2");
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "3");
             }
         });
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "4");
             }
         });
         b5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "5");
             }
         });
         b6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "6");
             }
         });
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "7");
             }
         });
         b8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "8");
             }
         });
         b9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "9");
             }
         });
         b0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 et.setText(et.getText() + "0");
             }
         });
@@ -124,11 +204,10 @@ public class Multiplication extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-                String mm=et.getText().toString();
-            if(!mm.contains("x")) {
-                et.setText(et.getText() + "\n" + "x ");
-            }
+                String mm = et.getText().toString();
+                if (!mm.contains("x")) {
+                    et.setText(et.getText() + "\n" + "x ");
+                }
             }
         });
 
@@ -136,8 +215,6 @@ public class Multiplication extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
                 et.setText(null);
             }
         });
@@ -146,21 +223,16 @@ public class Multiplication extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
                 String smp = et.getText().toString();
                 if (smp.length() > 1) {
-                    char qq2=smp.charAt(smp.length()-1);
-                    if(qq2==' ')
-                    {
+                    char qq2 = smp.charAt(smp.length() - 1);
+                    if (qq2 == ' ') {
                         smp = smp.substring(0, smp.length() - 2);
-                    }
-                    else
+                    } else
                         smp = smp.substring(0, smp.length() - 1);
                     et.setText(smp);
-                    char qq=smp.charAt(smp.length()-1);
-                    if(qq=='\n')
-                    {
+                    char qq = smp.charAt(smp.length() - 1);
+                    if (qq == '\n') {
                         smp = smp.substring(0, smp.length() - 1);
                         et.setText(smp);
                     }
@@ -171,765 +243,199 @@ public class Multiplication extends AppCompatActivity {
             }
         });
 
+        // Dot button behavior (allow at most one '.' per current line)
+        if (bdot != null) {
+            bdot.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    String full = et.getText().toString();
+                    int ln = full.lastIndexOf('\n');
+                    String currentLine = (ln==-1)? full : full.substring(ln+1);
+                    if(currentLine.startsWith("x ")) currentLine = currentLine.substring(2);
+                    if(currentLine.contains(".")) return;
+                    if(full.endsWith("\nx ") || full.endsWith("x ") || currentLine.isEmpty()){
+                        et.append("0.");
+                    } else {
+                        et.append(".");
+                    }
+                }
+            });
+        }
+
         beq.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                String raw = et.getText()+"";
+                if (!raw.contains("x")) {
+                    raw = raw + "\n" + "x ";
+                }
+
                 setContentView(R.layout.added);
                 at = (TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-
-                //ADDS BY GOOGLE
-                mAdView=(AdView)findViewById(R.id.adView);
-//                mAdView.setAdListener(new ToastAdListener(Multiplication.this));
-                AdRequest adRequest =new AdRequest.Builder().build();
+                at.setTypeface(Typeface.MONOSPACE);
+                mAdView = (AdView) findViewById(R.id.adView);
+                AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
 
-                int fl=0;
-                long v1=0,v2=0;
-                String txt = et.getText() + "";
-                if(!txt.contains("x")) {
-                    txt=txt+"\n" + "x ";
+                String[] lines = raw.split("\n");
+                String a = lines.length>0 ? lines[0] : "";
+                String b = lines.length>1 ? (lines[1].startsWith("x ")? lines[1].substring(2): lines[1]) : "";
+                if (a.isEmpty()) a = "1";
+                if (b.isEmpty()) b = "1";
+
+                if (!a.matches("\\d+(\\.\\d+)?") || !b.matches("\\d+(\\.\\d+)?")) {
+                    at.setText("Invalid number format\n");
+                    return;
                 }
 
-                at.setText(txt);
+                if (digitsOnly(a).length() > 16 || digitsOnly(b).length() > 16) {
+                    at.setText("Maximum digits(16) exceeded\n");
+                    return;
+                }
 
-                int tm=0;
-                String yn="";
-                String zn="";
+                // split int/frac (keep original fractional lengths)
+                int ad = a.indexOf('.');
+                int bd = b.indexOf('.');
+                String ai = (ad>=0? a.substring(0, ad) : a);
+                String af = (ad>=0? a.substring(ad+1) : "");
+                String bi = (bd>=0? b.substring(0, bd) : b);
+                String bf = (bd>=0? b.substring(bd+1) : "");
 
-                String[] split = txt.split("\n");
-//                int gh=split.length;
-//                String thh=gh+"";
-//                at.append(thh);
-                for (int i = 0; i < split.length; i++) {
-                    if (i == 0) {
-                        yn = split[i];
+                // Display exactly as typed (no zero-padding for B)
+                at.setText(a + "\n" + "x " + b);
 
-                        if(yn.length()==0)
-                        {
-                            v1=1;
-                            yn=1+"";
-                            tm++;
-                        }
-                        else {
-                            if(yn.length()>16)
-                            {
-                                v2=0;
-                                zn=0+"";
-                                break;
-                            }
-                            v1 = Long.parseLong(yn);
-                        }
-                    }
-                    if (i > 0) {
-                        zn = split[i].substring(2);
+                // Arithmetic scaled integers use original fraction lengths only
+                String aScaled = ai + af;
+                String bScaled = bi + bf;
+                if (aScaled.isEmpty()) aScaled = "0";
+                if (bScaled.isEmpty()) bScaled = "0";
 
-                        if(zn.length()==0)
-                        {
-                            v2=1;
-                            zn=1+"";
+                BigInteger A = new BigInteger(aScaled);
+                BigInteger B = new BigInteger(bScaled);
+                int aIntLen = ai.length();
+                int resultFrac = af.length() + bf.length();
 
-                            if(tm==1)
-                            {
-                                v1=0;
-                                v2=0;
-                                zn=0+"";
-                            }
-                        }
-                        else
-                        {
-                            if((zn.length()+yn.length())>16)
-                            {
-                                v1=0;
-                                zn=0+"";
-                                break;
-                            }
-                            v2=Long.parseLong(zn);
-                            if(tm==1)
-                            {
-                                v1=v2;
-                                v2=1;
-                                zn=1+"";
-                            }
-                        }
+                // Pre-compute final product string and expected column width (including dot if any)
+                BigInteger prod = A.multiply(B);
+                String rsExpected = prod.toString();
+                if (resultFrac > 0) {
+                    while (rsExpected.length() <= resultFrac) rsExpected = "0" + rsExpected;
+                    int splitExp = rsExpected.length() - resultFrac;
+                    rsExpected = rsExpected.substring(0, splitExp) + "." + rsExpected.substring(splitExp);
+                }
+                int expectedLenForResult = rsExpected.length();
 
+                // First multiplication carry row: from LSD of B
+                int[] aDigits = toDigitsLeftToRight(aScaled);
+                int bLen = bScaled.length();
+                int lsdDigit = (bLen>0)? (bScaled.charAt(bLen-1) - '0') : 0;
+                char[] mulCarry = computeCarryRowForSingleDigit(aDigits, lsdDigit);
+                // Ignore fraction special spacing here (no dot placeholder)
+                String mulCarryRow = new String(mulCarry);
+                // Do not append yet; we will decide after building partials
+
+                // Build partial products (include zeros except trailing fractional zeros)
+                List<String> partials = new ArrayList<>();
+                List<String> displayPartials = new ArrayList<>();
+                int fracLenB = bf.length();
+                int trailingFracZeros = 0;
+                for (int i = bf.length() - 1; i >= 0; i--) {
+                    if (bf.charAt(i) == '0') trailingFracZeros++; else break;
+                }
+                if (bLen > 0) {
+                    for (int idx = bLen - 1, shift = 0; idx >= 0; idx--, shift++) {
+                        int d = bScaled.charAt(idx) - '0';
+                        boolean inFraction = (fracLenB > 0 && shift < fracLenB);
+                        boolean isTrailingFracZero = inFraction && (shift < trailingFracZeros) && d == 0;
+                        if (isTrailingFracZero) continue;
+                        BigInteger p = A.multiply(BigInteger.valueOf(Math.max(0, d)));
+                        String ps = p.toString();
+                        String shifted = padRightZeros(ps, shift);
+                        partials.add(shifted);
+                        StringBuilder vv = new StringBuilder(ps);
+                        for (int s = 0; s < shift; s++) vv.append('+');
+                        displayPartials.add(vv.toString());
                     }
                 }
 
-                String iii=v1+"";
-                String ii=v2+"";
-                String vv="";
-                String mm="";
-                for(int i=ii.length()-1;i>=0;i--)
-                {
-                    if(i==(ii.length()-1))
-                    {
-
-                            String q1=zn.charAt(i)+"";
-                            int kkk=Integer.parseInt(q1);
-                            mm=kkk*v1+"";
-                            vv=kkk*v1+"";
-                        if(kkk==0)
-                        {
-                            for(int k=0;k<iii.length()-1;k++)
-                            {
-                                vv=vv+"0";
-                            }
-                        }
-
-
-                        //Temp******************************************************************************************
-                        long ms=v1,rem_ms=0,um=0;
-                        int ns=Integer.parseInt(q1);;
-                        int roun=1;
-                        long cd1=0,cd2=0,cd3=0,cd4=0,cd5=0,cd6=0,cd7=0,cd8=0,cd9=0,cd10=0,cd11=0,cd12=0,cd13=0,cd14=0,cd15=0,cd16=0;
-                        while (ms != 0 && ns != 0) {
-                            rem_ms = ms % 10;
-                            if (roun == 1) {
-                                um = rem_ms * ns;
-                                if (um >= 10)
-                                    cd1=um/10;
-                            }
-                            if (roun == 2) {
-                                um = rem_ms *ns + cd1;
-                                if (um >= 10)
-                                    cd2=um/10;
-                            }
-                            if (roun == 3) {
-                                um = rem_ms * ns + cd2;
-                                if (um >= 10)
-                                    cd3=um/10;
-                            }
-                            if (roun == 4) {
-                                um = rem_ms * ns + cd3;
-                                if (um >= 10)
-                                    cd4=um/10;
-                            }
-                            if (roun == 5) {
-                                um = rem_ms * ns + cd4;
-                                if (um >= 10)
-                                    cd5=um/10;
-                            }
-                            if (roun == 6) {
-                                um = rem_ms * ns + cd5;
-                                if (um >= 10)
-                                    cd6=um/10;
-                            }
-                            if (roun == 7) {
-                                um = rem_ms * ns + cd6;
-                                if (um >= 10)
-                                    cd7=um/10;
-                            }
-                            if (roun == 8) {
-                                um = rem_ms * ns + cd7;
-                                if (um >= 10)
-                                    cd8=um/10;
-                            }
-                            if (roun == 9) {
-                                um = rem_ms * ns + cd8;
-                                if (um >= 10)
-                                    cd9=um/10;
-                            }
-                            if (roun == 10) {
-                                um = rem_ms * ns + cd9;
-                                if (um >= 10)
-                                    cd10=um/10;
-                            }
-                            if (roun == 11) {
-                                um = rem_ms * ns + cd10;
-                                if (um >= 10)
-                                    cd11=um/10;
-                            }
-                            if (roun == 12) {
-                                um = rem_ms * ns + cd11;
-                                if (um >= 10)
-                                    cd12=um/10;
-                            }
-                            if (roun == 13) {
-                                um = rem_ms * ns + cd12;
-                                if (um >= 10)
-                                    cd13=um/10;
-                            }
-                            if (roun == 14) {
-                                um = rem_ms * ns + cd13;
-                                if (um >= 10)
-                                    cd14=um/10;
-                            }
-                            if (roun == 15) {
-                                um = rem_ms * ns + cd14;
-                                if (um >= 10)
-                                    cd15=um/10;
-                            }
-                            if (roun == 16) {
-                                um = rem_ms * ns + cd15;
-                                if (um >= 10)
-                                    cd16=um/10;
-                            }
-                            ms = ms / 10;
-
-                            roun++;
-                        }
-
-                        int kj=iii.length()-1;
-                        int gr=8;
-                        if(kj>gr)
-                        {
-                            gr=kj;
-                        }
-                        String sd3 = "";
-                        for (int ig = gr; ig > 0; ig--) {
-                            if (ig == 16) {
-                                if ((cd16 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd16 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 15) {
-                                if ((cd15 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd15 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 14) {
-                                if ((cd14 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd14 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 13) {
-                                if ((cd13 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd13 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 12) {
-                                if ((cd12 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd12 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 11) {
-                                if ((cd11 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd11 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 10) {
-                                if ((cd10 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd10 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 9) {
-                                if ((cd9 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd9 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 8) {
-                                if ((cd8 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd8 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig== 7) {
-                                if ((cd7 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd7 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 6) {
-                                if ((cd6 > 0)&&(ig<=kj)){
-                                    sd3 = sd3 + cd6 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 5) {
-                                if ((cd5 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd5 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 4) {
-                                if ((cd4 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd4 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 3) {
-                                if ((cd3 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd3 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 2) {
-                                if ((cd2 > 0)&&(ig<=kj)) {
-                                    sd3 = sd3 + cd2 + "";
-                                    fl= 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-                            if (ig == 1) {
-                                if ((cd1 > 0)&&(ig<=kj)){
-                                    sd3 = sd3 + cd1 + "";
-                                    fl = 1;
-                                } else
-                                    sd3 = sd3 + "  ";
-                            }
-
-                        }
-                        sd3 = sd3 + "  ";
-                        if (fl == 1) {
-                            SpannableString ssd2 = new SpannableString(sd3);
-                            ssd2.setSpan(new UnderlineSpan(), 0, ssd2.length(), 0);
-                            ssd2.setSpan(new ForegroundColorSpan(Color.RED), 0, ssd2.length(), 0);
-                            at.append("\n");
-                            at.append(ssd2);
-                        }
-                        if (fl==0) {
-                            sd3 = "\n____________";
-                            at.append(sd3);
-                        }
-
-                        //Temp*******************************************************************************************
-
-                         if(ii.length()!=1) {
-                            at.append("\n");
-                            at.append(vv);
-                            fl = 2;
-                        }
-                    }
-                    else{
-                        String q1=zn.charAt(i)+"";
-                        int kkk=Integer.parseInt(q1);
-                        mm=mm+"\n"+kkk*v1+"";
-                        vv="\n"+kkk*v1+"";
-                        if(kkk==0)
-                        {
-                            for(int k=0;k<iii.length()-1;k++)
-                            {
-                                vv=vv+"0";
-                            }
-                        }
-                        for(int j=ii.length()-1;j>i;j--)
-                         {
-                               vv=vv+"+";
-                             mm=mm+"0";
-                         }
-                         at.append(vv);
-                    }
-                }
-                String[] spin = mm.split("\n");
-                String fn = "";
-                String sn = "";
-                long m = 0, n = 0;
-                long rem_m, rem_n, sum = 0;
-                int c1=0,c2=0,c3=0,c4=0,c5=0,c6=0,c7=0,c8=0,c9=0,c10=0,c11=0,c12=0,c13=0,c14=0,c15=0,c16=0,l=0;
-                int t1=0,t2=0,t3=0,t4=0,t5=0,t6=0,t7=0,t8=0,t9=0,t10=0,t11=0,t12=0,t13=0,t14=0,t15=0;
-                for (int i = 0; i < spin.length; i++) {
-                    int round = 1;
-                    if (i == 0) {
-                        fn = spin[i];
-                        l = fn.length();
-                    }
-                    if (i > 0) {
-                        fn = spin[i];
-                        if (l < fn.length()) {
-                            l = fn.length();
-                        }
-                    }
-                    val2 = Long.parseLong(fn);
-                    n = val2;
-                    while (m != 0 && n != 0) {
-                        rem_m = m % 10;
-                        rem_n = n % 10;
-
-                        if(round==1)
-                        {
-                            sum=rem_m+rem_n;
-                            if(sum>=10)
-                            {
-                                c1++;
-                                if(i==split.length-1)
-                                    t1=1;
-                            }
-
-                        }
-                        if(round==2)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t1;
-                            if(sum>=10)
-                            {
-                                c2++;
-                                if(i==split.length-1)
-                                    t2=1;
-                            }
-                        }
-                        if(round==3)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t2;
-                            if(sum>=10)
-                            {
-                                c3++;
-                                if(i==split.length-1)
-                                    t3=1;
-                            }
-                        }
-                        if(round==4)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t3;
-                            if(sum>=10)
-                            {
-                                c4++;
-                                if(i==split.length-1)
-                                    t4=1;
-                            }
-                        }
-                        if(round==5)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t4;
-                            if(sum>=10)
-                            {
-                                c5++;
-                                if(i==split.length-1)
-                                    t5=1;
-                            }
-                        }
-                        if(round==6)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t5;
-                            if(sum>=10)
-                            {
-                                c6++;
-                                if(i==split.length-1)
-                                    t6=1;
-                            }
-                        }
-                        if(round==7)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t6;
-                            if(sum>=10)
-                            {
-                                c7++;
-                                if(i==split.length-1)
-                                    t7=1;
-                            }
-                        }
-                        if(round==8)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t7;
-                            if(sum>=10)
-                            {
-                                c8++;
-                                if(i==split.length-1)
-                                    t8=1;
-                            }
-                        }
-                        if(round==9)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t8;
-                            if(sum>=10)
-                            {
-                                c9++;
-                                if(i==split.length-1)
-                                    t9=1;
-                            }
-                        }
-                        if(round==10)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t9;
-                            if(sum>=10)
-                            {
-                                c10++;
-                                if(i==split.length-1)
-                                    t10=1;
-                            }
-                        }
-                        if(round==11)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t10;
-                            if(sum>=10)
-                            {
-                                c11++;
-                                if(i==split.length-1)
-                                    t11=1;
-                            }
-                        }
-                        if(round==12)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t11;
-                            if(sum>=10)
-                            {
-                                c12++;
-                                if(i==split.length-1)
-                                    t12=1;
-                            }
-                        }
-                        if(round==13)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t12;
-                            if(sum>=10)
-                            {
-                                c13++;
-                                if(i==split.length-1)
-                                    t13=1;
-                            }
-                        }
-                        if(round==14)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t13;
-                            if(sum>=10)
-                            {
-                                c14++;
-                                if(i==split.length-1)
-                                    t14=1;
-                            }
-                        }
-                        if(round==15)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t14;
-                            if(sum>=10)
-                            {
-                                c15++;
-                                if(i==split.length-1)
-                                    t15=1;
-                            }
-                        }
-                        if(round==16)
-                        {
-                            sum=rem_m+rem_n;
-                            if(i==split.length-1)
-                                sum=rem_m+rem_n+t15;
-                            if(sum>=10)
-                            {
-                                c16++;
-                            }
-                        }
-                        m = m / 10;
-                        n = n / 10;
-                        round++;
-                    }
-                    val1 = val1 + val2;
-                    m = val1;
-                }
-
-
-
-//                sn = sn + et.getText() + "\n";
-//                at.setText(sn);
-                String s3 = "";
-                int flag=0;
-                int gr=8;
-                if(l>gr)
-                {
-                    gr=l-1;
-                }
-                for(int i=gr;i>0;i--)
-                {
-                    if(i==16)
-                    {
-                        if((c16>0)&&(i<=l-1)) {
-                            s3 = s3 + c16 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==15)
-                    {
-                        if((c15>0)&&(i<=l-1)) {
-                            s3 = s3 + c15 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==14)
-                    {
-                        if((c14>0)&&(i<=l-1)) {
-                            s3 = s3 + c14 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==13)
-                    {
-                        if((c13>0)&&(i<=l-1)) {
-                            s3 = s3 + c13 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==12)
-                    {
-                        if((c12>0)&&(i<=l-1)) {
-                            s3 = s3 + c12 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==11)
-                    {
-                        if((c11>0)&&(i<=l-1)) {
-                            s3 = s3 + c11 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==10)
-                    {
-                        if((c10>0)&&(i<=l-1)) {
-                            s3 = s3 + c10 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==9)
-                    {
-                        if((c9>0)&&(i<=l-1)) {
-                            s3 = s3 + c9 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==8)
-                    {
-                        if((c8>0)&&(i<=l-1)) {
-                            s3 = s3 + c8 + "";
-                            flag=1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==7)
-                    {if((c7>0)&&(i<=l-1))
-                    {
-                        s3=s3+c7+"";
-                        flag=1;}
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==6)
-                    {if((c6>0)&&(i<=l-1)) {
-                        s3 = s3 + c6 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==5)
-                    {if((c5>0)&&(i<=l-1)) {
-                        s3 = s3 + c5 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==4)
-                    {if((c4>0)&&(i<=l-1)) {
-                        s3 = s3 + c4 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==3)
-                    {
-                        if((c3>0)&&(i<=l-1)) {
-                            s3 = s3 + c3 + "";
-                            flag = 1;
-                        }
-                        else
-                            s3=s3+"  ";
-                    }
-                    if(i==2)
-                    {if((c2>0)&&(i<=l-1))
-                    {
-                        s3=s3+c2+"";
-                        flag=1;}
-                    else
-                        s3=s3+"  ";
-                    }
-                    if(i==1)
-                    {if((c1>0)&&(i<=l-1)) {
-                        s3 = s3 + c1 + "";
-                        flag = 1;
-                    }
-                    else
-                        s3=s3+"  ";
-                    }
-
-                }
-                s3=s3+"  ";
-                if (flag == 1) {
-                    SpannableString ss2 = new SpannableString(s3);
-                    ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
-                    ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
+                // Show first carry row only when multiple partials (not for single-digit cases like 5.6 x 6)
+                if (displayPartials.size() > 1) {
                     at.append("\n");
-                    at.append(ss2);
+                    SpannableString mcr = new SpannableString(mulCarryRow);
+                    mcr.setSpan(new UnderlineSpan(), 0, mcr.length(), 0);
+                    mcr.setSpan(new ForegroundColorSpan(Color.RED), 0, mcr.length(), 0);
+                    at.append(mcr);
                 }
-                if ((flag == 0)&&(fl==2)) {
-                    s3 = "\n____________";
-                    at.append(s3);
+
+                // Show partials; if only one non-zero line, keep it hidden to avoid duplicate result
+                if (displayPartials.size() > 1) {
+                    for (String dp : displayPartials) {
+                        at.append("\n");
+                        at.append(dp);
+                    }
+                }
+
+                // Addition carry row across partials: always show a red underlined row
+                final char NBSP = '\u00A0';
+                char[] carr = new char[expectedLenForResult];
+                for (int i=0;i<expectedLenForResult;i++) carr[i] = NBSP;
+                if (partials.size() > 1) {
+                    // Exact column carries
+                    int L = 0;
+                    for (String s : partials) if (s.length() > L) L = s.length();
+                    int[] carryOut = new int[Math.max(L,1)];
+                    int carryAdd = 0;
+                    for (int col = 0; col < L; col++) {
+                        int columnSum = carryAdd;
+                        for (String s : partials) {
+                            int id = s.length() - 1 - col;
+                            if (id >= 0) columnSum += (s.charAt(id) - '0');
+                        }
+                        carryAdd = columnSum / 10;
+                        carryOut[col] = carryAdd;
+                    }
+                    // Place carries above next-left column; do not special-case decimal column
+                    for (int c = 0; c < L; c++) {
+                        int cv = carryOut[c] % 10;
+                        if (cv == 0) continue;
+                        int pos = expectedLenForResult - 1 - (c + 1);
+                        if (pos >= 0 && pos < expectedLenForResult) carr[pos] = (char)('0' + cv);
+                    }
+                }
+                // Print the carry row (always), red and underlined
+                at.append("\n");
+                SpannableString acr = new SpannableString(new String(carr));
+                acr.setSpan(new UnderlineSpan(), 0, acr.length(), 0);
+                acr.setSpan(new ForegroundColorSpan(Color.RED), 0, acr.length(), 0);
+                at.append(acr);
+
+                // Final result with decimal point (no left-padding; apply digit+dot compression; replace trailing frac 0 with NBSP)
+                String rs = prod.toString();
+                if (resultFrac > 0) {
+                    while (rs.length() <= resultFrac) rs = "0" + rs;
+                    int split = rs.length() - resultFrac;
+                    rs = rs.substring(0, split) + "." + rs.substring(split);
+                }
+                // Build spannable and compress digit+dot as one cell
+                SpannableString blue;
+                int dp = rs.indexOf('.')
+                        ;
+                if (dp > 0 && Character.isDigit(rs.charAt(dp-1))) {
+                    // Optionally replace trailing fractional 0 with NBSP so "2." shows when needed
+                    if (dp < rs.length()-1 && rs.charAt(rs.length()-1) == '0') {
+                        char[] rc = rs.toCharArray();
+                        rc[rc.length - 1] = NBSP;
+                        rs = new String(rc);
+                    }
+                    blue = new SpannableString(rs);
+                    blue.setSpan(new CombinedDigitDotSpan(), dp - 1, dp + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                } else {
+                    blue = new SpannableString(rs);
                 }
                 at.append("\n");
-               sn=v1*v2+"";
-                SpannableString ss1 = new SpannableString(sn);
-                ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss1.length(), 0);
-                at.append(ss1);
-                if((tm==0)&&(v1==0)&&(v2==0))
-                {
-                    at.setText("Maximum digits(16) exceeded\n");
-                }
+                blue.setSpan(new ForegroundColorSpan(Color.BLUE), 0, blue.length(), 0);
+                at.append(blue);
                 at.append("\n\n");
             }
         });
@@ -941,11 +447,43 @@ public class Multiplication extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
                 this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // Draw digit and following '.' as a single cell width (for final result only)
+    static class CombinedDigitDotSpan extends ReplacementSpan {
+        @Override
+        public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
+            if (fm != null) {
+                Paint.FontMetricsInt pfm = paint.getFontMetricsInt();
+                fm.ascent = pfm.ascent;
+                fm.descent = pfm.descent;
+                fm.top = pfm.top;
+                fm.bottom = pfm.bottom;
+            }
+            float w = paint.measureText("0"); // approximate monospace cell
+            return (int) Math.ceil(w);
+        }
+
+        @Override
+        public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+            int oldColor = paint.getColor();
+            float cell = paint.measureText("0");
+            // Draw digit in BLUE within this cell
+            paint.setColor(Color.BLUE);
+            char d = text.charAt(start);
+            canvas.drawText(new char[]{d}, 0, 1, x, y, paint);
+            // Draw the dot in RED centered at the boundary between this cell and the next
+            float dotW = paint.measureText(".");
+            float dotX = x + cell - (dotW / 2f);
+            paint.setColor(Color.RED);
+            canvas.drawText(".", dotX, y, paint);
+            // Restore original paint color
+            paint.setColor(oldColor);
         }
     }
 }
