@@ -272,21 +272,60 @@ public class Division extends AppCompatActivity {
                 at.append(ssp1);
                 long v3=v1/v2;
                 String qu=v3+"";
-                qt.setText(qu);
+
+                // Build fractional quotient (decimal expansion) with limits:
+                // - fractional part: up to 5 digits
+                // - total digits (integer + fractional): up to 10 digits
+                long rem = v1 % v2;
+                StringBuilder displayQuot = new StringBuilder(qu);
+                StringBuilder quotientDigits = new StringBuilder(qu); // digits only for step logic
+                int decCount = 0;
+                int intPartLen = qu.length();
+
+                if (intPartLen >= 10) {
+                    // Cap quotient to 10 integer digits, no decimals
+                    String capped = qu.substring(0, 10);
+                    displayQuot = new StringBuilder(capped);
+                    quotientDigits = new StringBuilder(capped);
+                    decCount = 0;
+                } else {
+                    int allowedDec = Math.min(5, 10 - intPartLen);
+                    if(rem != 0 && allowedDec > 0) {
+                        displayQuot.append('.');
+                        while(rem != 0 && decCount < allowedDec) {
+                            rem *= 10;
+                            long d = rem / v2;
+                            quotientDigits.append(d);
+                            displayQuot.append(d);
+                            rem = rem % v2;
+                            decCount++;
+                        }
+                    }
+                }
+
+                qt.setText(displayQuot.toString());
                 kt.setText(yn);
                 kt.append("\n");
                 String quotient="";
                 String remender="";
-                quotient=v3+"";
+                // Use full digits (integer + decimal) for step logic
+                quotient=quotientDigits.toString();
                 long v4=0;
                 String divv="";
                 String cur="";
                 long just1=0,just2=0;
                 int j=0,k=0;
+
+                // Prepare extended dividend with borrowed zeros for decimal part
+                StringBuilder zerosForYn = new StringBuilder();
+                for(int z=0; z<decCount; z++) zerosForYn.append('0');
+                String ynExt = yn + zerosForYn.toString();
+
                 for(int i=0;i<quotient.length();i++)
                 {
 
-                    if(i==0)
+                    // Keep old special-case breaks only for pure integer divisions
+                    if(i==0 && decCount==0)
                     {
                         if((quotient.length()==2)&&(quotient.charAt(1)=='0'))
                         {
@@ -344,13 +383,13 @@ public class Division extends AppCompatActivity {
                     if(v4!=0)
                     {
                         String df=v4+"";
-                        for(int g=j;g<yn.length();g++)
+                        for(int g=j;g<ynExt.length();g++)
                         {
                             if(df.length()>cur.length())
                             {
                                 k++;
-                                cur=cur+yn.substring(j,k);
-                                tmt=tmt+yn.substring(j,k);
+                                cur=cur+ynExt.substring(j,k);
+                                tmt=tmt+ynExt.substring(j,k);
                                 j++;
                             }
                             else
@@ -359,8 +398,8 @@ public class Division extends AppCompatActivity {
                                 if(v4>just2)
                                 {
                                     k++;
-                                    cur=cur+yn.substring(j,k);
-                                    tmt=tmt+yn.substring(j,k);
+                                    cur=cur+ynExt.substring(j,k);
+                                    tmt=tmt+ynExt.substring(j,k);
                                     j++;
                                     move2++;
                                     down=true;
@@ -402,6 +441,11 @@ public class Division extends AppCompatActivity {
                         cur="";
                     }
 
+                }
+
+                // If we produced decimal digits, skip the legacy trailing-digits append logic
+                if(decCount>0) {
+                    pms = true;
                 }
 
                 if(!pms)
