@@ -17,7 +17,8 @@
         android:maxLines="50"
         android:scrollbars="vertical"
         android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:focusableInTouchMode="true"
+        android:fontFamily="monospace" />
 
     <LinearLayout
         android:id="@+id/first"

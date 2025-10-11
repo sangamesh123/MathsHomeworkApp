@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.graphics.Typeface;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class Tables extends AppCompatActivity {
@@ -43,6 +43,13 @@ public class Tables extends AppCompatActivity {
         beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.tabl);
         et.setMovementMethod(new ScrollingMovementMethod());
+        Typeface tf = loadRobotoMonoFromAssets();
+        if (tf != null) {
+            et.setTypeface(tf);
+        } else {
+            et.setTypeface(Typeface.MONOSPACE);
+        }
+        et.setLetterSpacing(0f);
 
         View.OnClickListener digitListener = v -> {
             if (et.getText().length() >= MAX_INPUT_LENGTH) return;
@@ -97,6 +104,14 @@ public class Tables extends AppCompatActivity {
             intent.putExtra("tableNumber", input);
             Tables.this.startActivity(intent);
         });
+    }
+
+    private Typeface loadRobotoMonoFromAssets() {
+        try {
+            return Typeface.createFromAsset(getAssets(), "fonts/RobotoMono-Regular.ttf");
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
