@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.graphics.Typeface;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -188,6 +189,10 @@ public class Division extends AppCompatActivity {
                 kt.setMovementMethod(new ScrollingMovementMethod());
                 qt=(TextView) findViewById(R.id.quot);
                 qt.setMovementMethod(new ScrollingMovementMethod());
+
+                // Apply monospace only to divisor and quotient for consistent top-line spacing
+                at.setTypeface(Typeface.MONOSPACE);
+                qt.setTypeface(Typeface.MONOSPACE);
 
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
