@@ -21,6 +21,7 @@ int i=0;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prime_numbers);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //ADDS BY GOOGLE
         mAdView=(AdView)findViewById(R.id.adView);

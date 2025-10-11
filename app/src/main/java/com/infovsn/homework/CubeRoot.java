@@ -28,6 +28,7 @@ public class CubeRoot extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cube_root);
+        FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -172,6 +173,7 @@ public class CubeRoot extends AppCompatActivity {
             public void onClick(View v) {
                 String cc="";
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(CubeRoot.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Removed custom back button setup

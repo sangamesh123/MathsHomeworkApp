@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.graphics.Typeface;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import java.math.BigInteger;
@@ -117,6 +116,7 @@ public class Multiplication extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplication);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -137,7 +137,7 @@ public class Multiplication extends AppCompatActivity {
         beq = (ImageButton) findViewById(R.id.equal);
         et = (TextView) findViewById(R.id.txtScreen);
         et.setMovementMethod(new ScrollingMovementMethod());
-        et.setTypeface(Typeface.MONOSPACE);
+        et.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,9 +271,10 @@ public class Multiplication extends AppCompatActivity {
                 }
 
                 setContentView(R.layout.added);
-                at = (TextView) findViewById(R.id.txtScr);
+                FontUtils.applyToActivity(Multiplication.this);
+                at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                at.setTypeface(Typeface.MONOSPACE);
+                at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
                 mAdView = (AdView) findViewById(R.id.adView);
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);

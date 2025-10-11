@@ -28,6 +28,7 @@ public class Addition extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addition);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         b1=(Button) findViewById(R.id.one);
@@ -195,6 +196,7 @@ public class Addition extends AppCompatActivity {
                 if(!hasDecimal) {
                     // Show result layout
                     setContentView(R.layout.added);
+                    FontUtils.applyToActivity(Addition.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     mAdView=(AdView)findViewById(R.id.adView);
@@ -283,6 +285,7 @@ public class Addition extends AppCompatActivity {
 
                 // DECIMAL BRANCH
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Addition.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 mAdView=(AdView)findViewById(R.id.adView);

@@ -25,6 +25,7 @@ public class Fraction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -167,6 +168,7 @@ public class Fraction extends AppCompatActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Fraction.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 

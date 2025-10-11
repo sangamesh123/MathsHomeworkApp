@@ -20,6 +20,7 @@ public class EvenNumbers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_even_numbers);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.graphics.Typeface;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -85,6 +84,7 @@ public class Subtraction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtraction);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -256,9 +256,10 @@ public class Subtraction extends AppCompatActivity {
                 if(!hasDecimal) {
                     // Integer branch with correct borrow alignment
                     setContentView(R.layout.added);
+                    FontUtils.applyToActivity(Subtraction.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
-                    at.setTypeface(Typeface.MONOSPACE);
+                    at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                     mAdView=(AdView)findViewById(R.id.adView);
                     AdRequest adRequest =new AdRequest.Builder().build();
                     mAdView.loadAd(adRequest);
@@ -325,9 +326,10 @@ public class Subtraction extends AppCompatActivity {
 
                 // DECIMAL BRANCH (normalize display and compute with scaled integers)
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Subtraction.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                at.setTypeface(Typeface.MONOSPACE);
+                at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                 mAdView=(AdView)findViewById(R.id.adView);
                 AdRequest adRequest =new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);

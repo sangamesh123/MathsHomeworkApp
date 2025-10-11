@@ -29,6 +29,7 @@ public class Hcf extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hcf);
+        FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -174,6 +175,7 @@ public class Hcf extends AppCompatActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Hcf.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 

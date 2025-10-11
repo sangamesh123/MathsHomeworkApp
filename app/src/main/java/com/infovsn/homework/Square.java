@@ -27,6 +27,7 @@ public class Square extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -170,6 +171,7 @@ public class Square extends AppCompatActivity {
             public void onClick(View v) {
                 String cc="";
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Square.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Removed custom back button setup

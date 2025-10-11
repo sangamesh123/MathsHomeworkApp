@@ -25,6 +25,7 @@ public class DecrOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decr_order);
+        FontUtils.applyToActivity(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -168,8 +169,10 @@ public class DecrOrder extends AppCompatActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(DecrOrder.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
+                at.setTypeface(FontUtils.getRobotoMono(DecrOrder.this));
 
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);

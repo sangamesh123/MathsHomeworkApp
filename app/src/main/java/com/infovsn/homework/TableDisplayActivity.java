@@ -4,21 +4,16 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import android.graphics.Typeface;
 
 public class TableDisplayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table);
+        FontUtils.applyToActivity(this);
         TextView at = findViewById(R.id.txtScr);
         at.setMovementMethod(new ScrollingMovementMethod());
-        Typeface tf = loadRobotoMonoFromAssets();
-        if (tf != null) {
-            at.setTypeface(tf);
-        } else {
-            at.setTypeface(Typeface.MONOSPACE);
-        }
+        at.setTypeface(FontUtils.getRobotoMono(this));
         at.setLetterSpacing(0f);
         String tableNumberStr = getIntent().getStringExtra("tableNumber");
         if (tableNumberStr == null || tableNumberStr.isEmpty()) {
@@ -42,14 +37,6 @@ public class TableDisplayActivity extends AppCompatActivity {
             at.setText(table);
         } catch (NumberFormatException nfe) {
             at.setText("Invalid number");
-        }
-    }
-
-    private Typeface loadRobotoMonoFromAssets() {
-        try {
-            return Typeface.createFromAsset(getAssets(), "fonts/RobotoMono-Regular.ttf");
-        } catch (Exception e) {
-            return null;
         }
     }
 }

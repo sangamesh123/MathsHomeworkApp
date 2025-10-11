@@ -27,6 +27,7 @@ public class Cube extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cube);
+        FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -170,6 +171,7 @@ public class Cube extends AppCompatActivity {
             public void onClick(View v) {
                 String cc="";
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(Cube.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 //ADDS BY GOOGLE

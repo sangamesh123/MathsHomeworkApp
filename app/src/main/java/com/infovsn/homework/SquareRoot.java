@@ -27,6 +27,7 @@ public class SquareRoot extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square_root);
+        FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -169,8 +170,8 @@ public class SquareRoot extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String cc="";
                 setContentView(R.layout.added);
+                FontUtils.applyToActivity(SquareRoot.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 
@@ -180,7 +181,7 @@ public class SquareRoot extends AppCompatActivity {
                 AdRequest adRequest =new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
 
-                cc=et.getText().toString();
+                String cc=et.getText().toString();
                 if(cc.length()>0)
                 squareroot();
             }
