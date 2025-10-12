@@ -765,7 +765,7 @@ public class Division extends AppCompatActivity {
         if(flag==1) {
             SpannableString ss2 = new SpannableString(s3b.toString());
             ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
-            ss2.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss2.length(), 0);
+            ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
             kt.append(ss2);
         }
 
@@ -783,7 +783,7 @@ public class Division extends AppCompatActivity {
             }
             SpannableString ss2 = new SpannableString(blanksBuilder.toString());
             ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
-            ss2.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss2.length(), 0);
+            ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
             kt.append(ss2);
         }
         kt.append("\n");
@@ -810,7 +810,7 @@ public class Division extends AppCompatActivity {
         }
 
 //        SpannableString ss1=new SpannableString(sn);
-//        ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
+//        ss1.setSpan(new ForegroundColorSpan(Color.GREEN),0,ss1.length(),0);
         kt.append(sn);
 
 

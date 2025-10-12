@@ -79,10 +79,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:paddingLeft="10dp"
+                android:textColor="#2E7D32"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="26sp"
                 android:text="12345678"
-                android:textColor="#673AB7"
                 android:background="#ffffff"
                 android:focusableInTouchMode="true"
                 />

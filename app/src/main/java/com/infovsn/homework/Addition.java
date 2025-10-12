@@ -287,7 +287,7 @@ public class Addition extends AppCompatActivity {
                     // Print result in blue
                     at.append("\n");
                     SpannableString ss1 = new SpannableString(result);
-                    ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss1.length(), 0);
+                    ss1.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, ss1.length(), 0);
                     at.append(ss1);
                     at.append("\n\n");
                     return;
@@ -446,7 +446,7 @@ public class Addition extends AppCompatActivity {
                 // Print result in blue
                 at.append("\n");
                 SpannableString ss1 = new SpannableString(resultOut);
-                ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss1.length(), 0);
+                ss1.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, ss1.length(), 0);
                 at.append(ss1);
                 at.append("\n\n");
             }

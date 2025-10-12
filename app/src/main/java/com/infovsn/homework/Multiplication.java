@@ -441,7 +441,7 @@ public class Multiplication extends AppCompatActivity {
                     blue = new SpannableString(rs);
                 }
                 at.append("\n");
-                blue.setSpan(new ForegroundColorSpan(Color.BLUE), 0, blue.length(), 0);
+                blue.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, blue.length(), 0);
                 at.append(blue);
                 at.append("\n\n");
             }
@@ -481,7 +481,7 @@ public class Multiplication extends AppCompatActivity {
             int oldColor = paint.getColor();
             float cell = paint.measureText("0");
             // Draw digit in BLUE within this cell
-            paint.setColor(Color.BLUE);
+            paint.setColor(Colors.LCM_GREEN);
             char d = text.charAt(start);
             canvas.drawText(new char[]{d}, 0, 1, x, y, paint);
             // Draw the dot in RED centered at the boundary between this cell and the next

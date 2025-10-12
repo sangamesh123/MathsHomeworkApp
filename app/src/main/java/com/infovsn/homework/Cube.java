@@ -217,7 +217,7 @@ public class Cube extends AppCompatActivity {
         at.append("\n\n");
         SpannableString ss1=new SpannableString(sq);
         ss1.setSpan(new RelativeSizeSpan(1.2f),0,ss1.length(),0);
-        ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
+        ss1.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN),0,ss1.length(),0);
         at.append(ss1);
         myNum=myNum*myNum*myNum;
         sqr=String.format("%.2f",myNum)+"";

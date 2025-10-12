@@ -319,7 +319,7 @@ public class Subtraction extends AppCompatActivity {
                     // Print result
                     String out = resBI.toString();
                     SpannableString ss1 = new SpannableString(out);
-                    ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
+                    ss1.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN),0,ss1.length(),0);
                     at.append("\n");
                     at.append(ss1);
                     at.append("\n\n");
@@ -438,7 +438,7 @@ public class Subtraction extends AppCompatActivity {
 
                 at.append("\n");
                 SpannableString ss = new SpannableString(out);
-                ss.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss.length(),0);
+                ss.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN),0,ss.length(),0);
                 at.append(ss);
                 at.append("\n\n");
             }
