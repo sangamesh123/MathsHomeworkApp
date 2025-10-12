@@ -366,14 +366,12 @@ public class Multiplication extends AppCompatActivity {
                     }
                 }
 
-                // Show first carry row only when multiple partials (not for single-digit cases like 5.6 x 6)
-                if (displayPartials.size() > 1) {
-                    at.append("\n");
-                    SpannableString mcr = new SpannableString(mulCarryRow);
-                    mcr.setSpan(new UnderlineSpan(), 0, mcr.length(), 0);
-                    mcr.setSpan(new ForegroundColorSpan(Color.RED), 0, mcr.length(), 0);
-                    at.append(mcr);
-                }
+                // Show carry row above result for all cases
+                at.append("\n");
+                SpannableString mcr = new SpannableString(mulCarryRow);
+                mcr.setSpan(new UnderlineSpan(), 0, mcr.length(), 0);
+                mcr.setSpan(new ForegroundColorSpan(Color.RED), 0, mcr.length(), 0);
+                at.append(mcr);
 
                 // Show partials; if only one non-zero line, keep it hidden to avoid duplicate result
                 if (displayPartials.size() > 1) {
@@ -381,13 +379,10 @@ public class Multiplication extends AppCompatActivity {
                         at.append("\n");
                         at.append(dp);
                     }
-                }
-
-                // Addition carry row across partials: always show a red underlined row
-                final char NBSP = '\u00A0';
-                char[] carr = new char[expectedLenForResult];
-                for (int i=0;i<expectedLenForResult;i++) carr[i] = NBSP;
-                if (partials.size() > 1) {
+                    // Addition carry row across partials: only show for multi-partial
+                    final char NBSP = '\u00A0';
+                    char[] carr = new char[expectedLenForResult];
+                    for (int i=0;i<expectedLenForResult;i++) carr[i] = NBSP;
                     // Exact column carries
                     int L = 0;
                     for (String s : partials) if (s.length() > L) L = s.length();
@@ -409,13 +404,13 @@ public class Multiplication extends AppCompatActivity {
                         int pos = expectedLenForResult - 1 - (c + 1);
                         if (pos >= 0 && pos < expectedLenForResult) carr[pos] = (char)('0' + cv);
                     }
+                    // Print the carry row (only for multi-partial)
+                    at.append("\n");
+                    SpannableString acr = new SpannableString(new String(carr));
+                    acr.setSpan(new UnderlineSpan(), 0, acr.length(), 0);
+                    acr.setSpan(new ForegroundColorSpan(Color.RED), 0, acr.length(), 0);
+                    at.append(acr);
                 }
-                // Print the carry row (always), red and underlined
-                at.append("\n");
-                SpannableString acr = new SpannableString(new String(carr));
-                acr.setSpan(new UnderlineSpan(), 0, acr.length(), 0);
-                acr.setSpan(new ForegroundColorSpan(Color.RED), 0, acr.length(), 0);
-                at.append(acr);
 
                 // Final result with decimal point (no left-padding; apply digit+dot compression; replace trailing frac 0 with NBSP)
                 String rs = prod.toString();
