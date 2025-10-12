@@ -48,12 +48,12 @@
             <Button android:id="@+id/one" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_1" />
             <Button android:id="@+id/two" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_2" />
             <Button android:id="@+id/three" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_3" />
+            <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_0" />
         </LinearLayout>
 
-        <!-- Row 4 (zero + equal only for consistency) -->
+        <!-- Row 4 (arrow only) -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/digit_0" />
-            <ImageButton android:id="@+id/equal" style="@style/KeypadResultButton" android:layout_width="0dp" android:layout_weight="1" android:contentDescription="@string/send" android:src="@drawable/ic_result_arrow" />
+            <ImageButton android:id="@+id/equal" style="@style/KeypadResultButton" android:layout_width="match_parent" android:layout_weight="1" android:contentDescription="@string/send" android:src="@drawable/ic_result_arrow" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -271,7 +271,12 @@ public class Addition extends AppCompatActivity {
                         at.append("\n");
                         at.append(ss2);
                     } else {
+                        // Always show a blank (but underlined) carry row for alignment
+                        SpannableString ss2 = new SpannableString(carryStr);
+                        ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
+                        ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
                         at.append("\n");
+                        at.append(ss2);
                     }
 
                     // Print result in blue
@@ -387,21 +392,14 @@ public class Addition extends AppCompatActivity {
                 // Build carry row with exact column alignment using NBSP and dot placeholder
                 final char NBSP = '\u00A0';
                 StringBuilder carryFull2 = new StringBuilder();
-                // Leftmost final carry if any
                 int finalCarry2 = (L > 0) ? carryOut[L-1] : 0;
                 if (finalCarry2 > 0) carryFull2.append((char)('0' + finalCarry2));
-                // Walk columns from MS to LSD and inject a NBSP where the decimal point sits (after last integer column)
                 for (int col = L - 1; col >= 0; col--) {
                     if (col == 0) {
-                        // LSD: no carry printed above units -> placeholder
                         carryFull2.append(NBSP);
                     } else {
                         int c = carryOut[col - 1];
                         carryFull2.append(c == 0 ? NBSP : (char)('0' + c));
-                    }
-                    // Insert placeholder for decimal point boundary (between integer and fractional parts)
-                    if (maxFrac > 0 && col == maxFrac) {
-                        carryFull2.append(NBSP);
                     }
                 }
                 String carryStr2 = carryFull2.toString();
@@ -415,13 +413,18 @@ public class Addition extends AppCompatActivity {
                     at.append("\n");
                     at.append(ss2);
                 } else {
+                    // Always show a blank (but underlined) carry row for alignment
+                    SpannableString ss2 = new SpannableString(carryStr2);
+                    ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
                     at.append("\n");
+                    at.append(ss2);
                 }
 
+                // Print result in blue
                 at.append("\n");
-                SpannableString ss1d = new SpannableString(resultOut);
-                ss1d.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss1d.length(), 0);
-                at.append(ss1d);
+                SpannableString ss1 = new SpannableString(resultOut);
+                ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss1.length(), 0);
+                at.append(ss1);
                 at.append("\n\n");
             }
         });
