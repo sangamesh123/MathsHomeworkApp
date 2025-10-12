@@ -138,9 +138,9 @@ public class LcmTableView extends View {
         for (int r = 0; r < rows.size(); r++) {
             float baseY = padding + r * rowHeight + baselineOffset;
 
-            // Draw prime for rows after the first (align to corresponding row)
-            if (r > 0 && r - 1 < primes.size()) {
-                String p = String.valueOf(primes.get(r - 1));
+            // Draw prime aligned with the row being divided (fix: use r, not r-1)
+            if (r < primes.size()) {
+                String p = String.valueOf(primes.get(r));
                 c.drawText(p, xPrimeStart, baseY, primesPaint);
             }
 
@@ -157,8 +157,9 @@ public class LcmTableView extends View {
             // Draw a horizontal line under all rows except the last
             if (r < rows.size() - 1) {
                 float y = baseY + numbersPaint.getFontMetrics().descent + dp(6);
-                // Start exactly at the vertical divider; end at the end of numbers area
-                c.drawLine(xLine, y, xNumbersEnd, y, linePaint);
+                float lineStart = xPrimeStart - dp(4); // a bit left of prime
+                float lineEnd = xNumbersEnd;
+                c.drawLine(lineStart, y, lineEnd, y, linePaint);
             }
         }
     }

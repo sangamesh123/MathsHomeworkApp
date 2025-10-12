@@ -5,9 +5,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.graphics.Typeface;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -203,7 +206,14 @@ public class Lcm extends AppCompatActivity {
             } else {
                 String chain = buildChain(usedPrimes);
                 String ans = getString(R.string.label_lcm_chain, chain, String.valueOf(lcm));
-                answerTv.setText(ans);
+                int eqIdx = ans.lastIndexOf("=");
+                if (eqIdx != -1 && eqIdx + 2 < ans.length()) {
+                    SpannableString spanAns = new SpannableString(ans);
+                    spanAns.setSpan(new StyleSpan(Typeface.BOLD), eqIdx + 2, ans.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    answerTv.setText(spanAns);
+                } else {
+                    answerTv.setText(ans);
+                }
             }
         });
     }
