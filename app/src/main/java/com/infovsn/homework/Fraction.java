@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Fraction extends AppCompatActivity {
     private AdView mAdView;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
     TextView et;
     ImageButton bsp,badd,beq;
     TextView at;
@@ -115,6 +115,21 @@ public class Fraction extends AppCompatActivity {
                 et.setText(et.getText()+"0");
             }
         });
+        Button bdot = (Button) findViewById(R.id.dot);
+        bdot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String full = et.getText().toString();
+                int ln = full.lastIndexOf('\n');
+                String currentLine = (ln==-1)? full : full.substring(ln+1);
+                if(currentLine.contains(".")) return; // already has a decimal
+                if(full.endsWith("\n") || currentLine.length()==0){
+                    et.append("0.");
+                } else {
+                    et.append(".");
+                }
+            }
+        });
 
 
         badd.setOnClickListener(new View.OnClickListener() {
@@ -145,17 +160,18 @@ public class Fraction extends AppCompatActivity {
 //                add=true;
                 String smp = et.getText().toString();
                 if (smp.length() > 1) {
-                    char qq2=smp.charAt(smp.length()-1);
-
+                    // remove last char and then trim a trailing newline if present
                     smp = smp.substring(0, smp.length() - 1);
                     et.setText(smp);
-                    char qq=smp.charAt(smp.length()-1);
-                    if(qq=='\n')
-                    {
-                        smp = smp.substring(0, smp.length() - 1);
-                        et.setText(smp);
+                    if (!smp.isEmpty()) {
+                        char qq=smp.charAt(smp.length()-1);
+                        if(qq=='\n')
+                        {
+                            smp = smp.substring(0, smp.length() - 1);
+                            et.setText(smp);
+                        }
                     }
-                } else if (smp.length() <= 1) {
+                } else {
                     et.setText(null);
                 }
 
@@ -180,53 +196,76 @@ public class Fraction extends AppCompatActivity {
                 mAdView.loadAd(adRequest);
 
                 String txt=et.getText()+"";
-                String[] split=txt.split("\n");
+                String[] split=txt.split("\\n");
                 String fn="";
                 String sn="";
                 boolean trick=false;
-                long m=0,temp=0;
-                List<Long> list = new ArrayList<>();
+                // Use lists that preserve original string formatting while sorting by numeric value
+                List<String> originals = new ArrayList<>();
+                List<Double> values = new ArrayList<>();
                 for(int i=0;i<split.length;i++)
                 {
                     fn = split[i];
                     if(fn.length()==0)
                     {
-                        fn=0+"";
+                        fn = "0";
                     }
-                    else if(fn.length()>15)
-                    {
+
+                    String toParse = fn;
+                    if (toParse.endsWith(".")) toParse = toParse + "0";
+
+                    if (!toParse.matches("\\d+(\\.\\d+)?")) {
+                        at.setText("Invalid number format\n");
+                        trick=true;
+                        break;
+                    }
+
+                    if (toParse.replace(".", "").length() > 15) {
                         at.setText("Maximum digits(15) exceeded\n");
                         trick=true;
                         break;
                     }
-                    else
-                    {
-                        m=Long.parseLong(fn);
-                        list.add(m);
-                    }
+
+                    double dval = Double.parseDouble(toParse);
+                    originals.add(fn); // keep original for display (may be "123.")
+                    values.add(dval);
                 }
 
-                for (int i = 0; i < (list.size()-1); i++) {
-                    for (int j = 0; j < (list.size()-i-1); j++) {
-                        if (list.get(j) > list.get(j+1))
-                        {
-                            temp = list.get(j);
-                            list.set(j,list.get(j+1));
-                            list.set(j+1,temp);
+                // If validation failed, show message and stop
+                if (trick) {
+                    // already set message above; finalize and return
+                    at.append("\n\n");
+                    at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
+                    return;
+                } else {
+                    // Sort preserving original strings using simple bubble sort (keeping parity with existing code style)
+                    for (int i = 0; i < (values.size()-1); i++) {
+                        for (int j = 0; j < (values.size()-i-1); j++) {
+                            if (values.get(j) > values.get(j+1))
+                            {
+                                double tempVal = values.get(j);
+                                values.set(j, values.get(j+1));
+                                values.set(j+1, tempVal);
+                                String tempStr = originals.get(j);
+                                originals.set(j, originals.get(j+1));
+                                originals.set(j+1, tempStr);
+                            }
                         }
                     }
-                }
-                for(int i=0;i<list.size();i++)
-                {
-                    sn=sn+list.get(i)+"\n";
-                }
-                at.setText(sn);
 
-                if(trick)
-                {
-                    at.setText("Maximum digits(15) exceeded\n");
+                    // Build output using original strings to preserve formatting
+                    StringBuilder sb = new StringBuilder();
+                    for(String s : originals)
+                    {
+                        sb.append(s).append("\n");
+                    }
+                    at.setText(sb.toString());
                 }
+
+                // no duplicate error message after validation
                 at.append("\n\n");
+                // When showing result, set monospace font
+                at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
             }
         });
 
