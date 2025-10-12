@@ -26,7 +26,9 @@ public class Fraction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fraction);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         b1=(Button) findViewById(R.id.one);
@@ -137,7 +139,6 @@ public class Fraction extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
                 et.setText(et.getText()+"\n");
             }
         });
@@ -193,7 +194,9 @@ public class Fraction extends AppCompatActivity {
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Fraction.this));
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 String txt=et.getText()+"";
                 String[] split=txt.split("\\n");

@@ -184,7 +184,9 @@ public class Hcf extends AppCompatActivity {
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Hcf.this));
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
                 String txt=et.getText()+"";
                 String[] split=txt.split("\n");
                 String fn="";
@@ -207,7 +209,19 @@ public class Hcf extends AppCompatActivity {
                     }
                     else
                     {
-                        m=Long.parseLong(fn);
+                        // Validate integer input to avoid NumberFormatException
+                        if (!fn.matches("\\d+")) {
+                            at.setText("Invalid number format\n");
+                            trick = true;
+                            break;
+                        }
+                        try {
+                            m=Long.parseLong(fn);
+                        } catch (NumberFormatException nfe) {
+                            at.setText("Invalid number format\n");
+                            trick = true;
+                            break;
+                        }
                         list.add(m);
                     }
                 }

@@ -117,7 +117,9 @@ public class Multiplication extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplication);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         b1 = (Button) findViewById(R.id.one);
@@ -231,10 +233,12 @@ public class Multiplication extends AppCompatActivity {
                     } else
                         smp = smp.substring(0, smp.length() - 1);
                     et.setText(smp);
-                    char qq = smp.charAt(smp.length() - 1);
-                    if (qq == '\n') {
-                        smp = smp.substring(0, smp.length() - 1);
-                        et.setText(smp);
+                    if (!smp.isEmpty()) {
+                        char qq = smp.charAt(smp.length() - 1);
+                        if (qq == '\n') {
+                            smp = smp.substring(0, smp.length() - 1);
+                            et.setText(smp);
+                        }
                     }
                 } else if (smp.length() <= 1) {
                     et.setText(null);
@@ -277,7 +281,9 @@ public class Multiplication extends AppCompatActivity {
                 at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
                 mAdView = (AdView) findViewById(R.id.adView);
                 AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 String[] lines = raw.split("\n");
                 String a = lines.length>0 ? lines[0] : "";

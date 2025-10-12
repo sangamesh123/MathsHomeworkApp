@@ -85,9 +85,9 @@ public class Subtraction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtraction);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         b1=(Button) findViewById(R.id.one);
         b2=(Button) findViewById(R.id.two);
@@ -262,7 +262,9 @@ public class Subtraction extends AppCompatActivity {
                     at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                     mAdView=(AdView)findViewById(R.id.adView);
                     AdRequest adRequest =new AdRequest.Builder().build();
-                    mAdView.loadAd(adRequest);
+                    if (mAdView != null) {
+                        mAdView.loadAd(adRequest);
+                    }
 
                     String[] lines = raw.split("\n");
                     java.util.List<String> nums = new java.util.ArrayList<>();
@@ -332,7 +334,9 @@ public class Subtraction extends AppCompatActivity {
                 at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                 mAdView=(AdView)findViewById(R.id.adView);
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 String[] lines = raw.split("\n");
                 java.util.List<String> original = new java.util.ArrayList<>();

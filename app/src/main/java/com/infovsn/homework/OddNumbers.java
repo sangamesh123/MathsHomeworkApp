@@ -17,13 +17,17 @@ public class OddNumbers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_odd_numbers);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //ADDS BY GOOGLE
         mAdView=(AdView)findViewById(R.id.adView);
 //        mAdView.setAdListener(new ToastAdListener(OddNumbers.this));
         AdRequest adRequest =new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if (mAdView != null) {
+            mAdView.loadAd(adRequest);
+        }
 
         mText= (TextView) findViewById(R.id.odd);
         for (int i = 0; i <= 1000; i++) {

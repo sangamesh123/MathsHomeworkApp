@@ -28,7 +28,9 @@ public class Square extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
 
@@ -180,7 +182,9 @@ public class Square extends AppCompatActivity {
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Square.this));
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 cc=et.getText().toString();
                 if(cc.length()>0)

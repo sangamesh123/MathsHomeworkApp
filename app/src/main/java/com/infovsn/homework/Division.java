@@ -168,11 +168,14 @@ public class Division extends AppCompatActivity {
                     else
                         smp = smp.substring(0, smp.length() - 1);
                     et.setText(smp);
-                    char qq=smp.charAt(smp.length()-1);
-                    if(qq=='\n')
-                    {
-                        smp = smp.substring(0, smp.length() - 1);
-                        et.setText(smp);
+                    // Guard against empty string before accessing last char
+                    if (!smp.isEmpty()) {
+                        char qq=smp.charAt(smp.length()-1);
+                        if(qq=='\n')
+                        {
+                            smp = smp.substring(0, smp.length() - 1);
+                            et.setText(smp);
+                        }
                     }
                 } else if (smp.length() <= 1) {
                     et.setText(null);
@@ -203,7 +206,9 @@ public class Division extends AppCompatActivity {
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Division.this));
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 long v1=0,v2=1;
                 String txt = et.getText() + "";
@@ -232,12 +237,31 @@ public class Division extends AppCompatActivity {
                                 v1=0;
                                 tm=4;
                             }
-                            else
-                                v1 = Long.parseLong(yn);
+                            else {
+                                // validate integer input
+                                if (!yn.matches("\\d+")) {
+                                    at.setText("Invalid number format\n");
+                                    at.append("\n\n");
+                                    return;
+                                }
+                                try {
+                                    v1 = Long.parseLong(yn);
+                                } catch (NumberFormatException nfe) {
+                                    at.setText("Invalid number format\n");
+                                    at.append("\n\n");
+                                    return;
+                                }
+                            }
                         }
                     }
                     if (i > 0) {
-                        zn = split[i].substring(2);
+                        // Ensure the line is long enough before substring(2)
+                        String line = split[i];
+                        if (line.length() >= 2) {
+                            zn = line.substring(2);
+                        } else {
+                            zn = "";
+                        }
 
                         if(zn.length()==0)
                         {
@@ -260,8 +284,21 @@ public class Division extends AppCompatActivity {
                                 zn=1+"";
                                 tm=5;
                             }
-                            else
-                                v2=Long.parseLong(zn);
+                            else {
+                                // validate integer input
+                                if (!zn.matches("\\d+")) {
+                                    at.setText("Invalid number format\n");
+                                    at.append("\n\n");
+                                    return;
+                                }
+                                try {
+                                    v2=Long.parseLong(zn);
+                                } catch (NumberFormatException nfe) {
+                                    at.setText("Invalid number format\n");
+                                    at.append("\n\n");
+                                    return;
+                                }
+                            }
                         }
 
                     }
@@ -388,7 +425,13 @@ public class Division extends AppCompatActivity {
                     String tmt="";
                     String t="";
                     t=quotient.charAt(i)+"";
-                    just1=Long.parseLong(t);
+                    try {
+                        just1=Long.parseLong(t);
+                    } catch (NumberFormatException nfe) {
+                        at.setText("Invalid number format\n");
+                        at.append("\n\n");
+                        return;
+                    }
                     v4=just1*v2;
                     if(v4!=0)
                     {
@@ -404,7 +447,14 @@ public class Division extends AppCompatActivity {
                             }
                             else
                             {
-                                just2=Long.parseLong(cur);
+                                just2=0;
+                                try {
+                                    just2=Long.parseLong(cur);
+                                } catch (NumberFormatException nfe) {
+                                    at.setText("Invalid number format\n");
+                                    at.append("\n\n");
+                                    return;
+                                }
                                 if(v4>just2)
                                 {
                                     k++;
@@ -471,7 +521,13 @@ public class Division extends AppCompatActivity {
                     if(k<quotient.length())
                     {
                         mane=yn.substring(k,yn.length());
-                        meto=Long.parseLong(mane);
+                        try {
+                            meto=Long.parseLong(mane);
+                        } catch (NumberFormatException nfe) {
+                            at.setText("Invalid number format\n");
+                            at.append("\n\n");
+                            return;
+                        }
                     }
                     if(meto==abc)
                     {
@@ -487,7 +543,13 @@ public class Division extends AppCompatActivity {
                         {
                             ipl=ipl+"0";
                         }
-                        val1=Long.parseLong(ipl);
+                        try {
+                            val1=Long.parseLong(ipl);
+                        } catch (NumberFormatException nfe) {
+                            at.setText("Invalid number format\n");
+                            at.append("\n\n");
+                            return;
+                        }
                         abc=abc-val1;
                         ipl2=abc+"";
                         kt.append(ipl2);
@@ -574,7 +636,19 @@ public class Division extends AppCompatActivity {
                     fn=0+"";
                 }
             }
-            val2=Long.parseLong(fn);
+            // Safe parse for val2
+            if (!fn.matches("\\d+")) {
+                at.setText("Invalid number format\n");
+                at.append("\n\n");
+                return;
+            }
+            try {
+                val2 = Long.parseLong(fn);
+            } catch (NumberFormatException nfe) {
+                at.setText("Invalid number format\n");
+                at.append("\n\n");
+                return;
+            }
             n=val2;
             while(m!=0 && n!=0)
             {
@@ -648,16 +722,6 @@ public class Division extends AppCompatActivity {
             m=val1;
         }
 
-
-//              val2 = Integer.parseInt(et.getText() + "");
-//                if (add == true)
-//                    et.setText(null);
-//                    et.setText(val1 + val2 + "");
-//                    add = false;
-//                }
-
-//        sn=sn+et.getText()+"\n";
-//        kt.setText(sn);
         // Build shifted carry row: one char per digit, position p shows c(p-1); p==1 has no borrow source
         StringBuilder s3b = new StringBuilder(l);
         int flag=0;

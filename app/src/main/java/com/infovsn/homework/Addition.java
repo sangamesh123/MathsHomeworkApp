@@ -29,7 +29,9 @@ public class Addition extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addition);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         b1=(Button) findViewById(R.id.one);
         b2=(Button) findViewById(R.id.two);
@@ -199,9 +201,12 @@ public class Addition extends AppCompatActivity {
                     FontUtils.applyToActivity(Addition.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
+                    at.setTypeface(FontUtils.getRobotoMono(Addition.this));
                     mAdView=(AdView)findViewById(R.id.adView);
                     AdRequest adRequest =new AdRequest.Builder().build();
-                    mAdView.loadAd(adRequest);
+                    if (mAdView != null) {
+                        mAdView.loadAd(adRequest);
+                    }
 
                     // Parse numbers (integers only)
                     String[] lines = raw.split("\n");
@@ -293,9 +298,12 @@ public class Addition extends AppCompatActivity {
                 FontUtils.applyToActivity(Addition.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
+                at.setTypeface(FontUtils.getRobotoMono(Addition.this));
                 mAdView=(AdView)findViewById(R.id.adView);
                 AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                if (mAdView != null) {
+                    mAdView.loadAd(adRequest);
+                }
 
                 // Parse and normalize numbers with decimals
                 String[] rawLines = raw.split("\n");
@@ -303,6 +311,7 @@ public class Addition extends AppCompatActivity {
                 java.util.List<String> partsInt = new java.util.ArrayList<>();
                 java.util.List<String> partsFrac = new java.util.ArrayList<>();
                 int maxFrac = 0;
+                int maxIntLen = 0;
                 for (int i=0; i<rawLines.length; i++) {
                     String line = rawLines[i];
                     String num = (i==0) ? line : (line.length()>=2 ? line.substring(2) : "");
@@ -311,32 +320,20 @@ public class Addition extends AppCompatActivity {
                     original.add(num);
                     int dot = num.indexOf('.');
                     if (dot >= 0) {
-                        partsInt.add(num.substring(0, dot));
+                        String ip = num.substring(0, dot);
                         String f = num.substring(dot+1);
+                        partsInt.add(ip);
                         partsFrac.add(f);
                         if (f.length() > maxFrac) maxFrac = f.length();
+                        if (ip.length() > maxIntLen) maxIntLen = ip.length();
                     } else {
                         partsInt.add(num);
                         partsFrac.add("");
+                        if (num.length() > maxIntLen) maxIntLen = num.length();
                     }
                 }
 
-                // Build scaled digit strings (no dot), padded to same fractional length
-                java.util.List<String> scaled = new java.util.ArrayList<>();
-                int L = 0;
-                for (int i=0; i<original.size(); i++) {
-                    StringBuilder frac = new StringBuilder(partsFrac.get(i));
-                    while (frac.length() < maxFrac) frac.append('0');
-                    String s = partsInt.get(i) + frac;
-                    // strip leading zeros but keep at least one digit
-                    int z=0; while (z < s.length()-1 && s.charAt(z)=='0') z++;
-                    s = s.substring(z);
-                    if (s.length() > 15) { at.setText("Maximum digits(15) exceeded\n"); return; }
-                    if (s.length() > L) L = s.length();
-                    scaled.add(s);
-                }
-
-                // Show the expression as entered (normalized for decimal alignment)
+                // Build expression display normalized for fractional alignment only
                 StringBuilder expr2 = new StringBuilder();
                 for (int i=0;i<original.size();i++) {
                     String di = partsInt.get(i);
@@ -347,6 +344,23 @@ public class Addition extends AppCompatActivity {
                     else expr2.append("\n+ ").append(line);
                 }
                 at.setText(expr2.toString());
+
+                // Prepare scaled integer strings for arithmetic: left-pad to fixed L = maxIntLen + maxFrac
+                int L = maxIntLen + maxFrac; // digits-only width
+                java.util.List<String> scaled = new java.util.ArrayList<>();
+                for (int i=0; i<original.size(); i++) {
+                    StringBuilder frac = new StringBuilder(partsFrac.get(i));
+                    while (frac.length() < maxFrac) frac.append('0');
+                    String sNoPad = partsInt.get(i) + frac; // do not strip leading zeros
+                    // left-pad to L
+                    int pad = L - sNoPad.length();
+                    StringBuilder sb = new StringBuilder();
+                    for (int p=0; p<pad; p++) sb.append('0');
+                    sb.append(sNoPad);
+                    String s = sb.toString();
+                    if (s.length() > 15) { at.setText("Maximum digits(15) exceeded\n"); return; }
+                    scaled.add(s);
+                }
 
                 // Column-wise addition on scaled strings
                 int[] carryOut = new int[Math.max(L,1)];
@@ -378,7 +392,6 @@ public class Addition extends AppCompatActivity {
                     String intPart = resultScaled.substring(0, split);
                     String fracPart = resultScaled.substring(split);
                     if (intPart.isEmpty()) intPart = "0";
-                    // Keep all fractional digits (no trimming) to align with inputs
                     if (fracPart.length() < maxFrac) {
                         StringBuilder pad = new StringBuilder(fracPart);
                         while (pad.length() < maxFrac) pad.append('0');
@@ -389,7 +402,7 @@ public class Addition extends AppCompatActivity {
                     resultOut = resultScaled;
                 }
 
-                // Build carry row with exact column alignment using NBSP and dot placeholder
+                // Build carry row with NBSPs and a NBSP placeholder for the decimal point
                 final char NBSP = '\u00A0';
                 StringBuilder carryFull2 = new StringBuilder();
                 int finalCarry2 = (L > 0) ? carryOut[L-1] : 0;
@@ -402,7 +415,16 @@ public class Addition extends AppCompatActivity {
                         carryFull2.append(c == 0 ? NBSP : (char)('0' + c));
                     }
                 }
-                String carryStr2 = carryFull2.toString();
+                String carryStr2DigitsOnly = carryFull2.toString();
+                // Insert dot placeholder after integer digits (taking into account optional leading final carry)
+                if (maxFrac > 0) {
+                    int prefix = (finalCarry2 > 0) ? 1 : 0;
+                    int splitPos = prefix + (L - maxFrac); // integer digits count
+                    String left = carryStr2DigitsOnly.substring(0, splitPos);
+                    String right = carryStr2DigitsOnly.substring(splitPos);
+                    carryStr2DigitsOnly = left + NBSP + right;
+                }
+                String carryStr2 = carryStr2DigitsOnly;
                 boolean hasCarry2 = finalCarry2 > 0;
                 for (int col = 0; col < L-1 && !hasCarry2; col++) if (carryOut[col] > 0) hasCarry2 = true;
 
@@ -413,9 +435,10 @@ public class Addition extends AppCompatActivity {
                     at.append("\n");
                     at.append(ss2);
                 } else {
-                    // Always show a blank (but underlined) carry row for alignment
+                    // Always show an underlined red row for alignment (no visible carry digits)
                     SpannableString ss2 = new SpannableString(carryStr2);
                     ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
+                    ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
                     at.append("\n");
                     at.append(ss2);
                 }

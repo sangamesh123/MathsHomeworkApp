@@ -21,15 +21,17 @@ public class EvenNumbers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_even_numbers);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //ADDS BY GOOGLE
         mAdView=(AdView)findViewById(R.id.adView);
 //        mAdView.setAdListener(new ToastAdListener(EvenNumbers.this));
         AdRequest adRequest =new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if (mAdView != null) {
+            mAdView.loadAd(adRequest);
+        }
 
         mText= (TextView) findViewById(R.id.even);
         for (int i = 0; i <= 1000; i++) {
