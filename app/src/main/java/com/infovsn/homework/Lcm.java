@@ -18,15 +18,19 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Lcm extends AppCompatActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // numeric + clear
     TextView et;
     ImageButton bsp,badd,beq;
-    TextView at;
+    // Remove numbers/primes TextViews; use custom table view instead
+    LcmTableView lcmTable;
+    TextView headingTv, answerTv; // new heading and answer (green)
 
     private static final int MAX_DIGITS = 15;
+    private static final int MAX_STEPS = 2000; // guard to avoid pathological loops
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,60 +86,124 @@ public class Lcm extends AppCompatActivity {
         beq.setOnClickListener(v -> {
             // Capture input BEFORE switching layout
             String raw = et.getText().toString();
-
-            setContentView(R.layout.added);
-            at = findViewById(R.id.txtScr);
-            at.setMovementMethod(new ScrollingMovementMethod());
-            mAdView = findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-
             String[] lines = raw.split("\n");
             List<Long> nums = new ArrayList<>();
-            boolean error = false;
-            StringBuilder echo = new StringBuilder();
 
             for (String line : lines) {
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) continue; // skip blanks
                 if (trimmed.length() > MAX_DIGITS) {
+                    // Switch to simple result screen to show error clearly
+                    setContentView(R.layout.added);
+                    FontUtils.applyToActivity(Lcm.this);
+                    TextView at = findViewById(R.id.txtScr);
+                    at.setMovementMethod(new ScrollingMovementMethod());
                     at.setText(getString(R.string.error_max_digits, MAX_DIGITS));
-                    at.append("\n");
-                    error = true;
-                    break;
+                    at.append("\n\n");
+                    return;
                 }
                 try {
                     long value = Long.parseLong(trimmed);
                     nums.add(value);
-                    echo.append(value).append('\n');
                 } catch (NumberFormatException nfe) {
+                    setContentView(R.layout.added);
+                    FontUtils.applyToActivity(Lcm.this);
+                    TextView at = findViewById(R.id.txtScr);
+                    at.setMovementMethod(new ScrollingMovementMethod());
                     at.setText(getString(R.string.error_invalid_number, trimmed));
-                    at.append("\n");
-                    error = true;
-                    break;
+                    at.append("\n\n");
+                    return;
                 }
             }
 
-            if (!error) {
-                if (nums.isEmpty()) {
-                    at.setText(getString(R.string.error_enter_numbers_first));
-                    at.append("\n\n");
-                    return;
-                }
-                long result = lcmSafe(nums);
+            if (nums.isEmpty()) {
+                setContentView(R.layout.added);
+                FontUtils.applyToActivity(Lcm.this);
+                TextView at = findViewById(R.id.txtScr);
+                at.setMovementMethod(new ScrollingMovementMethod());
+                at.setText(getString(R.string.error_enter_numbers_first));
+                at.append("\n\n");
+                return;
+            }
+
+            // If any input is 0, LCM is 0 (show echo + result)
+            boolean anyZero = false;
+            for (Long n : nums) { if (n == 0L) { anyZero = true; break; } }
+            if (anyZero) {
+                setContentView(R.layout.added);
+                FontUtils.applyToActivity(Lcm.this);
+                TextView at = findViewById(R.id.txtScr);
+                at.setMovementMethod(new ScrollingMovementMethod());
+                StringBuilder echo = new StringBuilder();
+                for (Long n : nums) echo.append(n).append('\n');
                 at.setText(echo.toString());
-                if (result == -1L) {
-                    at.append(getString(R.string.error_overflow));
-                    at.append("\n\n");
-                    return;
-                }
-                SpannableString ss1 = new SpannableString("\n" + getString(R.string.label_lcm, String.valueOf(result)));
+                SpannableString ss1 = new SpannableString("\n" + getString(R.string.label_lcm, "0"));
                 ss1.setSpan(new RelativeSizeSpan(1.2f), 0, ss1.length(), 0);
-                ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, ss1.length(), 0);
+                ss1.setSpan(new ForegroundColorSpan(Color.GREEN), 0, ss1.length(), 0);
                 at.append(ss1);
                 at.append("\n\n");
+                return;
+            }
+
+            // Now show the division-method layout
+            setContentView(R.layout.lcm_division);
+            FontUtils.applyToActivity(Lcm.this);
+            lcmTable = findViewById(R.id.lcmTable);
+            headingTv = findViewById(R.id.txtHeading);
+            answerTv = findViewById(R.id.txtAnswer);
+
+            // Ads
+            mAdView = findViewById(R.id.adView);
+            if (mAdView != null) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }
+
+            // Build heading like "LCM of 6 and 8" (or "LCM of 2, 3 and 5")
+            headingTv.setText(getString(R.string.heading_lcm_of, humanJoin(nums)));
+
+            List<Long> work = new ArrayList<>(nums);
+
+            long lcm = 1L;
+            long prime = 2L;
+            int steps = 0;
+            boolean overflow = false;
+            List<Long> usedPrimes = new ArrayList<>();
+            List<List<Long>> tableRows = new ArrayList<>();
+            tableRows.add(new ArrayList<>(work)); // initial row
+
+            while (!allOnes(work) && steps < MAX_STEPS) {
+                boolean divisible = anyDivisible(work, prime);
+                if (!divisible) {
+                    prime = nextPrime(prime);
+                    continue;
+                }
+                for (int i = 0; i < work.size(); i++) {
+                    long val = work.get(i);
+                    if (val % prime == 0) {
+                        work.set(i, val / prime);
+                    }
+                }
+                if (lcm != 0 && lcm > Long.MAX_VALUE / prime) {
+                    overflow = true; break;
+                }
+                lcm *= prime;
+                usedPrimes.add(prime);
+
+                tableRows.add(new ArrayList<>(work)); // append step row
+                steps++;
+            }
+
+            // Feed data to custom view (vertical line ends at last row)
+            lcmTable.setData(tableRows, usedPrimes);
+
+            // Bottom green sentence e.g. "LCM = 2 × 2 × 2 × 3 = 24"
+            if (overflow) {
+                answerTv.setText(getString(R.string.error_overflow));
             } else {
-                at.append("\n");
+                String chain = buildChain(usedPrimes);
+                String ans = getString(R.string.label_lcm_chain, chain, String.valueOf(lcm));
+                answerTv.setText(ans);
             }
         });
     }
@@ -152,6 +220,63 @@ public class Lcm extends AppCompatActivity {
     }
 
     // --- Math helpers ---
+    private static boolean allOnes(List<Long> arr) {
+        for (Long v : arr) if (v != 1L) return false; return true;
+    }
+    private static boolean anyDivisible(List<Long> arr, long p) {
+        for (Long v : arr) if (v % p == 0 && v > 1L) return true; return false;
+    }
+    private static String joinRow(List<Long> arr) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < arr.size(); i++) {
+            if (i > 0) sb.append("    "); // spacing between columns
+            sb.append(arr.get(i));
+        }
+        return sb.toString();
+    }
+
+    private static String humanJoin(List<Long> nums) {
+        if (nums.isEmpty()) return "";
+        if (nums.size() == 1) return String.valueOf(nums.get(0));
+        if (nums.size() == 2) return String.format(Locale.getDefault(), "%d and %d", nums.get(0), nums.get(1));
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > 0) {
+                if (i == nums.size() - 1) sb.append(" and "); else sb.append(", ");
+            }
+            sb.append(nums.get(i));
+        }
+        return sb.toString();
+    }
+
+    private static String buildChain(List<Long> primes) {
+        if (primes.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        final String times = " × ";
+        for (int i = 0; i < primes.size(); i++) {
+            if (i > 0) sb.append(times);
+            sb.append(primes.get(i));
+        }
+        return sb.toString();
+    }
+
+    private static long nextPrime(long current) {
+        if (current < 2) return 2;
+        long p = current + 1;
+        if ((p & 1) == 0) p++;
+        while (!isPrime(p)) p += 2;
+        return p;
+    }
+    private static boolean isPrime(long n) {
+        if (n < 2) return false;
+        if (n % 2 == 0) return n == 2;
+        for (long d = 3; d * d <= n; d += 2) {
+            if (n % d == 0) return false;
+        }
+        return true;
+    }
+
+    // Retained efficient direct LCM if needed elsewhere
     private static long gcd(long a, long b) {
         while (b != 0) {
             long t = b;
@@ -160,34 +285,17 @@ public class Lcm extends AppCompatActivity {
         }
         return Math.abs(a);
     }
-
+    @SuppressWarnings("unused")
     private static long lcmPair(long a, long b) {
         if (a == 0 || b == 0) return 0;
         long g = gcd(a, b);
         return Math.abs(a / g * b);
     }
-
     @SuppressWarnings("unused")
-    private static long lcmArray(List<Long> nums) { // retained if future reuse needed
+    private static long lcmArray(List<Long> nums) {
         long result = nums.get(0);
         for (int i = 1; i < nums.size(); i++) {
             result = lcmPair(result, nums.get(i));
-        }
-        return result;
-    }
-
-    private static long lcmSafe(List<Long> nums) {
-        long result = nums.get(0);
-        for (int i = 1; i < nums.size(); i++) {
-            long a = result;
-            long b = nums.get(i);
-            if (a == 0 || b == 0) { result = 0; continue; }
-            long g = gcd(a, b);
-            long divided = a / g;
-            if (divided != 0 && divided > Long.MAX_VALUE / Math.abs(b)) {
-                return -1L; // overflow
-            }
-            result = Math.abs(divided * b);
         }
         return result;
     }

@@ -86,4 +86,6 @@
     <string name="error_overflow">Result too large (overflow)</string>
     <string name="label_lcm">LCM : %1$s</string>
     <string name="dot">.</string>
+    <string name="heading_lcm_of">LCM of %1$s</string>
+    <string name="label_lcm_chain">LCM = %1$s = %2$s</string>
 </resources>

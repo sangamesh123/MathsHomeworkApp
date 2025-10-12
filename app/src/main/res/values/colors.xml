@@ -37,4 +37,5 @@
 
     <!-- Legacy reference kept (maps to primary) -->
     <color name="additionRed">@color/colorPrimary</color>
+    <color name="answerGreen">#2E7D32</color>
 </resources>
