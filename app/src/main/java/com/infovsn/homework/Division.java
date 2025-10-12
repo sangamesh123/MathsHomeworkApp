@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.graphics.Typeface;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -30,6 +29,8 @@ public class Division extends AppCompatActivity {
     boolean down=false;
     int move2=0;
     String ipl="";
+    // NBSP for building underlined blank rows (consistent with Subtraction)
+    private static final char NBSP = '\u00A0';
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,8 @@ public class Division extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        // Apply Roboto Mono to all TextViews in this layout
+        FontUtils.applyToActivity(this);
 
 
         b1=(Button) findViewById(R.id.one);
@@ -183,16 +186,18 @@ public class Division extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.division);
+                // Apply Roboto Mono to all TextViews in result layout
+                FontUtils.applyToActivity(Division.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 kt=(TextView) findViewById(R.id.txtdiv);
                 kt.setMovementMethod(new ScrollingMovementMethod());
                 qt=(TextView) findViewById(R.id.quot);
                 qt.setMovementMethod(new ScrollingMovementMethod());
-
-                // Apply monospace only to divisor and quotient for consistent top-line spacing
-                at.setTypeface(Typeface.MONOSPACE);
-                qt.setTypeface(Typeface.MONOSPACE);
+                // Ensure main math output uses the monospace typeface explicitly
+                at.setTypeface(FontUtils.getRobotoMono(Division.this));
+                kt.setTypeface(FontUtils.getRobotoMono(Division.this));
+                qt.setTypeface(FontUtils.getRobotoMono(Division.this));
 
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
@@ -228,7 +233,7 @@ public class Division extends AppCompatActivity {
                                 tm=4;
                             }
                             else
-                                 v1 = Long.parseLong(yn);
+                                v1 = Long.parseLong(yn);
                         }
                     }
                     if (i > 0) {
@@ -323,7 +328,7 @@ public class Division extends AppCompatActivity {
 
                 // Prepare extended dividend with borrowed zeros for decimal part
                 StringBuilder zerosForYn = new StringBuilder();
-                for(int z=0; z<decCount; z++) zerosForYn.append('0');
+                for(int z=0;z<decCount;z++) zerosForYn.append('0');
                 String ynExt = yn + zerosForYn.toString();
 
                 for(int i=0;i<quotient.length();i++)
@@ -352,10 +357,10 @@ public class Division extends AppCompatActivity {
                                 String mt="";
                                 if(yn.length()>remender.length())
                                 {
-                                        for(int x=0;x<((yn.length()-1));x++)
-                                        {
-                                           mt=mt+"0";
-                                        }
+                                    for(int x=0;x<((yn.length()-1));x++)
+                                    {
+                                        mt=mt+"0";
+                                    }
 
                                 }
                                 if(yn.length()==2)
@@ -373,7 +378,7 @@ public class Division extends AppCompatActivity {
                         }
                     }
                     if(val1!=0)
-                         cur=val1+"";
+                        cur=val1+"";
                     else
                     {
                         if((i!=0)&&(v4!=0))
@@ -453,11 +458,14 @@ public class Division extends AppCompatActivity {
                     pms = true;
                 }
 
+                if(decCount>0) {
+                    pms = true;
+                }
                 if(!pms)
                 {
                     String mane="";
                     long meto=0;
-                   long abc=v3*v2;
+                    long abc=v3*v2;
                     abc=v1-abc;
 
                     if(k<quotient.length())
@@ -469,7 +477,7 @@ public class Division extends AppCompatActivity {
                     {
                         kt.append(mane);
                     }
-                   else if(abc>val1)
+                    else if(abc>val1)
                     {
                         String ipl2=abc+"";
                         int lle=ipl2.length();
@@ -650,96 +658,31 @@ public class Division extends AppCompatActivity {
 
 //        sn=sn+et.getText()+"\n";
 //        kt.setText(sn);
-        String s3="";
+        // Build shifted carry row: one char per digit, position p shows c(p-1); p==1 has no borrow source
+        StringBuilder s3b = new StringBuilder(l);
         int flag=0;
-//        int gr=8;
-//        if(l>gr)
-//        {
-//            gr=l-1;
-//        }
-
-        for(int i=l-1;i>0;i--)
-        {
-
-
-            if(i==9)
-            {
-                if((c9>0)) {
-                    s3 = s3 + c9 + "";
-                    flag=1;
-                }
-                else
-                    s3=s3+"  ";
+        for (int p = l; p >= 1; p--) {
+            int borrow = 0;
+            switch (p - 1) {
+                case 1: borrow = c1; break;
+                case 2: borrow = c2; break;
+                case 3: borrow = c3; break;
+                case 4: borrow = c4; break;
+                case 5: borrow = c5; break;
+                case 6: borrow = c6; break;
+                case 7: borrow = c7; break;
+                case 8: borrow = c8; break;
+                case 9: borrow = c9; break;
+                default: borrow = 0; // positions beyond tracked borrows or p==1
             }
-            if(i==8)
-            {
-                if((c8>0)) {
-                    s3 = s3 + c8 + "";
-                    flag=1;
-                }
-                else
-                    s3=s3+"  ";
-            }
-            if(i==7)
-            {if((c7>0))
-            {
-                s3=s3+c7+"";
-                flag=1;}
-            else
-                s3=s3+"  ";
-            }
-            if(i==6)
-            {if((c6>0)) {
-                s3 = s3 + c6 + "";
+            if (borrow > 0) {
+                s3b.append((char)('0' + borrow));
                 flag = 1;
+            } else {
+                s3b.append(NBSP);
             }
-            else
-                s3=s3+"  ";
-            }
-            if(i==5)
-            {if((c5>0)) {
-                s3 = s3 + c5 + "";
-                flag = 1;
-            }
-            else
-                s3=s3+"  ";
-            }
-            if(i==4)
-            {if((c4>0)) {
-                s3 = s3 + c4 + "";
-                flag = 1;
-            }
-            else
-                s3=s3+"  ";
-            }
-            if(i==3)
-            {
-                if((c3>0)) {
-                    s3 = s3 + c3 + "";
-                    flag = 1;
-                }
-                else
-                    s3=s3+"  ";
-            }
-            if(i==2)
-            {if((c2>0))
-            {
-                s3=s3+c2+"";
-                flag=1;}
-            else
-                s3=s3+"  ";
-            }
-            if(i==1)
-            {if((c1>0)) {
-                s3 = s3 + c1 + "";
-                flag = 1;
-            }
-            else
-                s3=s3+"  ";
-            }
-
         }
-        s3=s3+"  ";
+
         if(val1<0)
         {
             flag=0;
@@ -756,7 +699,7 @@ public class Division extends AppCompatActivity {
         kt.append(ss8);
 
         if(flag==1) {
-            SpannableString ss2 = new SpannableString(s3);
+            SpannableString ss2 = new SpannableString(s3b.toString());
             ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
             ss2.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss2.length(), 0);
             kt.append(ss2);
@@ -764,9 +707,18 @@ public class Division extends AppCompatActivity {
 
         if(flag==0)
         {
+            // Build dynamic underlined blanks sized to the upcoming remainder length
+            // Determine the remainder that will be shown next (val1), padded to at least the divisor width
+            int remainderLen = String.valueOf(Math.abs(val1)).length();
+            int divisorLen = (dn != null) ? dn.length() : remainderLen;
+            int underlineWidth = Math.max(remainderLen, divisorLen);
 
-                s3="______";
-            SpannableString ss2 = new SpannableString(s3);
+            StringBuilder blanksBuilder = new StringBuilder(underlineWidth);
+            for (int i = 0; i < underlineWidth; i++) {
+                blanksBuilder.append(NBSP);
+            }
+            SpannableString ss2 = new SpannableString(blanksBuilder.toString());
+            ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
             ss2.setSpan(new ForegroundColorSpan(Color.BLUE), 0, ss2.length(), 0);
             kt.append(ss2);
         }
@@ -796,6 +748,7 @@ public class Division extends AppCompatActivity {
 //        SpannableString ss1=new SpannableString(sn);
 //        ss1.setSpan(new ForegroundColorSpan(Color.BLUE),0,ss1.length(),0);
         kt.append(sn);
+
 
     }
 }
