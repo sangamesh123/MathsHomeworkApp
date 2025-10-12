@@ -43,10 +43,10 @@ public final class FontUtils {
             }
             return;
         }
-        if (v instanceof TextView && !(v instanceof Button)) {
+        // Apply to all TextView subclasses, including Button. ImageButton is not a TextView.
+        if (v instanceof TextView) {
             TextView tv = (TextView) v;
             tv.setTypeface(tf);
-            // Min SDK is 21 per build.gradle, so letterSpacing API is available
             tv.setLetterSpacing(0f);
         }
     }
