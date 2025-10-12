@@ -28,10 +28,10 @@
 
     <style name="Theme.Addition" parent="AppTheme" />
 
-    <!-- Modern keypad button base style (lightened) -->
+    <!-- Modern keypad button base style (no background; flat) -->
     <style name="KeypadButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_height">@dimen/keypad_button_height</item>
-        <item name="android:background">@drawable/keypad_button_bg</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
@@ -40,6 +40,7 @@
         <item name="android:minHeight">@dimen/keypad_button_height</item>
         <item name="android:padding">0dp</item>
         <item name="android:layout_margin">0dp</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <style name="KeypadButton.Equal">
@@ -48,8 +49,10 @@
     </style>
 
     <style name="KeypadButton.Primary" parent="KeypadButton">
-        <item name="android:background">@drawable/keypad_button_primary_bg</item>
+        <!-- Keep primary variant flat/transparent as well -->
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/keypadIconTint</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <style name="DisplayText" parent="TextAppearance.AppCompat.Large">
@@ -73,10 +76,11 @@
 
     <!-- New primary variant for icon buttons (e.g. send/equals arrow) -->
     <style name="KeypadIconButton.Primary" parent="KeypadIconButton">
-        <item name="android:background">@drawable/keypad_button_primary_bg</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:tint">@color/keypadIconTint</item>
         <item name="android:padding">0dp</item>
         <item name="android:scaleType">centerInside</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <!-- Dedicated result (send) button: square arrow icon, centered -->
@@ -87,6 +91,8 @@
         <item name="android:adjustViewBounds">true</item>
         <!-- Use tint inheritance for adaptability; can null out if pure white asset used -->
         <item name="android:tint">@color/keypadIconTint</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <!-- Home menu button style updated for light background -->

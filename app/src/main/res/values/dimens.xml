@@ -7,5 +7,5 @@
     <dimen name="keypad_button_height">64dp</dimen>
     <dimen name="keypad_corner_radius">12dp</dimen>
     <dimen name="display_corner_radius">16dp</dimen>
-    <dimen name="keypad_row_spacing">4dp</dimen>
+    <dimen name="keypad_row_spacing">0dp</dimen>
 </resources>
