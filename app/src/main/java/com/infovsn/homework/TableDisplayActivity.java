@@ -29,9 +29,9 @@ public class TableDisplayActivity extends AppCompatActivity {
             }
             for (int i = 1; i <= 10; i++) {
                 if (i == 10) {
-                    table = table + "\n" + myNum + "  x  10  =   " + myNum * i;
+                    table = table + "\n" + myNum + "  x 10  =  " + myNum * i;
                 } else {
-                    table = table + "\n" + myNum + "  x   " + i + "   =   " + myNum * i;
+                    table = table + "\n" + myNum + "  x  " + i + "  =  " + myNum * i;
                 }
             }
             at.setText(table);

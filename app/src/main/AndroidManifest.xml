@@ -209,7 +209,7 @@
         </activity>
         <activity
             android:name=".TableDisplayActivity"
-            android:label="Table Display"
+            android:label="Tables"
             android:parentActivityName=".Tables"
             android:screenOrientation="portrait" />
 

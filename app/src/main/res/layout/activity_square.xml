@@ -16,9 +16,10 @@
         android:hint="@string/hintq"
         android:textSize="28sp"
         android:maxLines="50"
-        android:scrollbars="vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:scrollbars="none"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textAlignment="center" />
 
     <LinearLayout
         android:id="@+id/first"
