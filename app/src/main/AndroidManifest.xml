@@ -154,6 +154,11 @@
                 android:value="com.infovsn.homework.MainActivity" />
         </activity>
         <activity
+            android:name=".EvenNumbersResult"
+            android:label="Even Numbers"
+            android:parentActivityName=".EvenNumbers"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PrimeNumbers"
             android:label="Prime Numbers"
             android:parentActivityName=".MainActivity"

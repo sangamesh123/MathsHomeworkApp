@@ -97,4 +97,9 @@
     <string name="heading_hcf_of">HCF of %1$s</string>
     <string name="label_hcf">HCF/GCD : %1$s</string>
     <string name="label_hcf_chain">HCF = %1$s = %2$s</string>
+
+    <!-- Professional hint for the Even Numbers result area -->
+    <string name="hint_even_instructions">Enter the start and end values, then tap the arrow to view even numbers.</string>
+    <string name="label_start_value">Start value</string>
+    <string name="label_end_value">End value</string>
 </resources>
