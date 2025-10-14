@@ -159,6 +159,11 @@
             android:parentActivityName=".EvenNumbers"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".OddNumbersResult"
+            android:label="Odd Numbers"
+            android:parentActivityName=".OddNumbers"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".PrimeNumbers"
             android:label="Prime Numbers"
             android:parentActivityName=".MainActivity"
