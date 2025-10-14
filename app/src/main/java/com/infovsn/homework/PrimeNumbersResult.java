@@ -10,14 +10,13 @@ import com.google.android.gms.ads.AdView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
-public class EvenNumbersResult extends AppCompatActivity {
+public class PrimeNumbersResult extends AppCompatActivity {
     private AdView mAdView;
-    private TextView mText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_even_numbers_result);
+        setContentView(R.layout.activity_prime_numbers_result);
         FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -30,28 +29,28 @@ public class EvenNumbersResult extends AppCompatActivity {
             mAdView.loadAd(adRequest);
         }
 
-        mText = findViewById(R.id.evenResult);
+        TextView resultView = findViewById(R.id.primeResult);
+        int n = getIntent().getIntExtra("number", 5);
 
-        int startVal = getIntent().getIntExtra("start", 1);
-        int endVal = getIntent().getIntExtra("end", 500);
-        if (startVal > endVal) {
-            int tmp = startVal; startVal = endVal; endVal = tmp;
+        String message;
+        if (isPrime(n)) {
+            message = getString(R.string.prime_is, n);
+        } else {
+            message = getString(R.string.prime_not, n);
         }
+        SpannableString span = new SpannableString(message);
+        span.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, span.length(), 0);
+        resultView.setText(span);
+    }
 
-        // Header (green) + list (black)
-        String header = "Even numbers from " + startVal + " to " + endVal + ":";
-        SpannableString headerSpan = new SpannableString(header);
-        headerSpan.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, headerSpan.length(), 0);
-        mText.setText(headerSpan);
-        mText.append("\n\n");
-
-        StringBuilder list = new StringBuilder();
-        int first = (startVal % 2 == 0) ? startVal : (startVal + 1);
-        for (int i = first; i <= endVal; i += 2) {
-            list.append(i).append("  ");
+    private boolean isPrime(int n) {
+        if (n <= 1) return false;
+        if (n <= 3) return true;
+        if (n % 2 == 0 || n % 3 == 0) return false;
+        for (int i = 5; (long)i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) return false;
         }
-        mText.append(list.toString());
-        mText.append("\n\n");
+        return true;
     }
 
     @Override

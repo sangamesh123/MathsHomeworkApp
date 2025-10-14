@@ -102,4 +102,12 @@
     <string name="hint_even_instructions">Enter the start and end values, then tap the arrow to view even numbers.</string>
     <string name="label_start_value">Start value</string>
     <string name="label_end_value">End value</string>
+
+    <!-- Prime Checker strings -->
+    <string name="title_prime_checker">Prime Checker</string>
+    <string name="hint_prime_instructions">Enter a number and tap the arrow to check if it\'s prime.</string>
+    <string name="label_number">Number</string>
+    <string name="title_prime_result">Prime Result</string>
+    <string name="prime_is">%1$d is a prime number.</string>
+    <string name="prime_not">%1$d is not a prime number.</string>
 </resources>

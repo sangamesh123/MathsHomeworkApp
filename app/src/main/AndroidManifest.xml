@@ -175,6 +175,11 @@
                 android:value="com.infovsn.homework.MainActivity" />
         </activity>
         <activity
+            android:name=".PrimeNumbersResult"
+            android:label="Prime Numbers"
+            android:parentActivityName=".PrimeNumbers"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Fraction"
             android:label="Ascending Order"
             android:parentActivityName=".MainActivity"

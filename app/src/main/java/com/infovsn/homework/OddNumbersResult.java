@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 
 public class OddNumbersResult extends AppCompatActivity {
     private AdView mAdView;
@@ -36,13 +38,19 @@ public class OddNumbersResult extends AppCompatActivity {
             int tmp = startVal; startVal = endVal; endVal = tmp;
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Odd numbers from ").append(startVal).append(" to ").append(endVal).append(":\n\n");
+        // Header (green) + list (black)
+        String header = "Odd numbers from " + startVal + " to " + endVal + ":";
+        SpannableString headerSpan = new SpannableString(header);
+        headerSpan.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, headerSpan.length(), 0);
+        mText.setText(headerSpan);
+        mText.append("\n\n");
+
+        StringBuilder list = new StringBuilder();
         int first = (startVal % 2 != 0) ? startVal : (startVal + 1);
         for (int i = first; i <= endVal; i += 2) {
-            sb.append(i).append("  ");
+            list.append(i).append("  ");
         }
-        mText.setText(sb.toString());
+        mText.append(list.toString());
         mText.append("\n\n");
     }
 
@@ -55,4 +63,3 @@ public class OddNumbersResult extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
