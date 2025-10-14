@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Legacy splash layout placeholder: no longer used. Safe to delete along with SplashScreen.java. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <ImageView
-        android:id="@+id/splash_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_centerInParent="true" />
-
-    <TextView
-        android:id="@+id/splash_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Maths Homework Helper"
-        android:textSize="24sp"
-        android:textColor="#2962FF"
-        android:layout_below="@id/splash_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
-
-</RelativeLayout>
+    android:background="@android:color/white" />
 

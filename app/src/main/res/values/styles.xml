@@ -12,6 +12,8 @@
         <!-- If using Toolbar manually -->
         <item name="actionBarStyle">@style/RedActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item>
+        <!-- Set window background to white for cold start -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <!-- Updated ActionBar (Toolbar) style -->
