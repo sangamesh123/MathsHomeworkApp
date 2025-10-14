@@ -26,6 +26,8 @@ public class Subtraction extends AppCompatActivity {
     TextView at;
     long val1=0,val2=0;
     boolean add;
+    // Track whether result layout is currently displayed
+    private boolean isShowingResult = false;
 
     // Region: helpers for borrow computation and rendering
     private static final char NBSP = '\u00A0';
@@ -256,6 +258,7 @@ public class Subtraction extends AppCompatActivity {
                 if(!hasDecimal) {
                     // Integer branch with correct borrow alignment
                     setContentView(R.layout.added);
+                    isShowingResult = true;
                     FontUtils.applyToActivity(Subtraction.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
@@ -328,6 +331,7 @@ public class Subtraction extends AppCompatActivity {
 
                 // DECIMAL BRANCH (normalize display and compute with scaled integers)
                 setContentView(R.layout.added);
+                isShowingResult = true;
                 FontUtils.applyToActivity(Subtraction.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -449,9 +453,24 @@ public class Subtraction extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (isShowingResult) {
+                isShowingResult = false;
+                recreate();
+            } else {
+                finish();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

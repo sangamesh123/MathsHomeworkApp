@@ -28,6 +28,7 @@ public class Cube extends AppCompatActivity {
     ImageButton bsp, beq;
     TextView et;
     TextView at;
+    private boolean isShowingResult = false;
 
     // Buffer for keypad input
     private final StringBuilder inputBuffer = new StringBuilder();
@@ -132,6 +133,7 @@ public class Cube extends AppCompatActivity {
             public void onClick(View v) {
                 String cc = inputBuffer.toString();
                 setContentView(R.layout.added);
+                isShowingResult = true;
                 FontUtils.applyToActivity(Cube.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -152,11 +154,18 @@ public class Cube extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                if (isShowingResult) { isShowingResult = false; recreate(); }
+                else this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) { isShowingResult = false; recreate(); }
+        else super.onBackPressed();
     }
 
     // Keypad screen: show only N³ (red superscript)

@@ -24,6 +24,8 @@ public class Addition extends AppCompatActivity {
     TextView at;
     long val1=0,val2=0;
     boolean add;
+    // Track whether we're showing a result layout (so back/Up returns to input instead of exiting)
+    private boolean isShowingResult = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,6 +200,7 @@ public class Addition extends AppCompatActivity {
                 if(!hasDecimal) {
                     // Show result layout
                     setContentView(R.layout.added);
+                    isShowingResult = true;
                     FontUtils.applyToActivity(Addition.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
@@ -295,6 +298,7 @@ public class Addition extends AppCompatActivity {
 
                 // DECIMAL BRANCH
                 setContentView(R.layout.added);
+                isShowingResult = true;
                 FontUtils.applyToActivity(Addition.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -458,11 +462,26 @@ public class Addition extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
+                // If on result screen, go back to input by recreating; else finish as usual
+                if (isShowingResult) {
+                    isShowingResult = false;
+                    recreate();
+                } else {
+                    this.finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
         }
     }
 }

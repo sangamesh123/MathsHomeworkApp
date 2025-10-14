@@ -30,6 +30,8 @@ public class Multiplication extends AppCompatActivity {
     TextView at;
     long val1 = 0, val2 = 0;
     boolean add;
+    // Track result layout state
+    private boolean isShowingResult = false;
 
     // helpers
     private static final char NBSP = '\u00A0';
@@ -275,6 +277,7 @@ public class Multiplication extends AppCompatActivity {
                 }
 
                 setContentView(R.layout.added);
+                isShowingResult = true;
                 FontUtils.applyToActivity(Multiplication.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -449,10 +452,25 @@ public class Multiplication extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                if (isShowingResult) {
+                    isShowingResult = false;
+                    recreate();
+                } else {
+                    this.finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
         }
     }
 
