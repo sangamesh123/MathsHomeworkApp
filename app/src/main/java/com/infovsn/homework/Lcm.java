@@ -34,6 +34,8 @@ public class Lcm extends AppCompatActivity {
 
     private static final int MAX_DIGITS = 15;
     private static final int MAX_STEPS = 2000; // guard to avoid pathological loops
+    // Track whether we're showing a result layout (error or division) so Back/Up returns to input
+    private boolean isShowingResult = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class Lcm extends AppCompatActivity {
                 String trimmed = line.trim();
                 if (trimmed.isEmpty()) continue; // skip blanks
                 if (trimmed.length() > MAX_DIGITS) {
-                    // Switch to simple result screen to show error clearly
+                    isShowingResult = true;
                     setContentView(R.layout.added);
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
@@ -109,6 +111,7 @@ public class Lcm extends AppCompatActivity {
                     long value = Long.parseLong(trimmed);
                     nums.add(value);
                 } catch (NumberFormatException nfe) {
+                    isShowingResult = true;
                     setContentView(R.layout.added);
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
@@ -120,6 +123,7 @@ public class Lcm extends AppCompatActivity {
             }
 
             if (nums.isEmpty()) {
+                isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
@@ -133,6 +137,7 @@ public class Lcm extends AppCompatActivity {
             boolean anyZero = false;
             for (Long n : nums) { if (n == 0L) { anyZero = true; break; } }
             if (anyZero) {
+                isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
@@ -149,6 +154,7 @@ public class Lcm extends AppCompatActivity {
             }
 
             // Now show the division-method layout
+            isShowingResult = true;
             setContentView(R.layout.lcm_division);
             FontUtils.applyToActivity(Lcm.this);
             lcmTable = findViewById(R.id.lcmTable);
@@ -223,10 +229,25 @@ public class Lcm extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (isShowingResult) {
+                isShowingResult = false;
+                recreate(); // Return to input layout
+            } else {
+                finish();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     // --- Math helpers ---

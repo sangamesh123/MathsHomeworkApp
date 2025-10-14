@@ -35,6 +35,8 @@ public class Hcf extends AppCompatActivity {
 
     private static final int MAX_DIGITS = 15;
     private static final int MAX_STEPS = 2000;
+    // Track whether we're showing a result layout (error/simple result or division table)
+    private boolean isShowingResult = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class Hcf extends AppCompatActivity {
             String trimmed = line.trim();
             if (trimmed.isEmpty()) continue;
             if (trimmed.length() > MAX_DIGITS) {
+                isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
                 TextView at = findViewById(R.id.txtScr);
@@ -111,6 +114,7 @@ public class Hcf extends AppCompatActivity {
             }
             // digits only
             if (!trimmed.matches("\\d+")) {
+                isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
                 TextView at = findViewById(R.id.txtScr);
@@ -122,6 +126,7 @@ public class Hcf extends AppCompatActivity {
             try {
                 nums.add(Long.parseLong(trimmed));
             } catch (NumberFormatException nfe) {
+                isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
                 TextView at = findViewById(R.id.txtScr);
@@ -133,6 +138,7 @@ public class Hcf extends AppCompatActivity {
         }
 
         if (nums.isEmpty()) {
+            isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
             TextView at = findViewById(R.id.txtScr);
@@ -146,6 +152,7 @@ public class Hcf extends AppCompatActivity {
         boolean allZero = true;
         for (Long n : nums) { if (n != 0L) { allZero = false; break; } }
         if (allZero) {
+            isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
             TextView at = findViewById(R.id.txtScr);
@@ -170,6 +177,7 @@ public class Hcf extends AppCompatActivity {
             nonZero.add(v);
         }
         if (anyOne) {
+            isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
             TextView at = findViewById(R.id.txtScr);
@@ -188,6 +196,7 @@ public class Hcf extends AppCompatActivity {
         // If there were zeros but no ones, show simple result using Euclid (table method is ambiguous with zeros)
         if (nonZero.size() != nums.size()) {
             long g = gcdArray(nonZero);
+            isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
             TextView at = findViewById(R.id.txtScr);
@@ -204,6 +213,7 @@ public class Hcf extends AppCompatActivity {
         }
 
         // All inputs are >=2 now; proceed with common prime division method
+        isShowingResult = true;
         setContentView(R.layout.hcf_division);
         FontUtils.applyToActivity(Hcf.this);
         hcfTable = findViewById(R.id.hcfTable);
@@ -274,10 +284,25 @@ public class Hcf extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            if (isShowingResult) {
+                isShowingResult = false;
+                recreate();
+            } else {
+                finish();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     // --- Helpers ---

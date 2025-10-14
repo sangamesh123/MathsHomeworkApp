@@ -31,6 +31,8 @@ public class Division extends AppCompatActivity {
     String ipl="";
     // NBSP for building underlined blank rows (consistent with Subtraction)
     private static final char NBSP = '\u00A0';
+    // Track whether we're showing the result layout so Back/Up returns to input instead of exiting
+    private boolean isShowingResult = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,6 +191,7 @@ public class Division extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.division);
+                isShowingResult = true; // now in result view
                 // Apply Roboto Mono to all TextViews in result layout
                 FontUtils.applyToActivity(Division.this);
                 at=(TextView) findViewById(R.id.txtScr);
@@ -598,11 +601,25 @@ public class Division extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
+                if (isShowingResult) {
+                    isShowingResult = false;
+                    recreate(); // return to input screen
+                } else {
+                    this.finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
         }
     }
 

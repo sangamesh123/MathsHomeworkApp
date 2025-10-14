@@ -21,6 +21,7 @@ public class DecrOrder extends AppCompatActivity {
     TextView et;
     ImageButton bsp,badd,beq;
     TextView at;
+    private boolean isShowingResult = false; // track if showing result layout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +170,7 @@ public class DecrOrder extends AppCompatActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
+                isShowingResult = true; // now in result layout
                 FontUtils.applyToActivity(DecrOrder.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -271,11 +273,25 @@ public class DecrOrder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
+                if (isShowingResult) {
+                    isShowingResult = false;
+                    recreate(); // return to input screen
+                } else {
+                    this.finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
         }
     }
 }
