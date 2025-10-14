@@ -20,6 +20,7 @@ public class PrimeNumbers extends AppCompatActivity {
 
     private static final int MAX_INPUT_LENGTH = 16;
     private boolean clearedOnce = false;
+    private boolean resetOnNextResume = false; // clear input after returning from result
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,22 @@ public class PrimeNumbers extends AppCompatActivity {
 
         Intent intent = new Intent(PrimeNumbers.this, PrimeNumbersResult.class);
         intent.putExtra("number", n);
+        resetOnNextResume = true; // mark for clearing when user comes back
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (resetOnNextResume) {
+            resetOnNextResume = false;
+            resetInputToDefault();
+        }
+    }
+
+    private void resetInputToDefault() {
+        if (startScreen != null) startScreen.setText("5");
+        clearedOnce = false;
     }
 
     @Override

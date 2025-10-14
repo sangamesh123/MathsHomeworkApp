@@ -23,6 +23,7 @@ public class EvenNumbers extends AppCompatActivity {
     private boolean editingStart = true; // which input the keypad writes to
     private boolean clearedStartOnce = false;
     private boolean clearedEndOnce = false;
+    private boolean resetOnNextResume = false; // set true before launching result so inputs reset when returning
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +174,30 @@ public class EvenNumbers extends AppCompatActivity {
         Intent intent = new Intent(EvenNumbers.this, EvenNumbersResult.class);
         intent.putExtra("start", startVal);
         intent.putExtra("end", endVal);
+        resetOnNextResume = true; // mark to clear inputs when user returns
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (resetOnNextResume) {
+            resetOnNextResume = false;
+            resetInputsToDefaults();
+        }
+    }
+
+    private void resetInputsToDefaults() {
+        // Restore defaults and allow clearing again on first tap
+        if (startScreen != null) {
+            startScreen.setText("1");
+        }
+        if (endScreen != null) {
+            endScreen.setText("500");
+        }
+        editingStart = true;
+        clearedStartOnce = false;
+        clearedEndOnce = false;
     }
 
     @Override

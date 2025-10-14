@@ -23,6 +23,7 @@ public class OddNumbers extends AppCompatActivity {
     private boolean editingStart = true; // which input the keypad writes to
     private boolean clearedStartOnce = false;
     private boolean clearedEndOnce = false;
+    private boolean resetOnNextResume = false; // clear inputs after returning from result
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,10 +171,29 @@ public class OddNumbers extends AppCompatActivity {
 
         if (startVal > endVal) { int tmp = startVal; startVal = endVal; endVal = tmp; }
 
+        resetOnNextResume = true; // mark for clearing when user comes back
+
         Intent intent = new Intent(OddNumbers.this, OddNumbersResult.class);
         intent.putExtra("start", startVal);
         intent.putExtra("end", endVal);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (resetOnNextResume) {
+            resetOnNextResume = false;
+            resetInputsToDefaults();
+        }
+    }
+
+    private void resetInputsToDefaults() {
+        if (startScreen != null) startScreen.setText("1");
+        if (endScreen != null) endScreen.setText("500");
+        editingStart = true;
+        clearedStartOnce = false;
+        clearedEndOnce = false;
     }
 
     @Override
