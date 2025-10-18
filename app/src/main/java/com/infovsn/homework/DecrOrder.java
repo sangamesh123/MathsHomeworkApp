@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -178,9 +177,8 @@ public class DecrOrder extends AppCompatActivity {
 
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
-//                mAdView.setAdListener(new ToastAdListener(DecrOrder.this));
-                AdRequest adRequest =new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                // Use anchored adaptive banner like Lcm
+                AdUtils.loadAdaptiveBanner(DecrOrder.this, mAdView);
                 String txt=et.getText()+"";
                 String[] split=txt.split("\n");
                 String fn="";

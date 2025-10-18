@@ -193,9 +193,8 @@ public class Fraction extends AppCompatActivity {
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Fraction.this));
-                AdRequest adRequest =new AdRequest.Builder().build();
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Fraction.this, mAdView);
                 }
 
                 String txt=et.getText()+"";

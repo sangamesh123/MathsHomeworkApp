@@ -264,9 +264,9 @@ public class Subtraction extends AppCompatActivity {
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                     mAdView=(AdView)findViewById(R.id.adView);
-                    AdRequest adRequest =new AdRequest.Builder().build();
+                    // Adaptive banner
                     if (mAdView != null) {
-                        mAdView.loadAd(adRequest);
+                        AdUtils.loadAdaptiveBanner(Subtraction.this, mAdView);
                     }
 
                     String[] lines = raw.split("\n");
@@ -337,9 +337,9 @@ public class Subtraction extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
                 mAdView=(AdView)findViewById(R.id.adView);
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Subtraction.this, mAdView);
                 }
 
                 String[] lines = raw.split("\n");

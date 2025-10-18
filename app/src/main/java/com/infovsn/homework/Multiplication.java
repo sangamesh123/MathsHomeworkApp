@@ -283,9 +283,9 @@ public class Multiplication extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
                 mAdView = (AdView) findViewById(R.id.adView);
-                AdRequest adRequest = new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Multiplication.this, mAdView);
                 }
 
                 String[] lines = raw.split("\n");

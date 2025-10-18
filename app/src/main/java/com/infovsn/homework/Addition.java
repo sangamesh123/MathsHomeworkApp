@@ -206,9 +206,9 @@ public class Addition extends AppCompatActivity {
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Addition.this));
                     mAdView=(AdView)findViewById(R.id.adView);
-                    AdRequest adRequest =new AdRequest.Builder().build();
+                    // Adaptive banner
                     if (mAdView != null) {
-                        mAdView.loadAd(adRequest);
+                        AdUtils.loadAdaptiveBanner(Addition.this, mAdView);
                     }
 
                     // Parse numbers (integers only)
@@ -255,7 +255,6 @@ public class Addition extends AppCompatActivity {
                     // Build the carry row with exact column alignment using NBSP placeholders
                     final char NBSP = '\u00A0';
                     StringBuilder carryFull = new StringBuilder();
-                    // Leftmost final carry (only if non-zero)
                     int finalCarry = (L > 0) ? carryOut[L-1] : 0;
                     if (finalCarry > 0) carryFull.append((char)('0' + finalCarry));
                     // Per-column carries from MS digit down to LSD, inserting LSD placeholder at the end
@@ -279,7 +278,6 @@ public class Addition extends AppCompatActivity {
                         at.append("\n");
                         at.append(ss2);
                     } else {
-                        // Always show a blank (but underlined) carry row for alignment
                         SpannableString ss2 = new SpannableString(carryStr);
                         ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
                         ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);
@@ -304,9 +302,9 @@ public class Addition extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Addition.this));
                 mAdView=(AdView)findViewById(R.id.adView);
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Addition.this, mAdView);
                 }
 
                 // Parse and normalize numbers with decimals
@@ -439,7 +437,6 @@ public class Addition extends AppCompatActivity {
                     at.append("\n");
                     at.append(ss2);
                 } else {
-                    // Always show an underlined red row for alignment (no visible carry digits)
                     SpannableString ss2 = new SpannableString(carryStr2);
                     ss2.setSpan(new UnderlineSpan(), 0, ss2.length(), 0);
                     ss2.setSpan(new ForegroundColorSpan(Color.RED), 0, ss2.length(), 0);

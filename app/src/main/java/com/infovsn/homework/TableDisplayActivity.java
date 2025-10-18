@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import com.google.android.gms.ads.AdView;
 
 public class TableDisplayActivity extends AppCompatActivity {
     @Override
@@ -15,6 +16,11 @@ public class TableDisplayActivity extends AppCompatActivity {
         at.setMovementMethod(new ScrollingMovementMethod());
         at.setTypeface(FontUtils.getRobotoMono(this));
         at.setLetterSpacing(0f);
+        // Load adaptive banner at bottom
+        AdView adView = findViewById(R.id.adView);
+        if (adView != null) {
+            AdUtils.loadAdaptiveBanner(this, adView);
+        }
         String tableNumberStr = getIntent().getStringExtra("tableNumber");
         if (tableNumberStr == null || tableNumberStr.isEmpty()) {
             at.setText("No number provided");

@@ -224,7 +224,8 @@ public class Hcf extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         if (mAdView != null) {
             AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
+            // switch to adaptive
+            AdUtils.loadAdaptiveBanner(Hcf.this, mAdView);
         }
 
         headingTv.setText(getString(R.string.heading_hcf_of, humanJoin(nums)));

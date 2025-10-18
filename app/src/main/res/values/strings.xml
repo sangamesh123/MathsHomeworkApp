@@ -74,7 +74,12 @@
     <string name="m16">PRIME NUMBERS</string>
 
 
+    <!-- Original AdMob banner unit id (commented out for testing)
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
+    -->
+    <!-- Use Google test banner unit id while testing -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <string name="result_label">RESULT</string>
     <string name="send">Send</string>
 

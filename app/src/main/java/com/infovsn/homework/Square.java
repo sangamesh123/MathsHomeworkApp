@@ -143,9 +143,9 @@ public class Square extends AppCompatActivity {
 
                 // ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Square.this, mAdView);
                 }
 
                 if(cc.length()>0)

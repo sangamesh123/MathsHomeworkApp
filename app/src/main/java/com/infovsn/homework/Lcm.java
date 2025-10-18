@@ -165,7 +165,8 @@ public class Lcm extends AppCompatActivity {
             mAdView = findViewById(R.id.adView);
             if (mAdView != null) {
                 AdRequest adRequest = new AdRequest.Builder().build();
-                mAdView.loadAd(adRequest);
+                // switch to adaptive
+                AdUtils.loadAdaptiveBanner(Lcm.this, mAdView);
             }
 
             // Build heading like "LCM of 6 and 8" (or "LCM of 2, 3 and 5")

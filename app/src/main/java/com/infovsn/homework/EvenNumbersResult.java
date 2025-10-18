@@ -25,9 +25,9 @@ public class EvenNumbersResult extends AppCompatActivity {
 
         // Ads by Google
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        // Adaptive banner
         if (mAdView != null) {
-            mAdView.loadAd(adRequest);
+            AdUtils.loadAdaptiveBanner(EvenNumbersResult.this, mAdView);
         }
 
         mText = findViewById(R.id.evenResult);

@@ -137,9 +137,9 @@ public class SquareRoot extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 mAdView=(AdView)findViewById(R.id.adView);
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(SquareRoot.this, mAdView);
                 }
                 if(cc.length()>0)
                     squareroot();

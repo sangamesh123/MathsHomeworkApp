@@ -63,6 +63,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
-        app:adSize="BANNER"
-        app:adUnitId="@string/banner_ad_unit_id" />
+        app:adUnitId="@string/banner_ad_unit_id"
+        app:adSize="BANNER" />
 </RelativeLayout>

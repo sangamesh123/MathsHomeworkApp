@@ -24,9 +24,9 @@ public class PrimeNumbersResult extends AppCompatActivity {
 
         // Ads by Google
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        // Adaptive banner
         if (mAdView != null) {
-            mAdView.loadAd(adRequest);
+            AdUtils.loadAdaptiveBanner(PrimeNumbersResult.this, mAdView);
         }
 
         TextView resultView = findViewById(R.id.primeResult);

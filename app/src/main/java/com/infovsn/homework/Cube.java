@@ -138,9 +138,9 @@ public class Cube extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 mAdView=(AdView)findViewById(R.id.adView);
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Cube.this, mAdView);
                 }
                 if(cc.length()>0)
                     cube();

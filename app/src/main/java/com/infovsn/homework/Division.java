@@ -208,9 +208,9 @@ public class Division extends AppCompatActivity {
                 //ADDS BY GOOGLE
                 mAdView=(AdView)findViewById(R.id.adView);
 //                mAdView.setAdListener(new ToastAdListener(Division.this));
-                AdRequest adRequest =new AdRequest.Builder().build();
+                // Adaptive banner
                 if (mAdView != null) {
-                    mAdView.loadAd(adRequest);
+                    AdUtils.loadAdaptiveBanner(Division.this, mAdView);
                 }
 
                 long v1=0,v2=1;
