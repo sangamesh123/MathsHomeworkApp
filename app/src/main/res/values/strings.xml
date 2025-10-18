@@ -80,6 +80,9 @@
     <!-- Use Google test banner unit id while testing -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
+    <!-- Google test native advanced ad unit id -->
+    <string name="native_ad_unit_id">ca-app-pub-3940256099942544/2247696110</string>
+
     <string name="result_label">RESULT</string>
     <string name="send">Send</string>
 
@@ -115,4 +118,8 @@
     <string name="title_prime_result">Prime Result</string>
     <string name="prime_is">%1$d is a prime number.</string>
     <string name="prime_not">%1$d is not a prime number.</string>
+
+    <!-- Native ad template strings -->
+    <string name="ad_app_icon_desc">Ad app icon</string>
+    <string name="ad_cta_install">Install</string>
 </resources>

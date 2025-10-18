@@ -1,8 +1,11 @@
 package com.infovsn.homework;
 
 import android.app.Activity;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowMetrics;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -27,6 +30,7 @@ public final class AdUtils {
                 try {
                     AdSize adSize = getAdSize(activity, adView);
                     if (adSize != null) {
+                        // Set adaptive size computed for current orientation and available width
                         adView.setAdSize(adSize);
                     }
                     AdRequest adRequest = new AdRequest.Builder().build();
@@ -42,17 +46,50 @@ public final class AdUtils {
         });
     }
 
+    /**
+     * Computes the best width in dp for the adaptive banner:
+     * - On API 30+, uses WindowMetrics and subtracts system bar insets so the ad fits the content area.
+     * - Otherwise, falls back to DisplayMetrics or the view's measured width if available.
+     */
     private static AdSize getAdSize(Activity activity, View anchor) {
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        int adWidthPixels = anchor.getWidth();
-        if (adWidthPixels <= 0) {
-            adWidthPixels = outMetrics.widthPixels; // fallback to full screen width
+        int adWidthPixels = 0;
+
+        // Prefer the anchor width if measured (handles cases where the ad is inside padded containers)
+        int measuredWidth = anchor.getWidth();
+        if (measuredWidth > 0) {
+            adWidthPixels = measuredWidth;
+        } else {
+            // Fallback: compute from window size
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
+                    int width = windowMetrics.getBounds().width();
+                    // Subtract system bars (status, nav) to get the content width
+                    WindowInsets insets = windowMetrics.getWindowInsets();
+                    int insetLeft = insets.getInsets(WindowInsets.Type.systemBars()).left;
+                    int insetRight = insets.getInsets(WindowInsets.Type.systemBars()).right;
+                    adWidthPixels = Math.max(0, width - insetLeft - insetRight);
+                } else {
+                    DisplayMetrics outMetrics = new DisplayMetrics();
+                    activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+                    adWidthPixels = outMetrics.widthPixels;
+                }
+            } catch (Throwable ignored) {
+                // As a last resort, fall back to DisplayMetrics
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+                adWidthPixels = outMetrics.widthPixels;
+            }
         }
-        float density = outMetrics.density;
+
+        // Convert pixels to density-independent pixels for the AdSize API
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        float density = dm.density;
         int adWidth = (int) (adWidthPixels / density);
         if (adWidth <= 0) adWidth = 320; // conservative fallback
+
+        // Return anchored adaptive size for the current orientation
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(activity, adWidth);
     }
 }
-

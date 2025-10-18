@@ -1,6 +1,5 @@
 package com.infovsn.homework;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -164,8 +162,7 @@ public class Lcm extends AppCompatActivity {
             // Ads
             mAdView = findViewById(R.id.adView);
             if (mAdView != null) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                // switch to adaptive
+                // Load anchored adaptive banner based on current orientation and width
                 AdUtils.loadAdaptiveBanner(Lcm.this, mAdView);
             }
 
