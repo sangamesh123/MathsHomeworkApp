@@ -101,6 +101,8 @@ public class Lcm extends AppCompatActivity {
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
+                    // Attach dynamic native-or-banner ad at bottom
+                    NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
                     at.setText(getString(R.string.error_max_digits, MAX_DIGITS));
                     at.append("\n\n");
                     return;
@@ -114,6 +116,8 @@ public class Lcm extends AppCompatActivity {
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
+                    // Attach dynamic native-or-banner ad at bottom
+                    NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
                     at.setText(getString(R.string.error_invalid_number, trimmed));
                     at.append("\n\n");
                     return;
@@ -126,6 +130,8 @@ public class Lcm extends AppCompatActivity {
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
                 at.setText(getString(R.string.error_enter_numbers_first));
                 at.append("\n\n");
                 return;
@@ -140,6 +146,8 @@ public class Lcm extends AppCompatActivity {
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
                 StringBuilder echo = new StringBuilder();
                 for (Long n : nums) echo.append(n).append('\n');
                 at.setText(echo.toString());

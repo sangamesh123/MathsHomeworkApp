@@ -263,11 +263,9 @@ public class Subtraction extends AppCompatActivity {
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
-                    mAdView=(AdView)findViewById(R.id.adView);
-                    // Adaptive banner
-                    if (mAdView != null) {
-                        AdUtils.loadAdaptiveBanner(Subtraction.this, mAdView);
-                    }
+
+                    // Attach dynamic native-or-banner ad at bottom
+                    NativeAdHelper.attachToContainerOnLayout(Subtraction.this, R.id.txtScr, R.id.ad_container);
 
                     String[] lines = raw.split("\n");
                     java.util.List<String> nums = new java.util.ArrayList<>();
@@ -336,11 +334,9 @@ public class Subtraction extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Subtraction.this, mAdView);
-                }
+
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Subtraction.this, R.id.txtScr, R.id.ad_container);
 
                 String[] lines = raw.split("\n");
                 java.util.List<String> original = new java.util.ArrayList<>();
@@ -452,25 +448,19 @@ public class Subtraction extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (isShowingResult) {
-                isShowingResult = false;
-                recreate();
-            } else {
-                finish();
-            }
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (isShowingResult) { isShowingResult = false; recreate(); }
+                else this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        if (isShowingResult) {
-            isShowingResult = false;
-            recreate();
-        } else {
-            super.onBackPressed();
-        }
+        if (isShowingResult) { isShowingResult = false; recreate(); }
+        else super.onBackPressed();
     }
 }

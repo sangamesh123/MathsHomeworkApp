@@ -205,11 +205,8 @@ public class Addition extends AppCompatActivity {
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Addition.this));
-                    mAdView=(AdView)findViewById(R.id.adView);
-                    // Adaptive banner
-                    if (mAdView != null) {
-                        AdUtils.loadAdaptiveBanner(Addition.this, mAdView);
-                    }
+                    // Attach dynamic native-or-banner ad at bottom based on remaining space
+                    NativeAdHelper.attachToContainerOnLayout(Addition.this, R.id.txtScr, R.id.ad_container);
 
                     // Parse numbers (integers only)
                     String[] lines = raw.split("\n");
@@ -301,11 +298,8 @@ public class Addition extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Addition.this));
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Addition.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom for decimal branch
+                NativeAdHelper.attachToContainerOnLayout(Addition.this, R.id.txtScr, R.id.ad_container);
 
                 // Parse and normalize numbers with decimals
                 String[] rawLines = raw.split("\n");
@@ -459,13 +453,8 @@ public class Addition extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // If on result screen, go back to input by recreating; else finish as usual
-                if (isShowingResult) {
-                    isShowingResult = false;
-                    recreate();
-                } else {
-                    this.finish();
-                }
+                if (isShowingResult) { isShowingResult = false; recreate(); }
+                else this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -474,11 +463,7 @@ public class Addition extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isShowingResult) {
-            isShowingResult = false;
-            recreate();
-        } else {
-            super.onBackPressed();
-        }
+        if (isShowingResult) { isShowingResult = false; recreate(); }
+        else super.onBackPressed();
     }
 }

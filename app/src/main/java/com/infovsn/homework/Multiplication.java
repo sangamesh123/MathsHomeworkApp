@@ -282,11 +282,8 @@ public class Multiplication extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
-                mAdView = (AdView) findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Multiplication.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Multiplication.this, R.id.txtScr, R.id.ad_container);
 
                 String[] lines = raw.split("\n");
                 String a = lines.length>0 ? lines[0] : "";

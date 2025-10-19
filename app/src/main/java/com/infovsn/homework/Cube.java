@@ -137,11 +137,8 @@ public class Cube extends AppCompatActivity {
                 FontUtils.applyToActivity(Cube.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Cube.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Cube.this, R.id.txtScr, R.id.ad_container);
                 if(cc.length()>0)
                     cube();
             }

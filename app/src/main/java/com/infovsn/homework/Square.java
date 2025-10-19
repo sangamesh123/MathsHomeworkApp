@@ -141,12 +141,8 @@ public class Square extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 
-                // ADDS BY GOOGLE
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Square.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Square.this, R.id.txtScr, R.id.ad_container);
 
                 if(cc.length()>0)
                     square();

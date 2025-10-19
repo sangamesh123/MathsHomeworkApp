@@ -189,13 +189,8 @@ public class Fraction extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 
-
-                //ADDS BY GOOGLE
-                mAdView=(AdView)findViewById(R.id.adView);
-//                mAdView.setAdListener(new ToastAdListener(Fraction.this));
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(Fraction.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(Fraction.this, R.id.txtScr, R.id.ad_container);
 
                 String txt=et.getText()+"";
                 String[] split=txt.split("\\n");
@@ -262,12 +257,9 @@ public class Fraction extends AppCompatActivity {
                         sb.append(s).append("\n");
                     }
                     at.setText(sb.toString());
+                    at.append("\n\n");
+                    at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
                 }
-
-                // no duplicate error message after validation
-                at.append("\n\n");
-                // When showing result, set monospace font
-                at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
             }
         });
 

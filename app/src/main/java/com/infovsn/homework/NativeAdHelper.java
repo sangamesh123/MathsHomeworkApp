@@ -1,11 +1,11 @@
 package com.infovsn.homework;
 
 import android.app.Activity;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +30,7 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
 
     private final Activity activity;
     private NativeAd currentNative;
-    private String lastLayoutName;
+    private boolean lastWasLarge;
 
     private NativeAdHelper(Activity activity) {
         this.activity = activity;
@@ -46,6 +46,32 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
         helper.loadInto(adContainer, remainingHeightPx);
     }
 
+    /**
+     * Convenience: attach dynamic native-or-banner loading to a layout.
+     * Measures remaining space below the given content view inside the activity root and loads an ad into the container.
+     */
+    public static void attachToContainerOnLayout(@NonNull final Activity activity,
+                                                 final int contentViewId,
+                                                 final int adContainerId) {
+        final View root = activity.findViewById(android.R.id.content);
+        final View content = activity.findViewById(contentViewId);
+        final MaxHeightFrameLayout adContainer = activity.findViewById(adContainerId);
+        if (root == null || content == null || adContainer == null) return;
+        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int rootH = root.getHeight();
+                int contentH = content.getHeight();
+                int remaining = Math.max(0, rootH - contentH);
+                if (remaining <= 0) {
+                    adContainer.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadDynamicNativeOrBanner(activity, adContainer, remaining);
+                }
+            }
+        });
+    }
+
     private void loadInto(@NonNull MaxHeightFrameLayout adContainer, int remainingHeightPx) {
         if (remainingHeightPx <= 0) {
             adContainer.setVisibility(View.GONE);
@@ -56,13 +82,13 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
 
         int remainingDp = pxToDp(remainingHeightPx);
 
-        String layoutName;
+        int layoutRes;
         if (remainingDp >= 420) {
-            layoutName = "native_ad_large";
+            layoutRes = R.layout.native_ad_large; lastWasLarge = true;
         } else if (remainingDp >= 280) {
-            layoutName = "native_ad_medium";
+            layoutRes = R.layout.native_ad_medium; lastWasLarge = false;
         } else if (remainingDp >= 140) {
-            layoutName = "native_ad_small";
+            layoutRes = R.layout.native_ad_small; lastWasLarge = false;
         } else {
             // Not enough space for a native ad. Try banner only if enough room for banner height.
             if (remainingDp < MIN_BANNER_DP) {
@@ -72,24 +98,13 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
             loadBannerFallback(adContainer);
             return;
         }
-        lastLayoutName = layoutName;
-
-        int layoutRes = activity.getResources().getIdentifier(layoutName, "layout", activity.getPackageName());
-        if (layoutRes == 0) {
-            // If for any reason layout isn't found, fallback to banner if enough space
-            if (remainingDp < MIN_BANNER_DP) {
-                adContainer.setVisibility(View.GONE);
-            } else {
-                loadBannerFallback(adContainer);
-            }
-            return;
-        }
 
         final View adView = LayoutInflater.from(activity).inflate(layoutRes, adContainer, false);
 
         AdLoader adLoader = new AdLoader.Builder(activity, activity.getString(R.string.native_ad_unit_id))
                 .forNativeAd(nativeAd -> {
-                    if (activity.isFinishing() || (Build.VERSION.SDK_INT >= 17 && activity.isDestroyed())) {
+                    // Activity lifecycle safety
+                    if (activity.isFinishing() || activity.isDestroyed()) {
                         nativeAd.destroy();
                         return;
                     }
@@ -98,7 +113,7 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
                     bindNative(adView, nativeAd);
                     adContainer.removeAllViews();
                     FrameLayout.LayoutParams lp;
-                    if ("native_ad_large".equals(lastLayoutName)) {
+                    if (lastWasLarge) {
                         // Expand to available height so MediaView (weight=1) can fill the remaining space
                         lp = new FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -143,23 +158,15 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
     }
 
     private void bindNative(@NonNull View adView, @NonNull NativeAd nativeAd) {
-        int idNativeAdView = id("native_ad_view");
-        int idMedia = id("ad_media");
-        int idHeadline = id("ad_headline");
-        int idBody = id("ad_body");
-        int idCta = id("ad_call_to_action");
-        int idIcon = id("ad_app_icon");
-        int idAdv = id("ad_advertiser");
-
-        com.google.android.gms.ads.nativead.NativeAdView nav = adView.findViewById(idNativeAdView);
-        MediaView mediaView = adView.findViewById(idMedia);
+        com.google.android.gms.ads.nativead.NativeAdView nav = adView.findViewById(R.id.native_ad_view);
+        MediaView mediaView = adView.findViewById(R.id.ad_media);
         if (nav == null) return;
         if (mediaView != null) nav.setMediaView(mediaView);
-        if (idHeadline != 0) nav.setHeadlineView(adView.findViewById(idHeadline));
-        if (idBody != 0) nav.setBodyView(adView.findViewById(idBody));
-        if (idCta != 0) nav.setCallToActionView(adView.findViewById(idCta));
-        if (idIcon != 0) nav.setIconView(adView.findViewById(idIcon));
-        if (idAdv != 0) nav.setAdvertiserView(adView.findViewById(idAdv));
+        nav.setHeadlineView(adView.findViewById(R.id.ad_headline));
+        nav.setBodyView(adView.findViewById(R.id.ad_body));
+        nav.setCallToActionView(adView.findViewById(R.id.ad_call_to_action));
+        nav.setIconView(adView.findViewById(R.id.ad_app_icon));
+        nav.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
 
         // Populate assets
         if (nav.getHeadlineView() instanceof TextView) {
@@ -219,10 +226,6 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
     private int pxToDp(int px) {
         DisplayMetrics dm = activity.getResources().getDisplayMetrics();
         return Math.round(px / dm.density);
-    }
-
-    private int id(String name) {
-        return activity.getResources().getIdentifier(name, "id", activity.getPackageName());
     }
 
     /**

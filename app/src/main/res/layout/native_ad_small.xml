@@ -64,11 +64,5 @@
         android:layout_height="0dp"
         android:visibility="gone" />
 
-    <!-- No media for small -->
-    <com.google.android.gms.ads.nativead.MediaView
-        android:id="@+id/ad_media"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
+    <!-- No MediaView for small layout on purpose -->
 </com.google.android.gms.ads.nativead.NativeAdView>
-

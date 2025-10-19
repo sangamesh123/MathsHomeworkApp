@@ -175,10 +175,9 @@ public class DecrOrder extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(DecrOrder.this));
 
-                //ADDS BY GOOGLE
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Use anchored adaptive banner like Lcm
-                AdUtils.loadAdaptiveBanner(DecrOrder.this, mAdView);
+                // Attach dynamic native-or-banner ad at bottom
+                NativeAdHelper.attachToContainerOnLayout(DecrOrder.this, R.id.txtScr, R.id.ad_container);
+
                 String txt=et.getText()+"";
                 String[] split=txt.split("\n");
                 String fn="";
