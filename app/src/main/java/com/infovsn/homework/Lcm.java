@@ -15,14 +15,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Lcm extends AppCompatActivity {
-    private AdView mAdView;
+    // Removed AdView; division screen now uses dynamic native helper with banner fallback
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // numeric + clear
     TextView et;
     ImageButton bsp,badd,beq;
@@ -167,13 +165,6 @@ public class Lcm extends AppCompatActivity {
             headingTv = findViewById(R.id.txtHeading);
             answerTv = findViewById(R.id.txtAnswer);
 
-            // Ads
-            mAdView = findViewById(R.id.adView);
-            if (mAdView != null) {
-                // Load anchored adaptive banner based on current orientation and width
-                AdUtils.loadAdaptiveBanner(Lcm.this, mAdView);
-            }
-
             // Build heading like "LCM of 6 and 8" (or "LCM of 2, 3 and 5")
             headingTv.setText(getString(R.string.heading_lcm_of, humanJoin(nums)));
 
@@ -209,10 +200,10 @@ public class Lcm extends AppCompatActivity {
                 steps++;
             }
 
-            // Feed data to custom view (vertical line ends at last row)
+            // Feed data to custom view
             lcmTable.setData(tableRows, usedPrimes);
 
-            // Bottom green sentence e.g. "LCM = 2 × 2 × 2 × 3 = 24"
+            // Set bottom green sentence
             if (overflow) {
                 answerTv.setText(getString(R.string.error_overflow));
             } else {
@@ -227,6 +218,9 @@ public class Lcm extends AppCompatActivity {
                     answerTv.setText(ans);
                 }
             }
+
+            // Dynamic native ad or banner fallback at bottom based on remaining space
+            NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.content, R.id.ad_container);
         });
     }
 

@@ -13,16 +13,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class CubeRoot extends AppCompatActivity {
-    private AdView mAdView;
+    // Removed AdView field; result screen uses dynamic native or banner fallback via helper
     int ex=0;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
     ImageButton bsp, beq;
@@ -138,11 +135,8 @@ public class CubeRoot extends AppCompatActivity {
                 FontUtils.applyToActivity(CubeRoot.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                mAdView=(AdView)findViewById(R.id.adView);
-                // Adaptive banner
-                if (mAdView != null) {
-                    AdUtils.loadAdaptiveBanner(CubeRoot.this, mAdView);
-                }
+                // Attach dynamic native-or-banner ad at bottom based on remaining space
+                NativeAdHelper.attachToContainerOnLayout(CubeRoot.this, R.id.txtScr, R.id.ad_container);
                 if(cc.length()>0)
                     cuberoot();
             }

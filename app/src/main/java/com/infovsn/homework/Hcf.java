@@ -16,15 +16,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Hcf extends AppCompatActivity {
-    private AdView mAdView;
+    // Removed AdView; division screen now uses dynamic native helper with banner fallback
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
     TextView et;
     ImageButton bsp,badd,beq;
@@ -234,14 +231,6 @@ public class Hcf extends AppCompatActivity {
         headingTv = findViewById(R.id.txtHeading);
         answerTv = findViewById(R.id.txtAnswer);
 
-        // Ads
-        mAdView = findViewById(R.id.adView);
-        if (mAdView != null) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            // switch to adaptive
-            AdUtils.loadAdaptiveBanner(Hcf.this, mAdView);
-        }
-
         headingTv.setText(getString(R.string.heading_hcf_of, humanJoin(nums)));
 
         List<Long> work = new ArrayList<>(nums);
@@ -294,6 +283,9 @@ public class Hcf extends AppCompatActivity {
                 }
             }
         }
+
+        // Attach dynamic native ad at bottom; falls back to adaptive banner if space is too small
+        NativeAdHelper.attachToContainerOnLayout(Hcf.this, R.id.content, R.id.ad_container);
     }
 
     @Override
