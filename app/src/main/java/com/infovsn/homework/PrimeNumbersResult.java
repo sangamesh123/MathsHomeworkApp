@@ -8,6 +8,7 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import java.math.BigInteger;
 
 public class PrimeNumbersResult extends AppCompatActivity {
     @Override
@@ -20,7 +21,7 @@ public class PrimeNumbersResult extends AppCompatActivity {
         }
 
         TextView resultView = findViewById(R.id.primeResult);
-        int n = getIntent().getIntExtra("number", 5);
+        long n = getIntent().getLongExtra("number", 5L);
 
         String message;
         if (isPrime(n)) {
@@ -55,14 +56,10 @@ public class PrimeNumbersResult extends AppCompatActivity {
         }
     }
 
-    private boolean isPrime(int n) {
-        if (n <= 1) return false;
-        if (n <= 3) return true;
-        if (n % 2 == 0 || n % 3 == 0) return false;
-        for (int i = 5; (long)i * i <= n; i += 6) {
-            if (n % i == 0 || n % (i + 2) == 0) return false;
-        }
-        return true;
+    private boolean isPrime(long n) {
+        if (n < 2) return false;
+        // Leverage BigInteger's well-tested probable prime check with high certainty
+        return BigInteger.valueOf(n).isProbablePrime(20);
     }
 
     @Override

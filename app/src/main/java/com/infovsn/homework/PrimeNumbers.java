@@ -131,8 +131,17 @@ public class PrimeNumbers extends AppCompatActivity {
         String sNum = startScreen != null ? startScreen.getText().toString().trim() : "";
         if (sNum.isEmpty()) sNum = "5"; // default
 
-        int n;
-        try { n = Integer.parseInt(sNum); } catch (NumberFormatException e) { n = 0; }
+        // Extract only ASCII digits to avoid unexpected characters causing parse failure
+        StringBuilder digitsOnly = new StringBuilder();
+        for (int i = 0; i < sNum.length(); i++) {
+            char c = sNum.charAt(i);
+            if (c >= '0' && c <= '9') digitsOnly.append(c);
+        }
+        String cleaned = digitsOnly.toString();
+        if (cleaned.isEmpty()) cleaned = "0";
+
+        long n;
+        try { n = Long.parseLong(cleaned); } catch (NumberFormatException e) { n = 0L; }
 
         Intent intent = new Intent(PrimeNumbers.this, PrimeNumbersResult.class);
         intent.putExtra("number", n);
