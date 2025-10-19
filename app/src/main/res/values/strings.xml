@@ -74,14 +74,11 @@
     <string name="m16">PRIME NUMBERS</string>
 
 
-    <!-- Original AdMob banner unit id (commented out for testing)
+    <!-- Production AdMob banner unit id (release). Debug build overrides in app/src/debug/res/values/strings.xml -->
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
-    -->
-    <!-- Use Google test banner unit id while testing -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <!-- Google test native advanced ad unit id -->
-    <string name="native_ad_unit_id">ca-app-pub-3940256099942544/2247696110</string>
+    <!-- Production native advanced ad unit id -->
+    <string name="native_ad_unit_id">ca-app-pub-5127203822190674/6122266781</string>
 
     <string name="result_label">RESULT</string>
     <string name="send">Send</string>
