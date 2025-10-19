@@ -1,38 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:ads="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@id/adView"
-    >
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txtScr"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="24sp"
-        android:maxLines = "50"
-        android:scrollbars = "vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        />
+        android:layout_height="match_parent"
+        android:layout_above="@id/ad_container">
 
+        <TextView
+            android:id="@+id/txtScr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="24sp"
+            android:maxLines="50"
+            android:scrollbars="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+    </LinearLayout>
 
-</LinearLayout>
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <!-- Flexible bottom ad container, hosts native or banner fallback -->
+    <com.infovsn.homework.MaxHeightFrameLayout
+        android:id="@+id/ad_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adUnitId="@string/banner_ad_unit_id"
-        ads:adSize="BANNER">
-    </com.google.android.gms.ads.AdView>
-
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

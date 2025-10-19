@@ -3,16 +3,13 @@ package com.infovsn.homework;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
 public class PrimeNumbersResult extends AppCompatActivity {
-    private AdView mAdView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,13 +17,6 @@ public class PrimeNumbersResult extends AppCompatActivity {
         FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        // Ads by Google
-        mAdView = findViewById(R.id.adView);
-        // Adaptive banner
-        if (mAdView != null) {
-            AdUtils.loadAdaptiveBanner(PrimeNumbersResult.this, mAdView);
         }
 
         TextView resultView = findViewById(R.id.primeResult);
@@ -41,6 +31,28 @@ public class PrimeNumbersResult extends AppCompatActivity {
         SpannableString span = new SpannableString(message);
         span.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, span.length(), 0);
         resultView.setText(span);
+
+        // After the layout is done, compute remaining space below content and load ad accordingly
+        final View root = findViewById(android.R.id.content);
+        final View content = findViewById(R.id.content_container);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (adContainer != null && root != null && content != null) {
+            root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override public void onGlobalLayout() {
+                    // Remove to avoid repeated calls
+                    root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    int rootH = root.getHeight();
+                    int contentH = content.getHeight();
+                    int remaining = Math.max(0, rootH - contentH);
+                    // Load a native ad that fits remaining space, or banner if too small; hide if none
+                    if (remaining <= 0) {
+                        adContainer.setVisibility(View.GONE);
+                    } else {
+                        NativeAdHelper.loadDynamicNativeOrBanner(PrimeNumbersResult.this, adContainer, remaining);
+                    }
+                }
+            });
+        }
     }
 
     private boolean isPrime(int n) {

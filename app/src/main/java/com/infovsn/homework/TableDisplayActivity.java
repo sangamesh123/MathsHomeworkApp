@@ -1,10 +1,11 @@
 package com.infovsn.homework;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
-import com.google.android.gms.ads.AdView;
 
 public class TableDisplayActivity extends AppCompatActivity {
     @Override
@@ -16,33 +17,48 @@ public class TableDisplayActivity extends AppCompatActivity {
         at.setMovementMethod(new ScrollingMovementMethod());
         at.setTypeface(FontUtils.getRobotoMono(this));
         at.setLetterSpacing(0f);
-        // Load adaptive banner at bottom
-        AdView adView = findViewById(R.id.adView);
-        if (adView != null) {
-            AdUtils.loadAdaptiveBanner(this, adView);
-        }
+
         String tableNumberStr = getIntent().getStringExtra("tableNumber");
         if (tableNumberStr == null || tableNumberStr.isEmpty()) {
             at.setText("No number provided");
-            return;
-        }
-        long myNum = 0;
-        String table = "";
-        try {
-            myNum = Long.parseLong(tableNumberStr);
-            if (myNum > 99999) {
-                at.setTextSize(26);
-            }
-            for (int i = 1; i <= 10; i++) {
-                if (i == 10) {
-                    table = table + "\n" + myNum + "  x 10  =  " + myNum * i;
-                } else {
-                    table = table + "\n" + myNum + "  x  " + i + "  =  " + myNum * i;
+        } else {
+            try {
+                long myNum = Long.parseLong(tableNumberStr);
+                if (myNum > 99999) {
+                    at.setTextSize(26);
                 }
+                StringBuilder table = new StringBuilder();
+                for (int i = 1; i <= 10; i++) {
+                    if (i == 10) {
+                        table.append("\n").append(myNum).append("  x 10  =  ").append(myNum * i);
+                    } else {
+                        table.append("\n").append(myNum).append("  x  ").append(i).append("  =  ").append(myNum * i);
+                    }
+                }
+                at.setText(table.toString());
+            } catch (NumberFormatException nfe) {
+                at.setText("Invalid number");
             }
-            at.setText(table);
-        } catch (NumberFormatException nfe) {
-            at.setText("Invalid number");
+        }
+
+        // Dynamic native ad or banner fallback at bottom without affecting content
+        final View root = findViewById(android.R.id.content);
+        final View mainContent = findViewById(R.id.txtScr);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (adContainer != null && root != null && mainContent != null) {
+            root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override public void onGlobalLayout() {
+                    root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    int rootH = root.getHeight();
+                    int contentH = mainContent.getHeight();
+                    int remaining = Math.max(0, rootH - contentH);
+                    if (remaining <= 0) {
+                        adContainer.setVisibility(View.GONE);
+                    } else {
+                        NativeAdHelper.loadDynamicNativeOrBanner(TableDisplayActivity.this, adContainer, remaining);
+                    }
+                }
+            });
         }
     }
 }

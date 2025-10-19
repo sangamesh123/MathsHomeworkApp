@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext globally for testing (ads sometimes use http redirect chains).
+         For production, restrict to specific domains or set cleartextTrafficPermitted to false. -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
+
