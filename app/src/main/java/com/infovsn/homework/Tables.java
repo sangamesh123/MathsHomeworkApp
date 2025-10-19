@@ -102,6 +102,15 @@ public class Tables extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Clear the input field when returning to this screen
+        if (et != null) {
+            et.setText("");
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
