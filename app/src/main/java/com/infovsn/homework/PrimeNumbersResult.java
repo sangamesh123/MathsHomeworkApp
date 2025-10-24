@@ -7,6 +7,10 @@ import android.widget.TextView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import java.math.BigInteger;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ScrollView;
 
 public class PrimeNumbersResult extends AppCompatActivity {
     @Override
@@ -31,9 +35,38 @@ public class PrimeNumbersResult extends AppCompatActivity {
         span.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, span.length(), 0);
         resultView.setText(span);
 
-        // Attach a dynamic native-or-banner ad loader anchored at the bottom, measuring remaining below the prime text
-        // Using the inner TextView avoids the fillViewport behavior of the ScrollView that can make container height == viewport
-        NativeAdHelper.attachToContainerOnLayout(this, R.id.primeResult, R.id.ad_container);
+        // Measure remaining viewport space and load the largest ad that fits in-flow
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll != null && contentCard != null && adCard != null && adContainer != null) {
+            scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override public void onGlobalLayout() {
+                    scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    int viewportH = scroll.getHeight();
+                    int contentH = contentCard.getHeight();
+
+                    int contentBottomMargin = 0;
+                    int adTopBottomMargin = 0;
+                    ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                    if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                        contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                    }
+                    ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                    if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                        adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                    }
+
+                    int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                    if (remaining <= 0) {
+                        adCard.setVisibility(View.GONE);
+                    } else {
+                        NativeAdHelper.loadAdaptiveBySpace(PrimeNumbersResult.this, adContainer, adCard, remaining);
+                    }
+                }
+            });
+        }
     }
 
     private boolean isPrime(long n) {
