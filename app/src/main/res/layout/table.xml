@@ -4,25 +4,41 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ad_container">
+        android:layout_alignParentTop="true"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/txtScr"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24sp"
-            android:maxLines="50"
-            android:scrollbars="vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
-    </LinearLayout>
+            android:layout_height="wrap_content">
 
-    <!-- Flexible bottom ad container, hosts native or banner fallback -->
+            <androidx.cardview.widget.CardView
+                style="@style/ContentCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_content_padding">
+
+                    <TextView
+                        android:id="@+id/txtScr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="24sp"
+                        android:maxLines="50" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Flexible bottom ad container, overlays at bottom without reserving space -->
     <com.infovsn.homework.MaxHeightFrameLayout
         android:id="@+id/ad_container"
         android:layout_width="match_parent"

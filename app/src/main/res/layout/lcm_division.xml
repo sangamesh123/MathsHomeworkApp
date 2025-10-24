@@ -9,45 +9,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/ad_container">
+        android:layout_above="@id/ad_container"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_sm">
+            android:orientation="vertical">
 
-            <!-- Top heading -->
-            <TextView
-                android:id="@+id/txtHeading"
+            <androidx.cardview.widget.CardView
+                style="@style/ContentCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#2E7D32"
-                android:textStyle="bold"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp" />
+                android:layout_height="wrap_content">
 
-            <!-- Table area: primes | divider | numbers -->
-            <com.infovsn.homework.LcmTableView
-                android:id="@+id/lcmTable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_content_padding">
 
-            <!-- Bottom answer line -->
-            <TextView
-                android:id="@+id/txtAnswer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#2E7D32"
-                android:textStyle="bold"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp" />
+                    <!-- Top heading -->
+                    <TextView
+                        android:id="@+id/txtHeading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp" />
+
+                    <!-- Table area: primes | divider | numbers -->
+                    <com.infovsn.homework.LcmTableView
+                        android:id="@+id/lcmTable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Bottom answer line -->
+                    <TextView
+                        android:id="@+id/txtAnswer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

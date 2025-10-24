@@ -110,4 +110,14 @@
         <item name="android:elevation">2dp</item>
     </style>
 
+    <!-- Shared content card style for app-generated sections -->
+    <style name="ContentCard">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:layout_margin">@dimen/card_margin</item>
+    </style>
+
 </resources>
