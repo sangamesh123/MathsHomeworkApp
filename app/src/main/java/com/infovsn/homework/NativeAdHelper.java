@@ -27,16 +27,28 @@ import com.google.android.gms.ads.AdLoader;
 
 public final class NativeAdHelper implements DefaultLifecycleObserver {
     private static final int MIN_BANNER_DP = 50; // typical phone banner height
+    // Conservative thresholds to reduce overflow risk; final guard is measurement
+    private static final int MIN_NATIVE_LARGE_DP = 400;
+    private static final int MIN_NATIVE_MEDIUM_DP = 300;
+    private static final int MIN_NATIVE_SMALL_DP = 160;
 
     private final Activity activity;
     private NativeAd currentNative;
-    private boolean lastWasLarge;
+    private AdView currentBanner;
 
     private NativeAdHelper(Activity activity) {
         this.activity = activity;
         if (activity instanceof LifecycleOwner) {
             ((LifecycleOwner) activity).getLifecycle().addObserver(this);
         }
+    }
+
+    public static void loadAdaptiveBySpace(@NonNull Activity activity,
+                                           @NonNull MaxHeightFrameLayout adContainer,
+                                           @NonNull View adWrapperCard,
+                                           int remainingHeightPx) {
+        NativeAdHelper helper = new NativeAdHelper(activity);
+        helper.loadBySpaceInternal(adContainer, adWrapperCard, remainingHeightPx);
     }
 
     public static void loadDynamicNativeOrBanner(@NonNull Activity activity,
@@ -46,10 +58,12 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
         helper.loadInto(adContainer, remainingHeightPx);
     }
 
-    /**
-     * Convenience: attach dynamic native-or-banner loading to a layout.
-     * Measures remaining space below the given content view inside the activity root and loads an ad into the container.
-     */
+    public static void loadAdaptiveNativeInFlow(@NonNull Activity activity,
+                                                @NonNull MaxHeightFrameLayout adContainer) {
+        NativeAdHelper helper = new NativeAdHelper(activity);
+        helper.loadAdaptiveInFlowInternal(adContainer);
+    }
+
     public static void attachToContainerOnLayout(@NonNull final Activity activity,
                                                  final int contentViewId,
                                                  final int adContainerId) {
@@ -84,13 +98,12 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
 
         int layoutRes;
         if (remainingDp >= 420) {
-            layoutRes = R.layout.native_ad_large; lastWasLarge = true;
+            layoutRes = R.layout.native_ad_large;
         } else if (remainingDp >= 280) {
-            layoutRes = R.layout.native_ad_medium; lastWasLarge = false;
+            layoutRes = R.layout.native_ad_medium;
         } else if (remainingDp >= 140) {
-            layoutRes = R.layout.native_ad_small; lastWasLarge = false;
+            layoutRes = R.layout.native_ad_small;
         } else {
-            // Not enough space for a native ad. Try banner only if enough room for banner height.
             if (remainingDp < MIN_BANNER_DP) {
                 adContainer.setVisibility(View.GONE);
                 return;
@@ -99,11 +112,37 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
             return;
         }
 
+        loadNativeWithLayouts(adContainer, new int[]{ layoutRes }, 0);
+    }
+
+    private void loadAdaptiveInFlowInternal(@NonNull MaxHeightFrameLayout adContainer) {
+        // Clear max cap to allow natural wrap_content sizing inside Card
+        adContainer.setMaxHeightPx(0);
+        adContainer.setVisibility(View.VISIBLE);
+        // Prefer Large on tall screens, Medium on moderate, Small on compact
+        int screenDpH = pxToDp(activity.getResources().getDisplayMetrics().heightPixels);
+        int[] order;
+        if (screenDpH >= 700) {
+            order = new int[]{ R.layout.native_ad_large, R.layout.native_ad_medium, R.layout.native_ad_small };
+        } else if (screenDpH >= 560) {
+            order = new int[]{ R.layout.native_ad_medium, R.layout.native_ad_large, R.layout.native_ad_small };
+        } else {
+            order = new int[]{ R.layout.native_ad_small, R.layout.native_ad_medium };
+        }
+        loadNativeWithLayouts(adContainer, order, 0);
+    }
+
+    private void loadNativeWithLayouts(@NonNull MaxHeightFrameLayout adContainer, @NonNull int[] layouts, int index) {
+        if (index >= layouts.length) {
+            loadBannerFallback(adContainer);
+            return;
+        }
+
+        final int layoutRes = layouts[index];
         final View adView = LayoutInflater.from(activity).inflate(layoutRes, adContainer, false);
 
         AdLoader adLoader = new AdLoader.Builder(activity, activity.getString(R.string.native_ad_unit_id))
                 .forNativeAd(nativeAd -> {
-                    // Activity lifecycle safety
                     if (activity.isFinishing() || activity.isDestroyed()) {
                         nativeAd.destroy();
                         return;
@@ -112,28 +151,112 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
                     currentNative = nativeAd;
                     bindNative(adView, nativeAd);
                     adContainer.removeAllViews();
-                    FrameLayout.LayoutParams lp;
-                    if (lastWasLarge) {
-                        // Expand to available height so MediaView (weight=1) can fill the remaining space
-                        lp = new FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                remainingHeightPx
-                        );
-                    } else {
-                        lp = new FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                        );
-                    }
+                    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
                     adContainer.addView(adView, lp);
                 })
                 .withAdListener(new AdListener() {
                     @Override public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                        if (pxToDp(adContainer.getHeight()) < MIN_BANNER_DP) {
-                            adContainer.setVisibility(View.GONE);
-                        } else {
-                            loadBannerFallback(adContainer);
-                        }
+                        loadNativeWithLayouts(adContainer, layouts, index + 1);
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        .setVideoOptions(new VideoOptions.Builder().setStartMuted(true).build())
+                        .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_RIGHT)
+                        .build())
+                .build();
+
+        adLoader.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void loadBySpaceInternal(@NonNull MaxHeightFrameLayout adContainer,
+                                     @NonNull View adWrapperCard,
+                                     int remainingHeightPx) {
+        if (remainingHeightPx <= 0) {
+            adWrapperCard.setVisibility(View.GONE);
+            return;
+        }
+        adWrapperCard.setVisibility(View.VISIBLE);
+        adContainer.setVisibility(View.VISIBLE);
+        // Allow natural wrap; rely on pre-measurement to avoid overflow
+        adContainer.setMaxHeightPx(0);
+
+        int remainingDp = pxToDp(remainingHeightPx);
+        int[] candidates;
+        if (remainingDp >= MIN_NATIVE_LARGE_DP) {
+            candidates = new int[]{ R.layout.native_ad_large, R.layout.native_ad_medium, R.layout.native_ad_small };
+        } else if (remainingDp >= MIN_NATIVE_MEDIUM_DP) {
+            candidates = new int[]{ R.layout.native_ad_medium, R.layout.native_ad_small };
+        } else if (remainingDp >= MIN_NATIVE_SMALL_DP) {
+            candidates = new int[]{ R.layout.native_ad_small };
+        } else {
+            if (remainingDp >= MIN_BANNER_DP) {
+                loadBannerWithWrapper(adContainer, adWrapperCard);
+            } else {
+                adWrapperCard.setVisibility(View.GONE);
+            }
+            return;
+        }
+        loadNativeWithLayoutsAndWrapper(adContainer, adWrapperCard, remainingHeightPx, candidates, 0);
+    }
+
+    private void loadNativeWithLayoutsAndWrapper(@NonNull MaxHeightFrameLayout adContainer,
+                                                 @NonNull View adWrapperCard,
+                                                 int remainingHeightPx,
+                                                 @NonNull int[] layouts,
+                                                 int index) {
+        if (index >= layouts.length) {
+            int remainingDp = pxToDp(remainingHeightPx);
+            if (remainingDp < MIN_BANNER_DP) {
+                adWrapperCard.setVisibility(View.GONE);
+            } else {
+                loadBannerWithWrapper(adContainer, adWrapperCard);
+            }
+            return;
+        }
+
+        final int layoutRes = layouts[index];
+        final View adView = LayoutInflater.from(activity).inflate(layoutRes, adContainer, false);
+
+        AdLoader adLoader = new AdLoader.Builder(activity, activity.getString(R.string.native_ad_unit_id))
+                .forNativeAd(nativeAd -> {
+                    if (activity.isFinishing() || activity.isDestroyed()) {
+                        nativeAd.destroy();
+                        return;
+                    }
+                    // Bind assets before measuring (view not yet attached)
+                    bindNative(adView, nativeAd);
+
+                    // Measure prospective height and compare with remaining viewport
+                    int widthPx = adContainer.getWidth();
+                    if (widthPx <= 0) widthPx = activity.getResources().getDisplayMetrics().widthPixels;
+                    int wSpec = View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY);
+                    int hSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                    adView.measure(wSpec, hSpec);
+                    int needed = adView.getMeasuredHeight();
+
+                    if (needed > remainingHeightPx) {
+                        // Too tall: destroy and try next size
+                        try { nativeAd.destroy(); } catch (Throwable ignore) {}
+                        loadNativeWithLayoutsAndWrapper(adContainer, adWrapperCard, remainingHeightPx, layouts, index + 1);
+                        return;
+                    }
+
+                    // Safe to attach
+                    destroyCurrent();
+                    currentNative = nativeAd;
+                    adContainer.removeAllViews();
+                    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    adContainer.addView(adView, lp);
+                })
+                .withAdListener(new AdListener() {
+                    @Override public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        loadNativeWithLayoutsAndWrapper(adContainer, adWrapperCard, remainingHeightPx, layouts, index + 1);
                     }
                 })
                 .withNativeAdOptions(new NativeAdOptions.Builder()
@@ -147,13 +270,47 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
 
     private void loadBannerFallback(@NonNull MaxHeightFrameLayout adContainer) {
         adContainer.removeAllViews();
+        if (currentBanner != null) {
+            try { currentBanner.destroy(); } catch (Throwable ignore) {}
+            currentBanner = null;
+        }
         AdView banner = new AdView(activity);
         banner.setAdUnitId(activity.getString(R.string.banner_ad_unit_id));
         AdSize adSize = AdUtilsBannerSize.getAdSize(activity, adContainer);
         banner.setAdSize(adSize);
+        banner.setAdListener(new AdListener() {
+            @Override public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                adContainer.setVisibility(View.GONE);
+            }
+        });
         adContainer.addView(banner, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+        currentBanner = banner;
+        banner.loadAd(new AdRequest.Builder().build());
+    }
+
+    private void loadBannerWithWrapper(@NonNull MaxHeightFrameLayout adContainer,
+                                       @NonNull View adWrapperCard) {
+        adContainer.removeAllViews();
+        if (currentBanner != null) { try { currentBanner.destroy(); } catch (Throwable ignore) {} currentBanner = null; }
+        // Ensure banner can wrap content height
+        ViewGroup.LayoutParams lpCap = adContainer.getLayoutParams();
+        if (lpCap != null) { lpCap.height = ViewGroup.LayoutParams.WRAP_CONTENT; adContainer.setLayoutParams(lpCap); }
+        AdView banner = new AdView(activity);
+        banner.setAdUnitId(activity.getString(R.string.banner_ad_unit_id));
+        AdSize adSize = AdUtilsBannerSize.getAdSize(activity, adContainer);
+        banner.setAdSize(adSize);
+        banner.setAdListener(new AdListener() {
+            @Override public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                adWrapperCard.setVisibility(View.GONE);
+            }
+        });
+        adContainer.addView(banner, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        adWrapperCard.setVisibility(View.VISIBLE);
+        currentBanner = banner;
         banner.loadAd(new AdRequest.Builder().build());
     }
 
@@ -168,7 +325,6 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
         nav.setIconView(adView.findViewById(R.id.ad_app_icon));
         nav.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
 
-        // Populate assets
         if (nav.getHeadlineView() instanceof TextView) {
             ((TextView) nav.getHeadlineView()).setText(nativeAd.getHeadline());
         }
@@ -215,6 +371,24 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
                 currentNative = null;
             }
         } catch (Throwable ignore) {}
+        try {
+            if (currentBanner != null) {
+                currentBanner.destroy();
+                currentBanner = null;
+            }
+        } catch (Throwable ignore) {}
+    }
+
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {
+        try { if (currentBanner != null) currentBanner.pause(); } catch (Throwable ignore) {}
+        DefaultLifecycleObserver.super.onPause(owner);
+    }
+
+    @Override
+    public void onResume(@NonNull LifecycleOwner owner) {
+        try { if (currentBanner != null) currentBanner.resume(); } catch (Throwable ignore) {}
+        DefaultLifecycleObserver.super.onResume(owner);
     }
 
     @Override
@@ -228,9 +402,6 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
         return Math.round(px / dm.density);
     }
 
-    /**
-     * Local helper to compute adaptive banner size based on a view width.
-     */
     private static final class AdUtilsBannerSize {
         static AdSize getAdSize(Activity activity, View anchor) {
             int adWidthPixels = anchor.getWidth();

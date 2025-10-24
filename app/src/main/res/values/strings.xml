@@ -119,4 +119,8 @@
     <!-- Native ad template strings -->
     <string name="ad_app_icon_desc">Ad app icon</string>
     <string name="ad_cta_install">Install</string>
+
+    <!-- TableDisplayActivity messages -->
+    <string name="msg_no_number_provided">No number provided</string>
+    <string name="msg_invalid_number">Invalid number</string>
 </resources>

@@ -3,6 +3,8 @@ package com.infovsn.homework;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -20,7 +22,7 @@ public class TableDisplayActivity extends AppCompatActivity {
 
         String tableNumberStr = getIntent().getStringExtra("tableNumber");
         if (tableNumberStr == null || tableNumberStr.isEmpty()) {
-            at.setText("No number provided");
+            at.setText(getString(R.string.msg_no_number_provided));
         } else {
             try {
                 long myNum = Long.parseLong(tableNumberStr);
@@ -39,25 +41,38 @@ public class TableDisplayActivity extends AppCompatActivity {
                 }
                 at.setText(table.toString());
             } catch (NumberFormatException nfe) {
-                at.setText("Invalid number");
+                at.setText(getString(R.string.msg_invalid_number));
             }
         }
 
-        // Dynamic native ad or banner fallback at bottom without affecting content
-        final View root = findViewById(android.R.id.content);
-        final View mainContent = findViewById(R.id.txtScr);
+        // After layout, measure visible viewport remainder and load the largest ad that fits
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
         final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
-        if (adContainer != null && root != null && mainContent != null) {
-            root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        if (scroll != null && contentCard != null && adCard != null && adContainer != null) {
+            scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override public void onGlobalLayout() {
-                    root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    int rootH = root.getHeight();
-                    int contentH = mainContent.getHeight();
-                    int remaining = Math.max(0, rootH - contentH);
+                    scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    int viewportH = scroll.getHeight();
+                    int contentH = contentCard.getHeight();
+
+                    int contentBottomMargin = 0;
+                    int adTopBottomMargin = 0;
+                    ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                    if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                        contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                    }
+                    ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                    if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                        adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                    }
+
+                    int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
                     if (remaining <= 0) {
-                        adContainer.setVisibility(View.GONE);
+                        adCard.setVisibility(View.GONE);
                     } else {
-                        NativeAdHelper.loadDynamicNativeOrBanner(TableDisplayActivity.this, adContainer, remaining);
+                        NativeAdHelper.loadAdaptiveBySpace(TableDisplayActivity.this, adContainer, adCard, remaining);
                     }
                 }
             });
