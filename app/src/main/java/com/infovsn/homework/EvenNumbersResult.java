@@ -43,7 +43,7 @@ public class EvenNumbersResult extends AppCompatActivity {
         SpannableString headerSpan = new SpannableString(header);
         headerSpan.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, headerSpan.length(), 0);
         mText.setText(headerSpan);
-        mText.append("\n");
+        mText.append("\n\n");
 
         StringBuilder list = new StringBuilder();
         int first = (startVal % 2 == 0) ? startVal : (startVal + 1);
