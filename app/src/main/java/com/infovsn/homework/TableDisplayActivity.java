@@ -31,6 +31,8 @@ public class TableDisplayActivity extends AppCompatActivity {
                 for (int i = 1; i <= 10; i++) {
                     if (i == 10) {
                         table.append("\n").append(myNum).append("  x 10  =  ").append(myNum * i);
+                    } else if (i == 1) {
+                        table.append(myNum).append("  x  ").append(i).append("  =  ").append(myNum * i);
                     } else {
                         table.append("\n").append(myNum).append("  x  ").append(i).append("  =  ").append(myNum * i);
                     }

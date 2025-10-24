@@ -216,7 +216,7 @@ public class DecrOrder extends AppCompatActivity {
 
                 if (trick) {
                     // message already set above; finalize and return with monospace
-                    at.append("\n\n");
+                  //  at.append("\n");
                     at.setTypeface(FontUtils.getRobotoMono(DecrOrder.this));
                     return;
                 }
@@ -244,7 +244,7 @@ public class DecrOrder extends AppCompatActivity {
                 at.setText(sb.toString());
 
                 // finalize
-                at.append("\n\n");
+               // at.append("\n");
             }
         });
 

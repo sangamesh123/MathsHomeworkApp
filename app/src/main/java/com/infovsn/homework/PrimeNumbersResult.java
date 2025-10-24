@@ -3,8 +3,6 @@ package com.infovsn.homework;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -33,27 +31,9 @@ public class PrimeNumbersResult extends AppCompatActivity {
         span.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, span.length(), 0);
         resultView.setText(span);
 
-        // After the layout is done, compute remaining space below content and load ad accordingly
-        final View root = findViewById(android.R.id.content);
-        final View content = findViewById(R.id.content_container);
-        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
-        if (adContainer != null && root != null && content != null) {
-            root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override public void onGlobalLayout() {
-                    // Remove to avoid repeated calls
-                    root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    int rootH = root.getHeight();
-                    int contentH = content.getHeight();
-                    int remaining = Math.max(0, rootH - contentH);
-                    // Load a native ad that fits remaining space, or banner if too small; hide if none
-                    if (remaining <= 0) {
-                        adContainer.setVisibility(View.GONE);
-                    } else {
-                        NativeAdHelper.loadDynamicNativeOrBanner(PrimeNumbersResult.this, adContainer, remaining);
-                    }
-                }
-            });
-        }
+        // Attach a dynamic native-or-banner ad loader anchored at the bottom, measuring remaining below the prime text
+        // Using the inner TextView avoids the fillViewport behavior of the ScrollView that can make container height == viewport
+        NativeAdHelper.attachToContainerOnLayout(this, R.id.primeResult, R.id.ad_container);
     }
 
     private boolean isPrime(long n) {

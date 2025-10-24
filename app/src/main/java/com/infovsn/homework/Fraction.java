@@ -231,7 +231,7 @@ public class Fraction extends AppCompatActivity {
                 // If validation failed, show message and stop
                 if (trick) {
                     // already set message above; finalize and return
-                    at.append("\n\n");
+                   // at.append("\n");
                     at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
                     return;
                 } else {
@@ -257,7 +257,7 @@ public class Fraction extends AppCompatActivity {
                         sb.append(s).append("\n");
                     }
                     at.setText(sb.toString());
-                    at.append("\n\n");
+                  //  at.append("\n");
                     at.setTypeface(FontUtils.getRobotoMono(Fraction.this));
                 }
             }

@@ -323,7 +323,7 @@ public class Subtraction extends AppCompatActivity {
                     ss1.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN),0,ss1.length(),0);
                     at.append("\n");
                     at.append(ss1);
-                    at.append("\n\n");
+                    at.append("\n");
                     return;
                 }
 
@@ -440,7 +440,7 @@ public class Subtraction extends AppCompatActivity {
                 SpannableString ss = new SpannableString(out);
                 ss.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN),0,ss.length(),0);
                 at.append(ss);
-                at.append("\n\n");
+                at.append("\n");
             }
         });
 

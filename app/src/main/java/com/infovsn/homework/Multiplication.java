@@ -438,7 +438,7 @@ public class Multiplication extends AppCompatActivity {
                 at.append("\n");
                 blue.setSpan(new ForegroundColorSpan(Colors.LCM_GREEN), 0, blue.length(), 0);
                 at.append(blue);
-                at.append("\n\n");
+                at.append("\n");
             }
         });
 

@@ -51,7 +51,7 @@ public class OddNumbersResult extends AppCompatActivity {
             list.append(i).append("  ");
         }
         mText.append(list.toString());
-        mText.append("\n\n");
+        mText.append("\n");
     }
 
     @Override
