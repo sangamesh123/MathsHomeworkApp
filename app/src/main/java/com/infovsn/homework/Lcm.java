@@ -11,8 +11,12 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.graphics.Typeface;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -99,8 +103,8 @@ public class Lcm extends AppCompatActivity {
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
-                    // Attach dynamic native-or-banner ad at bottom
-                    NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
+                    // Load adaptive in-flow ad
+                    setupAdaptiveAdForAdded();
                     at.setText(getString(R.string.error_max_digits, MAX_DIGITS));
                     at.append("\n\n");
                     return;
@@ -114,8 +118,8 @@ public class Lcm extends AppCompatActivity {
                     FontUtils.applyToActivity(Lcm.this);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
-                    // Attach dynamic native-or-banner ad at bottom
-                    NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
+                    // Load adaptive in-flow ad
+                    setupAdaptiveAdForAdded();
                     at.setText(getString(R.string.error_invalid_number, trimmed));
                     at.append("\n\n");
                     return;
@@ -128,8 +132,8 @@ public class Lcm extends AppCompatActivity {
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                // Attach dynamic native-or-banner ad at bottom
-                NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
+                // Load adaptive in-flow ad
+                setupAdaptiveAdForAdded();
                 at.setText(getString(R.string.error_enter_numbers_first));
                 at.append("\n\n");
                 return;
@@ -144,8 +148,8 @@ public class Lcm extends AppCompatActivity {
                 FontUtils.applyToActivity(Lcm.this);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
-                // Attach dynamic native-or-banner ad at bottom
-                NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.txtScr, R.id.ad_container);
+                // Load adaptive in-flow ad
+                setupAdaptiveAdForAdded();
                 StringBuilder echo = new StringBuilder();
                 for (Long n : nums) echo.append(n).append('\n');
                 at.setText(echo.toString());
@@ -164,6 +168,9 @@ public class Lcm extends AppCompatActivity {
             lcmTable = findViewById(R.id.lcmTable);
             headingTv = findViewById(R.id.txtHeading);
             answerTv = findViewById(R.id.txtAnswer);
+
+            // Load adaptive ad below content in-flow on division layout
+            setupAdaptiveAdForDivision();
 
             // Build heading like "LCM of 6 and 8" (or "LCM of 2, 3 and 5")
             headingTv.setText(getString(R.string.heading_lcm_of, humanJoin(nums)));
@@ -219,8 +226,7 @@ public class Lcm extends AppCompatActivity {
                 }
             }
 
-            // Dynamic native ad or banner fallback at bottom based on remaining space
-            NativeAdHelper.attachToContainerOnLayout(Lcm.this, R.id.content, R.id.ad_container);
+            // Dynamic native ad or banner fallback replaced by adaptive in-flow above
         });
     }
 
@@ -329,5 +335,67 @@ public class Lcm extends AppCompatActivity {
             result = lcmPair(result, nums.get(i));
         }
         return result;
+    }
+
+    private void setupAdaptiveAdForAdded() {
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll == null || contentCard == null || adCard == null || adContainer == null) return;
+        scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int viewportH = scroll.getHeight();
+                int contentH = contentCard.getHeight();
+                int contentBottomMargin = 0;
+                int adTopBottomMargin = 0;
+                ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                    contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                }
+                ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                    adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                }
+                int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                if (remaining <= 0) {
+                    adCard.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadAdaptiveBySpace(Lcm.this, adContainer, adCard, remaining);
+                }
+            }
+        });
+    }
+
+    private void setupAdaptiveAdForDivision() {
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll == null || contentCard == null || adCard == null || adContainer == null) return;
+        scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int viewportH = scroll.getHeight();
+                int contentH = contentCard.getHeight();
+                int contentBottomMargin = 0;
+                int adTopBottomMargin = 0;
+                ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                    contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                }
+                ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                    adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                }
+                int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                if (remaining <= 0) {
+                    adCard.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadAdaptiveBySpace(Lcm.this, adContainer, adCard, remaining);
+                }
+            }
+        });
     }
 }

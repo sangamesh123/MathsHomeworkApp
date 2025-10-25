@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -264,8 +267,8 @@ public class Subtraction extends AppCompatActivity {
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
 
-                    // Attach dynamic native-or-banner ad at bottom
-                    NativeAdHelper.attachToContainerOnLayout(Subtraction.this, R.id.txtScr, R.id.ad_container);
+                    // Load adaptive in-flow ad for result screen
+                    setupAdaptiveAdForAdded();
 
                     String[] lines = raw.split("\n");
                     java.util.List<String> nums = new java.util.ArrayList<>();
@@ -335,8 +338,8 @@ public class Subtraction extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
 
-                // Attach dynamic native-or-banner ad at bottom
-                NativeAdHelper.attachToContainerOnLayout(Subtraction.this, R.id.txtScr, R.id.ad_container);
+                // Load adaptive in-flow ad for result screen
+                setupAdaptiveAdForAdded();
 
                 String[] lines = raw.split("\n");
                 java.util.List<String> original = new java.util.ArrayList<>();
@@ -445,6 +448,39 @@ public class Subtraction extends AppCompatActivity {
         });
 
 
+    }
+
+    // ...existing code...
+
+    private void setupAdaptiveAdForAdded() {
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll == null || contentCard == null || adCard == null || adContainer == null) return;
+        scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int viewportH = scroll.getHeight();
+                int contentH = contentCard.getHeight();
+                int contentBottomMargin = 0;
+                int adTopBottomMargin = 0;
+                ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                    contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                }
+                ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                    adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                }
+                int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                if (remaining <= 0) {
+                    adCard.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadAdaptiveBySpace(Subtraction.this, adContainer, adCard, remaining);
+                }
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

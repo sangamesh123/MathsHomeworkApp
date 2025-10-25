@@ -1,45 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/content_wrapper"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true"
+        android:layout_alignParentTop="true">
 
-        <androidx.cardview.widget.CardView
-            style="@style/ContentCard"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/content_card"
+                style="@style/ContentCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/card_content_padding">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/txtScr"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end|center_vertical|bottom"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="30sp"
-                    android:maxLines = "50"
-                    android:scrollbars = "vertical"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                    android:orientation="vertical"
+                    android:padding="@dimen/card_content_padding">
 
-    <!-- Flexible bottom ad container, hosts native or banner fallback without pushing content -->
-    <com.infovsn.homework.MaxHeightFrameLayout
-        android:id="@+id/ad_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+                    <TextView
+                        android:id="@+id/txtScr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end|center_vertical|bottom"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="30sp"
+                        android:maxLines="50"
+                        android:scrollbars="vertical"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Adaptive Native Ad Card placed in the natural scroll flow -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ad_card"
+                style="@style/ContentCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentPadding="0dp">
+
+                <com.infovsn.homework.MaxHeightFrameLayout
+                    android:id="@+id/ad_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Removed bottom overlay ad container to prevent overlap with content -->
 </RelativeLayout>

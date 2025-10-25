@@ -21,6 +21,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.Spanned;
 import android.text.style.ReplacementSpan;
+import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 public class Multiplication extends AppCompatActivity {
     private AdView mAdView;
@@ -282,8 +285,8 @@ public class Multiplication extends AppCompatActivity {
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));
-                // Attach dynamic native-or-banner ad at bottom
-                NativeAdHelper.attachToContainerOnLayout(Multiplication.this, R.id.txtScr, R.id.ad_container);
+                // Load adaptive in-flow native ad (no overlap)
+                setupAdaptiveAdForAdded();
 
                 String[] lines = raw.split("\n");
                 String a = lines.length>0 ? lines[0] : "";
@@ -502,5 +505,37 @@ public class Multiplication extends AppCompatActivity {
             // Restore original paint color
             paint.setColor(oldColor);
         }
+    }
+
+    // Helper: measure remaining viewport and load native ad into added.xml ad_card accordingly
+    private void setupAdaptiveAdForAdded() {
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll == null || contentCard == null || adCard == null || adContainer == null) return;
+        scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int viewportH = scroll.getHeight();
+                int contentH = contentCard.getHeight();
+                int contentBottomMargin = 0;
+                int adTopBottomMargin = 0;
+                ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                    contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                }
+                ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                    adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                }
+                int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                if (remaining <= 0) {
+                    adCard.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadAdaptiveBySpace(Multiplication.this, adContainer, adCard, remaining);
+                }
+            }
+        });
     }
 }
