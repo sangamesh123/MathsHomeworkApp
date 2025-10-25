@@ -13,6 +13,9 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 public class DecrOrder extends AppCompatActivity {
     private AdView mAdView;
@@ -167,6 +170,8 @@ public class DecrOrder extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                // capture input before switching layout
+                String txt = et.getText()+"";
 
                 setContentView(R.layout.added);
                 isShowingResult = true; // now in result layout
@@ -175,10 +180,9 @@ public class DecrOrder extends AppCompatActivity {
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(DecrOrder.this));
 
-                // Attach dynamic native-or-banner ad at bottom
-                NativeAdHelper.attachToContainerOnLayout(DecrOrder.this, R.id.txtScr, R.id.ad_container);
+                // Load adaptive in-flow native ad (no overlap) like Table and Addition
+                setupAdaptiveAdForAdded();
 
-                String txt=et.getText()+"";
                 String[] split=txt.split("\n");
                 String fn="";
                 String sn="";
@@ -290,5 +294,37 @@ public class DecrOrder extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    // Helper: measure remaining viewport and load native ad into added.xml ad_card accordingly
+    private void setupAdaptiveAdForAdded() {
+        final ScrollView scroll = findViewById(R.id.scroll);
+        final View contentCard = findViewById(R.id.content_card);
+        final View adCard = findViewById(R.id.ad_card);
+        final MaxHeightFrameLayout adContainer = findViewById(R.id.ad_container);
+        if (scroll == null || contentCard == null || adCard == null || adContainer == null) return;
+        scroll.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int viewportH = scroll.getHeight();
+                int contentH = contentCard.getHeight();
+                int contentBottomMargin = 0;
+                int adTopBottomMargin = 0;
+                ViewGroup.LayoutParams cLp = contentCard.getLayoutParams();
+                if (cLp instanceof ViewGroup.MarginLayoutParams) {
+                    contentBottomMargin = ((ViewGroup.MarginLayoutParams) cLp).bottomMargin;
+                }
+                ViewGroup.LayoutParams aLp = adCard.getLayoutParams();
+                if (aLp instanceof ViewGroup.MarginLayoutParams) {
+                    adTopBottomMargin = ((ViewGroup.MarginLayoutParams) aLp).topMargin + ((ViewGroup.MarginLayoutParams) aLp).bottomMargin;
+                }
+                int remaining = viewportH - (contentH + contentBottomMargin) - adTopBottomMargin;
+                if (remaining <= 0) {
+                    adCard.setVisibility(View.GONE);
+                } else {
+                    NativeAdHelper.loadAdaptiveBySpace(DecrOrder.this, adContainer, adCard, remaining);
+                }
+            }
+        });
     }
 }
