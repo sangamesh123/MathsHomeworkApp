@@ -25,12 +25,21 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.AdLoader;
 
+import java.lang.ref.WeakReference;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public final class NativeAdHelper implements DefaultLifecycleObserver {
     private static final int MIN_BANNER_DP = 50; // typical phone banner height
     // Conservative thresholds to reduce overflow risk; final guard is measurement
     private static final int MIN_NATIVE_LARGE_DP = 400;
     private static final int MIN_NATIVE_MEDIUM_DP = 300;
     private static final int MIN_NATIVE_SMALL_DP = 160;
+
+    // Keep a weak mapping of Activity -> helper so we reuse one helper per Activity and
+    // avoid registering multiple lifecycle observers for the same Activity.
+    private static final Map<Activity, WeakReference<NativeAdHelper>> HELPERS = Collections.synchronizedMap(new WeakHashMap<>());
 
     private final Activity activity;
     private NativeAd currentNative;
@@ -43,24 +52,33 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
         }
     }
 
+    private static NativeAdHelper getHelper(@NonNull Activity activity) {
+        WeakReference<NativeAdHelper> ref = HELPERS.get(activity);
+        NativeAdHelper existing = ref != null ? ref.get() : null;
+        if (existing != null) return existing;
+        NativeAdHelper helper = new NativeAdHelper(activity);
+        HELPERS.put(activity, new WeakReference<>(helper));
+        return helper;
+    }
+
     public static void loadAdaptiveBySpace(@NonNull Activity activity,
                                            @NonNull MaxHeightFrameLayout adContainer,
                                            @NonNull View adWrapperCard,
                                            int remainingHeightPx) {
-        NativeAdHelper helper = new NativeAdHelper(activity);
+        NativeAdHelper helper = getHelper(activity);
         helper.loadBySpaceInternal(adContainer, adWrapperCard, remainingHeightPx);
     }
 
     public static void loadDynamicNativeOrBanner(@NonNull Activity activity,
                                                  @NonNull MaxHeightFrameLayout adContainer,
                                                  int remainingHeightPx) {
-        NativeAdHelper helper = new NativeAdHelper(activity);
+        NativeAdHelper helper = getHelper(activity);
         helper.loadInto(adContainer, remainingHeightPx);
     }
 
     public static void loadAdaptiveNativeInFlow(@NonNull Activity activity,
                                                 @NonNull MaxHeightFrameLayout adContainer) {
-        NativeAdHelper helper = new NativeAdHelper(activity);
+        NativeAdHelper helper = getHelper(activity);
         helper.loadAdaptiveInFlowInternal(adContainer);
     }
 
@@ -382,19 +400,25 @@ public final class NativeAdHelper implements DefaultLifecycleObserver {
     @Override
     public void onPause(@NonNull LifecycleOwner owner) {
         try { if (currentBanner != null) currentBanner.pause(); } catch (Throwable ignore) {}
-        DefaultLifecycleObserver.super.onPause(owner);
     }
 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
         try { if (currentBanner != null) currentBanner.resume(); } catch (Throwable ignore) {}
-        DefaultLifecycleObserver.super.onResume(owner);
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
         destroyCurrent();
-        DefaultLifecycleObserver.super.onDestroy(owner);
+        // Remove observer and helper reference to avoid accumulation of helpers/observers
+        try {
+            if (activity instanceof LifecycleOwner) {
+                ((LifecycleOwner) activity).getLifecycle().removeObserver(this);
+            }
+        } catch (Throwable ignore) {}
+        try {
+            HELPERS.remove(activity);
+        } catch (Throwable ignore) {}
     }
 
     private int pxToDp(int px) {

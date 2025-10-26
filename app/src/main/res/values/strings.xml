@@ -123,4 +123,7 @@
     <!-- TableDisplayActivity messages -->
     <string name="msg_no_number_provided">No number provided</string>
     <string name="msg_invalid_number">Invalid number</string>
+
+    <!-- Attribution label for native ads -->
+    <string name="ad_attribution">Ad</string>
 </resources>

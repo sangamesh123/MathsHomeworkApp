@@ -38,4 +38,7 @@
     <!-- Legacy reference kept (maps to primary) -->
     <color name="additionRed">@color/colorPrimary</color>
     <color name="answerGreen">#2E7D32</color>
+
+    <!-- Native ad attribution badge colors -->
+    <color name="adAttributionBg">#99000000</color>
 </resources>

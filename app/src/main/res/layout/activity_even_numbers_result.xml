@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundDark"
     tools:context="com.infovsn.homework.EvenNumbersResult">
 
     <!-- Content scrolls from the top and stays above the anchored adView at the bottom -->
