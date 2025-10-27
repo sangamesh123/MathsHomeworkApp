@@ -1,228 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/backgroundLight"
     tools:context="com.infovsn.homework.MainActivity">
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background">
+        android:layout_above="@id/adView"
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m1"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp"
-
-                />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m2"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp"
-                />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m3"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m4"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m5"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m6"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m7"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m8"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m9"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m10"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m11"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m12"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m13"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m14"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m15"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <Button
-                android:id="@+id/button15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/m16"
-                android:textColor="#795548"
-                android:background="@drawable/shape"
-                android:textSize="24sp" />
-
-            <!-- AdMob Banner AdView -->
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:adSize="BANNER"
-                app:adUnitId="@string/banner_ad_unit_id" />
+            <!-- Button Grid Rows -->
+            <!-- Each row: two HomeMenuButton styled buttons -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button1" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m1" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button2" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m2" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button3" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m3" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button4" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m4" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button5" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m5" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button6" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m6" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button16" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m7" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button7" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m8" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button8" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m9" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button9" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m10" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button10" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m11" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button11" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m12" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button12" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m13" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button13" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m14" android:layout_marginStart="8dp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
+                <Button android:id="@+id/button14" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m15" android:layout_marginEnd="8dp" />
+                <Button android:id="@+id/button15" style="@style/HomeMenuButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m16" android:layout_marginStart="8dp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        app:adUnitId="@string/banner_ad_unit_id"
+        app:adSize="BANNER" />
+</RelativeLayout>

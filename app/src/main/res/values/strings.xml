@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Maths Homework Helper</string>
 
+    <!-- Digit strings for button labels (avoid using integer resources for android:text) -->
+    <string name="digit_0">0</string>
+    <string name="digit_1">1</string>
+    <string name="digit_2">2</string>
+    <string name="digit_3">3</string>
+    <string name="digit_4">4</string>
+    <string name="digit_5">5</string>
+    <string name="digit_6">6</string>
+    <string name="digit_7">7</string>
+    <string name="digit_8">8</string>
+    <string name="digit_9">9</string>
+
+    <!-- (Legacy integer definitions retained but no longer used for text) -->
     <integer name="one">1</integer>
     <integer name="two">2</integer>
     <integer name="three">3</integer>
@@ -11,37 +24,39 @@
     <integer name="eight">8</integer>
     <integer name="nine">9</integer>
     <integer name="zero">0</integer>
-    <string name="backspace">"\u232B"</string>
+    <!-- Use actual unicode characters instead of escape sequences with quotes -->
+    <string name="backspace">⌫</string>
     <string name="clear">C</string>
     <string name="add">+</string>
     <string name="minus">-</string>
     <string name="mult">x</string>
     <string name="div">/</string>
-    <string name="equal">ANSWER</string>
-    <string name="equal1">ADD</string>
-    <string name="equal3">SUBTRACT</string>
-    <string name="equal4">MULTIPLY</string>
-    <string name="equal5">DIVIDE</string>
-    <string name="equal6">ORDER</string>
-    <string name="equal7">LCM</string>
-    <string name="equal9">CUBE</string>
-    <string name="equal11">CUBEROOT</string>
-    <string name="equal12">SQUARE</string>
-    <string name="equal13">SQUAREROOT</string>
-    <string name="equal8">HCF</string>
+    <!-- Send-style arrow used instead of the word Result on equal buttons -->
+    <string name="equal">➤</string>
+    <string name="equal1">➤</string>
+    <string name="equal3">➤</string>
+    <string name="equal4">➤</string>
+    <string name="equal5">➤</string>
+    <string name="equal6">➤</string>
+    <string name="equal7">➤</string>
+    <string name="equal9">➤</string>
+    <string name="equal11">➤</string>
+    <string name="equal12">➤</string>
+    <string name="equal13">➤</string>
+    <string name="equal8">➤</string>
     <string name="equal10">.</string>
     <string name="table">Tables Number: </string>
     <string name="back">&lt; Back</string>
     <string name="hintq">Enter the Number</string>
-    <string name="equal2">SHOW TABLES</string>
-    <string name="div2">"\u00F7"</string>
-    <string name="inf">infiniy</string>
+    <string name="equal2">➤</string>
+    <string name="div2">÷</string>
+    <string name="inf">infinity</string>
     <string name="exc1">Divisor exceeds maximum digits(4)</string>
     <string name="exc2">Dividend exceeds maximum digits(10)</string>
     <string name="enter">Enter</string>
-    <string name="hintq2">To Separate Numbers press Enter("\u21B2")</string>
+    <string name="hintq2">To Separate Numbers press Enter(↲)</string>
 
-    <string name="m1">MULTIPLICATION TABLE</string>
+    <string name="m1">TABLES</string>
     <string name="m2">ADDITION</string>
     <string name="m3">SUBTRACTION</string>
     <string name="m4">MULTIPLICATION</string>
@@ -59,6 +74,56 @@
     <string name="m16">PRIME NUMBERS</string>
 
 
+    <!-- Production AdMob banner unit id (release). Debug build overrides in app/src/debug/res/values/strings.xml -->
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
 
+    <!-- Production native advanced ad unit id -->
+    <string name="native_ad_unit_id">ca-app-pub-5127203822190674/6122266781</string>
+
+    <string name="result_label">RESULT</string>
+    <string name="send">Send</string>
+
+    <!-- Newly added for LCM screen validation -->
+    <string name="error_max_digits">Maximum digits(%1$d) exceeded</string>
+    <!-- Removed single quotes around placeholder to avoid any formatting parser quirks -->
+    <string name="error_invalid_number">Invalid number: %1$s</string>
+    <string name="error_enter_numbers_first">Enter numbers first</string>
+    <string name="error_overflow">Result too large (overflow)</string>
+    <string name="label_lcm">LCM : %1$s</string>
+    <string name="dot">.</string>
+    <string name="heading_lcm_of">LCM of %1$s</string>
+    <string name="label_lcm_chain">LCM = %1$s = %2$s</string>
+
+    <!-- Newly added for HCF screen validation -->
+    <string name="error_max_digits_hcf">Maximum digits(%1$d) exceeded</string>
+    <string name="error_invalid_number_hcf">Invalid number: %1$s</string>
+    <string name="error_enter_numbers_first_hcf">Enter numbers first</string>
+    <string name="error_overflow_hcf">Result too large (overflow)</string>
+    <string name="heading_hcf_of">HCF of %1$s</string>
+    <string name="label_hcf">HCF/GCD : %1$s</string>
+    <string name="label_hcf_chain">HCF = %1$s = %2$s</string>
+
+    <!-- Professional hint for the Even Numbers result area -->
+    <string name="hint_even_instructions">Enter the start and end values, then tap the arrow to view even numbers.</string>
+    <string name="label_start_value">Start value</string>
+    <string name="label_end_value">End value</string>
+
+    <!-- Prime Checker strings -->
+    <string name="title_prime_checker">Prime Checker</string>
+    <string name="hint_prime_instructions">Enter a number and tap the arrow to check if it\'s prime.</string>
+    <string name="label_number">Number</string>
+    <string name="title_prime_result">Prime Result</string>
+    <string name="prime_is">%1$d is a prime number.</string>
+    <string name="prime_not">%1$d is not a prime number.</string>
+
+    <!-- Native ad template strings -->
+    <string name="ad_app_icon_desc">Ad app icon</string>
+    <string name="ad_cta_install">Install</string>
+
+    <!-- TableDisplayActivity messages -->
+    <string name="msg_no_number_provided">No number provided</string>
+    <string name="msg_invalid_number">Invalid number</string>
+
+    <!-- Attribution label for native ads -->
+    <string name="ad_attribution">Ad</string>
 </resources>

@@ -10,27 +10,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class Tables extends AppCompatActivity {
     private AdView mAdView;
-    String table;
-    int ex=0;
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,beq,back;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // badd & back removed
     TextView et;
-    ImageButton bsp;
-    TextView at;
+    ImageButton bsp, beq;
+    private static final int MAX_INPUT_LENGTH = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tables);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
-        table="";
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        FontUtils.applyToActivity(this);
 
         b1=(Button) findViewById(R.id.one);
         b2=(Button) findViewById(R.id.two);
@@ -42,226 +38,84 @@ public class Tables extends AppCompatActivity {
         b8=(Button) findViewById(R.id.eight);
         b9=(Button) findViewById(R.id.nine);
         b0=(Button) findViewById(R.id.zero);
-        badd=(Button) findViewById(R.id.add);
         bsp=(ImageButton) findViewById(R.id.backspace);
         bclr=(Button) findViewById(R.id.clear);
-        beq=(Button) findViewById(R.id.equal);
+        beq=(ImageButton) findViewById(R.id.equal);
         et=(TextView) findViewById(R.id.tabl);
         et.setMovementMethod(new ScrollingMovementMethod());
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"1");
-                }
+        et.setTypeface(FontUtils.getRobotoMono(this));
+        et.setLetterSpacing(0f);
 
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"2");
-                }
-            }
-        });
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"3");
-                }
-            }
-        });
-        b4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"4");
-                }
-            }
-        });
-        b5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"5");
-                }
-            }
-        });
-        b6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"6");
-                }
-            }
-        });
-        b7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"7");
-                }
-            }
-        });
-        b8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"8");
-                }
-            }
-        });
-        b9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"9");
-                }
-            }
-        });
-        b0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                ex=et.getText().toString().length();
-                if(ex<=16)
-                {
-                    et.setText(et.getText()+"0");
-                }
-            }
-        });
+        View.OnClickListener digitListener = v -> {
+            if (et.getText().length() >= MAX_INPUT_LENGTH) return;
+            int id = v.getId();
+            if (id == R.id.one)      et.append("1");
+            else if (id == R.id.two)   et.append("2");
+            else if (id == R.id.three) et.append("3");
+            else if (id == R.id.four)  et.append("4");
+            else if (id == R.id.five)  et.append("5");
+            else if (id == R.id.six)   et.append("6");
+            else if (id == R.id.seven) et.append("7");
+            else if (id == R.id.eight) et.append("8");
+            else if (id == R.id.nine)  et.append("9");
+            else if (id == R.id.zero)  et.append("0");
+        };
+        b1.setOnClickListener(digitListener);
+        b2.setOnClickListener(digitListener);
+        b3.setOnClickListener(digitListener);
+        b4.setOnClickListener(digitListener);
+        b5.setOnClickListener(digitListener);
+        b6.setOnClickListener(digitListener);
+        b7.setOnClickListener(digitListener);
+        b8.setOnClickListener(digitListener);
+        b9.setOnClickListener(digitListener);
+        b0.setOnClickListener(digitListener);
 
+        bclr.setOnClickListener(v -> et.setText(null));
 
-
-        bclr.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                val1=Integer.parseInt(et.getText()+"");
-//                add=true;
+        bsp.setOnClickListener(v -> {
+            String smp = et.getText().toString();
+            if (smp.length() > 1) {
+                smp = smp.substring(0, smp.length() - 1);
+                et.setText(smp);
+            } else if (smp.length() <= 1) {
                 et.setText(null);
             }
         });
 
-        bsp.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String smp = et.getText().toString();
-                if (smp.length() > 1) {
-                    smp = smp.substring(0, smp.length() - 1);
-                    et.setText(smp);
-                } else if (smp.length() <= 1) {
-                    et.setText(null);
-                }
+        beq.setOnClickListener(v -> {
+            String input = et.getText().toString();
+            if (input.isEmpty()) {
+                et.setError("Please enter a number");
+                return;
             }
-        });
-        beq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String input = et.getText().toString();
-                if (input.isEmpty()) {
-                    et.setError("Please enter a number");
-                    return;
-                }
-                try {
-                    Long.parseLong(input);
-                } catch (NumberFormatException e) {
-                    et.setError("Invalid number");
-                    return;
-                }
-                Intent intent = new Intent(Tables.this, TableDisplayActivity.class);
-                intent.putExtra("tableNumber", input);
-                Tables.this.startActivity(intent);
+            try {
+                Long.parseLong(input);
+            } catch (NumberFormatException e) {
+                et.setError("Invalid number");
+                return;
             }
+            Intent intent = new Intent(Tables.this, TableDisplayActivity.class);
+            intent.putExtra("tableNumber", input);
+            Tables.this.startActivity(intent);
         });
+    }
 
-//        for(int i=1; i<=10; i++)
-//        {
-//            if(i==10)
-//            {
-//                table=table+"\n2  x  10  =   "+2*i;
-//            }
-//            else {
-//                table = table + "\n2  x   " + i + "   =   " + 2 * i;
-//            }
-//        }
-//        mText.setText(table);
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Clear the input field when returning to this screen
+        if (et != null) {
+            et.setText("");
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
-    }
-
-    private void tab() {
-        // If the search string is not empty, launch the course list intent and hand in the search string
-        long myNum = 0;
-        table="";
-        try {
-            myNum = Long.parseLong(et.getText().toString());
-            if(myNum>99999)
-            {
-                at.setTextSize(26);
-            }
-//            if(myNum>99999999)
-//            {
-//                at.setTextSize(16);
-//            }
-            for(int i=1; i<=10; i++)
-            {
-                if(i==10)
-                {
-                    table=table+"\n"+myNum+"  x  10  =   "+myNum*i;
-                }
-                else {
-                    table = table + "\n"+myNum+"  x   " + i + "   =   " + myNum * i;
-                }
-            }
-            at.setText(table);
-        }
-        catch(NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-
+        return super.onOptionsItemSelected(item);
     }
 }

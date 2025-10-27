@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Unified red palette for the entire app -->
-    <color name="colorPrimary">#F44336</color> <!-- Red 500 -->
-    <color name="colorPrimaryDark">#D32F2F</color> <!-- Red 700 for status bar -->
-    <color name="colorAccent">#FFCDD2</color> <!-- Light red accent -->
+    <!-- Unified red primary for top bar / app bars -->
+    <color name="colorPrimary">@color/actionBarRed</color>
+    <color name="colorPrimaryDark">@color/actionBarRedDark</color>
+    <color name="colorAccent">@color/actionBarRed</color>
+    <!-- Red accent exclusively for top bar (still accessible as specific colors) -->
+    <color name="actionBarRed">#F44336</color>
+    <color name="actionBarRedDark">#D32F2F</color>
+
+    <!-- Core neutrals / surfaces -->
     <color name="white">#FFFFFF</color>
-    <!-- Keep for possible future per–screen variants -->
-    <color name="additionRed">#F44336</color>
+    <color name="backgroundLight">#FAFAFA</color> <!-- Keep light neutral background -->
+    <color name="backgroundDark">#F1F1F3</color> <!-- Repurposed to a light neutral (was dark) -->
+
+    <!-- Interactive / button specific new tones -->
+    <color name="menuButtonBgStart">#FFF6F8</color>
+    <color name="menuButtonBgEnd">#FFE7EE</color>
+    <color name="menuButtonStroke">#FFD0DC</color>
+    <color name="menuButtonRipple">#33FF6F88</color> <!-- 20% alpha ripple tint -->
+
+    <!-- Keypad colors (neutral gray) -->
+    <color name="keypadButton">#F2F3F5</color>
+    <color name="keypadButtonStroke">#D5D8DC</color>
+    <color name="keypadButtonStart">#FFFFFFFF</color>
+    <color name="keypadButtonEnd">#F2F3F5</color>
+    <color name="keypadRipple">#26000000</color>
+    <!-- New deeper gray variant for former primary (equals / action) buttons -->
+    <color name="keypadPrimaryStart">#ECEDEF</color>
+    <color name="keypadPrimaryEnd">#DADCE0</color>
+    <color name="keypadPrimaryStroke">#C5C8CC</color>
+    <color name="keypadIconTint">#333333</color>
+
+    <!-- Text / on-surface colors -->
+    <color name="textPrimary">#222222</color>
+    <color name="textSecondary">#555555</color>
+
+    <!-- Legacy reference kept (maps to primary) -->
+    <color name="additionRed">@color/colorPrimary</color>
+    <color name="answerGreen">#2E7D32</color>
+
+    <!-- Native ad attribution badge colors -->
+    <color name="adAttributionBg">#99000000</color>
 </resources>

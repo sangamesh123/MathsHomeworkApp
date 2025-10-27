@@ -1,22 +1,26 @@
 <resources>
 
-    <!-- Global application theme using unified red primary color -->
+    <!-- Global application theme using new light palette (with ActionBar) -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/actionBarRedDark</item>
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <!-- If using Toolbar manually -->
         <item name="actionBarStyle">@style/RedActionBar</item>
-        <item name="colorControlNormal">@color/white</item> <!-- White icons for ActionBar -->
-        <item name="android:textColorPrimary">@android:color/black</item> <!-- Black text for content -->
-        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item> <!-- Ensure back button matches pasted_image_2.png -->
+        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item>
+        <!-- Set window background to white for cold start -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
-    <!-- Custom ActionBar style applying red background and white title/icons -->
-    <style name="RedActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/colorPrimary</item>
+    <!-- Updated ActionBar (Toolbar) style -->
+    <style name="RedActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@color/actionBarRed</item>
         <item name="titleTextStyle">@style/RedActionBarTitleText</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item> <!-- Refined back button styling -->
+        <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item>
         <item name="elevation">4dp</item>
     </style>
 
@@ -24,7 +28,96 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <!-- Placeholder if later you want per-screen variants -->
     <style name="Theme.Addition" parent="AppTheme" />
+
+    <!-- Modern keypad button base style (no background; flat) -->
+    <style name="KeypadButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">@dimen/keypad_button_height</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">@dimen/keypad_button_height</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="KeypadButton.Equal">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <style name="KeypadButton.Primary" parent="KeypadButton">
+        <!-- Keep primary variant flat/transparent as well -->
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/keypadIconTint</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="DisplayText" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:gravity">end|bottom</item>
+        <item name="android:background">@drawable/display_bg</item>
+    </style>
+
+    <style name="DisplayText.Center" parent="DisplayText">
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="KeypadIconButton" parent="KeypadButton">
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <!-- New primary variant for icon buttons (e.g. send/equals arrow) -->
+    <style name="KeypadIconButton.Primary" parent="KeypadIconButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@color/keypadIconTint</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <!-- Dedicated result (send) button: square arrow icon, centered -->
+    <style name="KeypadResultButton" parent="KeypadIconButton.Primary">
+        <!-- Provide comfortable touch target while keeping icon visually balanced -->
+        <item name="android:padding">8dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+        <!-- Use tint inheritance for adaptability; can null out if pure white asset used -->
+        <item name="android:tint">@color/keypadIconTint</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <!-- Home menu button style updated for light background -->
+    <style name="HomeMenuButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/home_menu_button_bg</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <!-- Shared content card style for app-generated sections -->
+    <style name="ContentCard">
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:layout_margin">@dimen/card_margin</item>
+    </style>
 
 </resources>

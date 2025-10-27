@@ -16,12 +16,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FontUtils.applyToActivity(this);
 
         // Initialize Mobile Ads SDK
         MobileAds.initialize(this, initializationStatus -> {});
         AdView adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        // Replace fixed-size banner load with anchored adaptive banner
+        AdUtils.loadAdaptiveBanner(this, adView);
 
         Button one = (Button) findViewById(R.id.button1);
         one.setOnClickListener(this); // calling onClick() method
