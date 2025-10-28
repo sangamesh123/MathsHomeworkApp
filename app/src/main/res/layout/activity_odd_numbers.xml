@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundDark"
     android:importantForAutofill="noExcludeDescendants"
+    android:fitsSystemWindows="true"
     tools:context="com.infovsn.homework.OddNumbers">
 
     <!-- Inputs container -->

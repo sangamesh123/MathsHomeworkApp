@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.view.WindowCompat;
+
 public final class FontUtils {
     private static Typeface cached;
 
@@ -28,8 +30,13 @@ public final class FontUtils {
     }
 
     public static void applyToActivity(Activity activity) {
+        // Ensure the system reserves space for status/navigation bars
+        try { WindowCompat.setDecorFitsSystemWindows(activity.getWindow(), true); } catch (Throwable ignore) {}
+
         View root = activity.findViewById(android.R.id.content);
         if (root == null) return;
+        try { root.setFitsSystemWindows(true); } catch (Throwable ignore) {}
+
         Typeface tf = getTypeface(activity);
         applyRecursive(root, tf);
     }

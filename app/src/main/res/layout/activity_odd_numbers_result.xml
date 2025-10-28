@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundDark"
+    android:fitsSystemWindows="true"
     tools:context="com.infovsn.homework.OddNumbersResult">
 
     <!-- Content scrolls from the top and stays above the anchored adView at the bottom -->
