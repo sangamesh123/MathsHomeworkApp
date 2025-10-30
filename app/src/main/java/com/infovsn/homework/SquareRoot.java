@@ -20,6 +20,8 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 public class SquareRoot extends BaseActivity {
     int ex=0;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
@@ -133,6 +135,7 @@ public class SquareRoot extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(SquareRoot.this);
+                setToolbarTitle(R.string.m12);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive native ad in-flow
@@ -286,5 +289,10 @@ public class SquareRoot extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void setToolbarTitle(int titleRes) {
+        MaterialToolbar tb = findViewById(R.id.toolbar);
+        if (tb != null) tb.setTitle(titleRes);
     }
 }

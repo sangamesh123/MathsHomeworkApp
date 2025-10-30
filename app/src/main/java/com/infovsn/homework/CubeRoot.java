@@ -21,6 +21,8 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 public class CubeRoot extends BaseActivity {
     // Removed AdView field; result screen uses dynamic native or banner fallback via helper
     int ex=0;
@@ -136,6 +138,7 @@ public class CubeRoot extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(CubeRoot.this);
+                setToolbarTitle(R.string.m13);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Attach dynamic native-or-banner ad at bottom based on remaining space
@@ -290,5 +293,10 @@ public class CubeRoot extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void setToolbarTitle(int titleRes) {
+        MaterialToolbar tb = findViewById(R.id.toolbar);
+        if (tb != null) tb.setTitle(titleRes);
     }
 }

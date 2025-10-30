@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class OddNumbers extends BaseActivity {
 
@@ -30,11 +31,14 @@ public class OddNumbers extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_even_numbers);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        setContentView(R.layout.activity_odd_numbers);
         FontUtils.applyToActivity(this);
+        // Setup MaterialToolbar navigation and title
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finish());
+            toolbar.setTitle(R.string.m15); // Odd Numbers title
+        }
 
         // Ensure OS keyboard never shows up; we only use the in-app keypad
         getWindow().setSoftInputMode(

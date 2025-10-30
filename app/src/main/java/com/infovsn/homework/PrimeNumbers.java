@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class PrimeNumbers extends BaseActivity {
     // Keypad buttons
@@ -26,8 +27,11 @@ public class PrimeNumbers extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prime_numbers);
         FontUtils.applyToActivity(this);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Setup MaterialToolbar navigation and title
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> finish());
+            toolbar.setTitle(R.string.m16); // Prime Numbers title
         }
 
         // Ensure OS keyboard never shows up; we only use the in-app keypad

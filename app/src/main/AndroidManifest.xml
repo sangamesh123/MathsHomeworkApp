@@ -34,207 +34,63 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Addition"
-            android:label="Addition"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Addition" android:label="Addition" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Subtraction"
-            android:label="Subtraction"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Subtraction" android:label="Subtraction" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Multiplication"
-            android:label="Multiplication"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Multiplication" android:label="Multiplication" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Division"
-            android:label="Division"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Division" android:label="Division" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Square"
-            android:label="Square"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Square" android:label="Square" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".SquareRoot"
-            android:label="SqaureRoot"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".SquareRoot" android:label="SqaureRoot" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Cube"
-            android:label="Cube"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Cube" android:label="Cube" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".CubeRoot"
-            android:label="CubeRoot"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".CubeRoot" android:label="CubeRoot" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".EvenNumbers"
-            android:label="Even Numbers"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".OddNumbers" android:label="Odd Numbers" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".OddNumbers"
-            android:label="Odd Numbers"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".OddNumbersResult" android:label="Odd Numbers Result" android:parentActivityName=".OddNumbers" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.OddNumbers" />
         </activity>
-        <activity
-            android:name=".EvenNumbersResult"
-            android:label="Even Numbers"
-            android:parentActivityName=".EvenNumbers"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".OddNumbersResult"
-            android:label="Odd Numbers"
-            android:parentActivityName=".OddNumbers"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".PrimeNumbers"
-            android:label="Prime Numbers"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".EvenNumbers" android:label="Even Numbers" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".PrimeNumbersResult"
-            android:label="Prime Numbers"
-            android:parentActivityName=".PrimeNumbers"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Fraction"
-            android:label="Ascending Order"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".EvenNumbersResult" android:label="Even Numbers Result" android:parentActivityName=".EvenNumbers" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.EvenNumbers" />
         </activity>
-        <activity
-            android:name=".Lcm"
-            android:label="LCM"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".PrimeNumbers" android:label="Prime Numbers" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".Hcf"
-            android:label="HCF"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".PrimeNumbersResult" android:label="Prime Numbers Result" android:parentActivityName=".PrimeNumbers" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.PrimeNumbers" />
         </activity>
-        <activity android:name=".DecrOrder"
-            android:label="Descending Order"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.infovsn.homework.MainActivity" />
+        <activity android:name=".Fraction" android:label="Ascending Order" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
         </activity>
-        <activity
-            android:name=".TableDisplayActivity"
-            android:label="Tables"
-            android:parentActivityName=".Tables"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Lcm" android:label="LCM" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
+        </activity>
+        <activity android:name=".Hcf" android:label="HCF" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
+        </activity>
+        <activity android:name=".DecrOrder" android:label="Descending Order" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.infovsn.homework.MainActivity" />
+        </activity>
+        <activity android:name=".TableDisplayActivity" android:label="Tables" android:parentActivityName=".Tables" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>

@@ -7,11 +7,21 @@
     android:background="@color/backgroundDark"
     tools:context="com.infovsn.homework.PrimeNumbersResult">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@color/actionBarRed"
+        app:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"
+        app:title="@string/title_prime_result" />
+
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/toolbar"
         android:fillViewport="true">
 
         <LinearLayout
