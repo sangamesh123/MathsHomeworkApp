@@ -18,10 +18,11 @@ import android.widget.ScrollView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.math.BigInteger;
 
-public class Subtraction extends AppCompatActivity {
+public class Subtraction extends BaseActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,bdot; // add dot
     ImageButton bsp, beq;
@@ -262,6 +263,9 @@ public class Subtraction extends AppCompatActivity {
                     // Integer branch with correct borrow alignment
                     setContentView(R.layout.added);
                     isShowingResult = true;
+                    // Set result toolbar title for Subtraction
+                    MaterialToolbar tb = findViewById(R.id.toolbar);
+                    if (tb != null) tb.setTitle(R.string.m3);
                     FontUtils.applyToActivity(Subtraction.this);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
@@ -333,6 +337,9 @@ public class Subtraction extends AppCompatActivity {
                 // DECIMAL BRANCH (normalize display and compute with scaled integers)
                 setContentView(R.layout.added);
                 isShowingResult = true;
+                // Set result toolbar title for Subtraction
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m3);
                 FontUtils.applyToActivity(Subtraction.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());

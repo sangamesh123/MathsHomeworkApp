@@ -1,18 +1,31 @@
 <resources>
 
-    <!-- Global application theme using new light palette (with ActionBar) -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <!-- Global application theme using Material 3 with ActionBar -->
+    <style name="AppTheme" parent="Theme.Material3.Light">
+        <!-- Ensure an ActionBar is present (not NoActionBar) -->
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+
+        <!-- Core brand colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/actionBarRedDark</item>
-        <item name="android:textColorPrimary">@color/textPrimary</item>
-        <item name="android:textColorSecondary">@color/textSecondary</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <!-- If using Toolbar manually -->
+        <item name="colorSecondary">@color/colorAccent</item>
+
+        <!-- AppCompat ActionBar styling retained -->
         <item name="actionBarStyle">@style/RedActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_back_arrow_white</item>
-        <!-- Set window background to white for cold start -->
+
+        <!-- Material 3 edge-to-edge handling -->
+        <item name="enableEdgeToEdge">true</item>
+
+        <!-- Edge-to-edge: make system bars transparent; content will handle insets -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <!-- Text colors and window background -->
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 
@@ -118,6 +131,11 @@
         <item name="cardElevation">@dimen/card_elevation</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="android:layout_margin">@dimen/card_margin</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

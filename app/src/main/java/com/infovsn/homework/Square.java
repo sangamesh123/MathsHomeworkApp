@@ -21,11 +21,12 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Square extends AppCompatActivity {
+public class Square extends BaseActivity {
     private AdView mAdView;
     int ex=0;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
@@ -140,6 +141,9 @@ public class Square extends AppCompatActivity {
                 String cc = inputBuffer.toString();
                 setContentView(R.layout.added);
                 isShowingResult = true;
+                // Set result toolbar title for Square
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m10);
                 FontUtils.applyToActivity(Square.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());

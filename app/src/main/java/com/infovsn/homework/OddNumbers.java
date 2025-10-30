@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class OddNumbers extends AppCompatActivity {
+public class OddNumbers extends BaseActivity {
 
     // Keypad buttons
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
@@ -28,7 +30,7 @@ public class OddNumbers extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_odd_numbers);
+        setContentView(R.layout.activity_even_numbers);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -42,6 +44,8 @@ public class OddNumbers extends AppCompatActivity {
         // Bind views
         startScreen = findViewById(R.id.startScreen);
         endScreen = findViewById(R.id.endScreen);
+        startScreen.setMovementMethod(new ScrollingMovementMethod());
+        endScreen.setMovementMethod(new ScrollingMovementMethod());
 
         // Defaults with subtle look; actual color will switch when user edits
         if (startScreen != null && startScreen.length() == 0) startScreen.setText("1");

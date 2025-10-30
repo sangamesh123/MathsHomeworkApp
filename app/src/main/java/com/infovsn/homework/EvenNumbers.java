@@ -3,27 +3,17 @@ package com.infovsn.homework;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class EvenNumbers extends AppCompatActivity {
-
-    // Keypad buttons
-    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
+public class EvenNumbers extends BaseActivity {
+    TextView startScreen,endScreen;
+    Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // Removed add button; not needed for range
     ImageButton bsp, beq;
-
-    // Input displays
-    TextView startScreen, endScreen;
-
-    private static final int MAX_INPUT_LENGTH = 16;
-    private boolean editingStart = true; // which input the keypad writes to
-    private boolean clearedStartOnce = false;
-    private boolean clearedEndOnce = false;
-    private boolean resetOnNextResume = false; // set true before launching result so inputs reset when returning
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,90 +24,38 @@ public class EvenNumbers extends AppCompatActivity {
         }
         FontUtils.applyToActivity(this);
 
-        // Ensure OS keyboard never shows up; we only use the in-app keypad
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-                        | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
-        // Bind views
         startScreen = findViewById(R.id.startScreen);
         endScreen = findViewById(R.id.endScreen);
+        startScreen.setMovementMethod(new ScrollingMovementMethod());
+        endScreen.setMovementMethod(new ScrollingMovementMethod());
 
-        // Show defaults with a subtle look (layout uses @color/textSecondary)
-        if (startScreen != null && startScreen.length() == 0) startScreen.setText("1");
-        if (endScreen != null && endScreen.length() == 0) endScreen.setText("500");
+        b1=(Button) findViewById(R.id.one);
+        b2=(Button) findViewById(R.id.two);
+        b3=(Button) findViewById(R.id.three);
+        b4=(Button) findViewById(R.id.four);
+        b5=(Button) findViewById(R.id.five);
+        b6=(Button) findViewById(R.id.six);
+        b7=(Button) findViewById(R.id.seven);
+        b8=(Button) findViewById(R.id.eight);
+        b9=(Button) findViewById(R.id.nine);
+        b0=(Button) findViewById(R.id.zero);
+        bsp=(ImageButton) findViewById(R.id.backspace);
+        bclr=(Button) findViewById(R.id.clear);
+        beq=(ImageButton) findViewById(R.id.equal);
 
-        // Allow switching active input by tapping the fields or labels; clear on first tap
-        TextView labelStart = findViewById(R.id.labelStart);
-        TextView labelEnd = findViewById(R.id.labelEnd);
-
-        if (startScreen != null) {
-            startScreen.setOnClickListener(v -> {
-                editingStart = true;
-                // Clear once when user starts editing
-                if (!clearedStartOnce) {
-                    startScreen.setText("");
-                    startScreen.setTextColor(ContextCompat.getColor(EvenNumbers.this, R.color.textPrimary));
-                    clearedStartOnce = true;
-                }
-            });
-            startScreen.setLongClickable(false);
-        }
-        if (endScreen != null) {
-            endScreen.setOnClickListener(v -> {
-                editingStart = false;
-                if (!clearedEndOnce) {
-                    endScreen.setText("");
-                    endScreen.setTextColor(ContextCompat.getColor(EvenNumbers.this, R.color.textPrimary));
-                    clearedEndOnce = true;
-                }
-            });
-            endScreen.setLongClickable(false);
-        }
-        if (labelStart != null) labelStart.setOnClickListener(v -> {
-            if (startScreen != null) startScreen.performClick();
-        });
-        if (labelEnd != null) labelEnd.setOnClickListener(v -> {
-            if (endScreen != null) endScreen.performClick();
-        });
-
-        // Keypad
-        b1=findViewById(R.id.one);   b2=findViewById(R.id.two);   b3=findViewById(R.id.three);
-        b4=findViewById(R.id.four);  b5=findViewById(R.id.five);  b6=findViewById(R.id.six);
-        b7=findViewById(R.id.seven); b8=findViewById(R.id.eight); b9=findViewById(R.id.nine);
-        b0=findViewById(R.id.zero);  bsp=findViewById(R.id.backspace);
-        bclr=findViewById(R.id.clear); beq=findViewById(R.id.equal);
-
-        android.view.View.OnClickListener digitListener = v -> {
-            TextView target = editingStart ? startScreen : endScreen;
-            if (target == null) return;
-            if (target.getText().length() >= MAX_INPUT_LENGTH) return;
-
-            String digit = null;
+        View.OnClickListener digitListener = v -> {
             int id = v.getId();
-            if (id == R.id.one)      digit = "1";
-            else if (id == R.id.two)   digit = "2";
-            else if (id == R.id.three) digit = "3";
-            else if (id == R.id.four)  digit = "4";
-            else if (id == R.id.five)  digit = "5";
-            else if (id == R.id.six)   digit = "6";
-            else if (id == R.id.seven) digit = "7";
-            else if (id == R.id.eight) digit = "8";
-            else if (id == R.id.nine)  digit = "9";
-            else if (id == R.id.zero)  digit = "0";
-            if (digit == null) return;
-
-            // If default is visible, replace it with first digit (safety), and switch to primary color
-            String current = target.getText().toString();
-            if (target == startScreen && ("1".equals(current) && !clearedStartOnce)) {
-                target.setText("");
-                clearedStartOnce = true;
-            } else if (target == endScreen && ("500".equals(current) && !clearedEndOnce)) {
-                target.setText("");
-                clearedEndOnce = true;
-            }
-            target.append(digit);
-            target.setTextColor(ContextCompat.getColor(EvenNumbers.this, R.color.textPrimary));
+            TextView target = (endScreen.hasFocus() ? endScreen : startScreen);
+            if (id == R.id.one)      target.append("1");
+            else if (id == R.id.two)   target.append("2");
+            else if (id == R.id.three) target.append("3");
+            else if (id == R.id.four)  target.append("4");
+            else if (id == R.id.five)  target.append("5");
+            else if (id == R.id.six)   target.append("6");
+            else if (id == R.id.seven) target.append("7");
+            else if (id == R.id.eight) target.append("8");
+            else if (id == R.id.nine)  target.append("9");
+            else if (id == R.id.zero)  target.append("0");
         };
 
         b1.setOnClickListener(digitListener);
@@ -131,73 +69,34 @@ public class EvenNumbers extends AppCompatActivity {
         b9.setOnClickListener(digitListener);
         b0.setOnClickListener(digitListener);
 
-        if (bclr != null) {
-            bclr.setOnClickListener(v -> {
-                TextView target = editingStart ? startScreen : endScreen;
-                if (target != null) {
-                    target.setText("");
-                    target.setTextColor(ContextCompat.getColor(EvenNumbers.this, R.color.textPrimary));
-                    if (target == startScreen) clearedStartOnce = true; else clearedEndOnce = true;
-                }
-            });
-        }
+        bclr.setOnClickListener(v -> { startScreen.setText(""); endScreen.setText(""); });
+        bsp.setOnClickListener(v -> {
+            TextView target = (endScreen.hasFocus() ? endScreen : startScreen);
+            CharSequence t = target.getText();
+            if (t != null && t.length() > 0) {
+                target.setText(t.subSequence(0, t.length()-1));
+            }
+        });
 
-        if (bsp != null) {
-            bsp.setOnClickListener(v -> {
-                TextView target = editingStart ? startScreen : endScreen;
-                if (target == null) return;
-                String s = target.getText().toString();
-                if (s.length() > 1) target.setText(s.substring(0, s.length() - 1));
-                else target.setText("");
-            });
-        }
-
-        if (beq != null) {
-            beq.setOnClickListener(v -> goToResult());
-        }
-    }
-
-    private void goToResult() {
-        String sStart = startScreen != null ? startScreen.getText().toString().trim() : "";
-        String sEnd = endScreen != null ? endScreen.getText().toString().trim() : "";
-
-        if (sStart.isEmpty()) sStart = "1"; // default
-        if (sEnd.isEmpty())   sEnd   = "500"; // default
-
-        int startVal;
-        int endVal;
-        try { startVal = Integer.parseInt(sStart); } catch (NumberFormatException e) { startVal = 1; }
-        try { endVal = Integer.parseInt(sEnd); }   catch (NumberFormatException e) { endVal = 500; }
-
-        if (startVal > endVal) { int tmp = startVal; startVal = endVal; endVal = tmp; }
-
-        Intent intent = new Intent(EvenNumbers.this, EvenNumbersResult.class);
-        intent.putExtra("start", startVal);
-        intent.putExtra("end", endVal);
-        resetOnNextResume = true; // mark to clear inputs when user returns
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (resetOnNextResume) {
-            resetOnNextResume = false;
-            resetInputsToDefaults();
-        }
-    }
-
-    private void resetInputsToDefaults() {
-        // Restore defaults and allow clearing again on first tap
-        if (startScreen != null) {
-            startScreen.setText("1");
-        }
-        if (endScreen != null) {
-            endScreen.setText("500");
-        }
-        editingStart = true;
-        clearedStartOnce = false;
-        clearedEndOnce = false;
+        beq.setOnClickListener(v -> {
+            String s = startScreen.getText().toString();
+            String e = endScreen.getText().toString();
+            if (s.isEmpty() || e.isEmpty()) {
+                endScreen.setError("Enter start and end");
+                return;
+            }
+            try {
+                int sv = Integer.parseInt(s);
+                int ev = Integer.parseInt(e);
+                if (sv > ev) { int tmp = sv; sv = ev; ev = tmp; }
+                android.content.Intent intent = new android.content.Intent(EvenNumbers.this, EvenNumbersResult.class);
+                intent.putExtra("start", sv);
+                intent.putExtra("end", ev);
+                startActivity(intent);
+            } catch (NumberFormatException ex) {
+                endScreen.setError("Invalid number");
+            }
+        });
     }
 
     @Override

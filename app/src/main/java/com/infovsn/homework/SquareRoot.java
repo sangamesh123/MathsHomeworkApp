@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class SquareRoot extends AppCompatActivity {
+public class SquareRoot extends BaseActivity {
     int ex=0;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
     ImageButton bsp, beq;

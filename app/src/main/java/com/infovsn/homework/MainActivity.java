@@ -2,15 +2,13 @@ package com.infovsn.homework;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.infovsn.homework.R;
+import com.google.android.material.appbar.MaterialToolbar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,43 +16,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         FontUtils.applyToActivity(this);
 
+        // Setup MaterialToolbar as ActionBar (no Up on home)
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                getSupportActionBar().setTitle(getString(R.string.app_name));
+            }
+        }
+
         // Initialize Mobile Ads SDK
         MobileAds.initialize(this, initializationStatus -> {});
         AdView adView = findViewById(R.id.adView);
         // Replace fixed-size banner load with anchored adaptive banner
         AdUtils.loadAdaptiveBanner(this, adView);
 
-        Button one = (Button) findViewById(R.id.button1);
-        one.setOnClickListener(this); // calling onClick() method
-        Button two = (Button) findViewById(R.id.button2);
+        Button one = findViewById(R.id.button1);
+        one.setOnClickListener(this);
+        Button two = findViewById(R.id.button2);
         two.setOnClickListener(this);
-        Button three = (Button) findViewById(R.id.button3);
+        Button three = findViewById(R.id.button3);
         three.setOnClickListener(this);
-        Button Four = (Button) findViewById(R.id.button4);
+        Button Four = findViewById(R.id.button4);
         Four.setOnClickListener(this);
-        Button Five = (Button) findViewById(R.id.button5);
+        Button Five = findViewById(R.id.button5);
         Five.setOnClickListener(this);
-        Button six = (Button) findViewById(R.id.button6);
+        Button six = findViewById(R.id.button6);
         six.setOnClickListener(this);
-        Button seven = (Button) findViewById(R.id.button7);
+        Button seven = findViewById(R.id.button7);
         seven.setOnClickListener(this);
-        Button eight = (Button) findViewById(R.id.button8);
+        Button eight = findViewById(R.id.button8);
         eight.setOnClickListener(this);
-        Button nine = (Button) findViewById(R.id.button9);
+        Button nine = findViewById(R.id.button9);
         nine.setOnClickListener(this);
-        Button ten = (Button) findViewById(R.id.button10);
+        Button ten = findViewById(R.id.button10);
         ten.setOnClickListener(this);
-        Button eleven = (Button) findViewById(R.id.button11);
+        Button eleven = findViewById(R.id.button11);
         eleven.setOnClickListener(this);
-        Button twelve = (Button) findViewById(R.id.button12);
+        Button twelve = findViewById(R.id.button12);
         twelve.setOnClickListener(this);
-        Button thirteen = (Button) findViewById(R.id.button13);
+        Button thirteen = findViewById(R.id.button13);
         thirteen.setOnClickListener(this);
-        Button fourteen = (Button) findViewById(R.id.button14);
+        Button fourteen = findViewById(R.id.button14);
         fourteen.setOnClickListener(this);
-        Button fifteen = (Button) findViewById(R.id.button15);
+        Button fifteen = findViewById(R.id.button15);
         fifteen.setOnClickListener(this);
-        Button sixteen = (Button) findViewById(R.id.button16);
+        Button sixteen = findViewById(R.id.button16);
         sixteen.setOnClickListener(this);
     }
 

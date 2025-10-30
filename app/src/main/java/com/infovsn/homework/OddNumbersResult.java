@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
-public class OddNumbersResult extends AppCompatActivity {
+public class OddNumbersResult extends BaseActivity {
     private AdView mAdView;
     private TextView mText;
 

@@ -6,14 +6,26 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import com.google.android.material.appbar.MaterialToolbar;
+import android.view.MenuItem;
 
-public class TableDisplayActivity extends AppCompatActivity {
+public class TableDisplayActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table);
+
+        // Setup MaterialToolbar for title and Up navigation
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(R.string.m1);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
         FontUtils.applyToActivity(this);
         TextView at = findViewById(R.id.txtScr);
         at.setMovementMethod(new ScrollingMovementMethod());
@@ -77,5 +89,14 @@ public class TableDisplayActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

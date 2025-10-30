@@ -1,7 +1,6 @@
 package com.infovsn.homework;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -10,7 +9,7 @@ import com.google.android.gms.ads.AdView;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
-public class EvenNumbersResult extends AppCompatActivity {
+public class EvenNumbersResult extends BaseActivity {
     private AdView mAdView;
     private TextView mText;
 
@@ -18,10 +17,10 @@ public class EvenNumbersResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_even_numbers_result);
-        FontUtils.applyToActivity(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        FontUtils.applyToActivity(this);
 
         // Ads by Google
         mAdView = findViewById(R.id.adView);

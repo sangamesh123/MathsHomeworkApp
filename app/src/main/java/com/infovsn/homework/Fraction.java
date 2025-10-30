@@ -18,7 +18,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-public class Fraction extends AppCompatActivity {
+public class Fraction extends BaseActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
     TextView et;

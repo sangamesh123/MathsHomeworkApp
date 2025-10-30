@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class Division extends AppCompatActivity {
+public class Division extends BaseActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;
     TextView et;

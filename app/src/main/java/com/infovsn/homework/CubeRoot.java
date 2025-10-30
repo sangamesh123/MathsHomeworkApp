@@ -21,7 +21,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-public class CubeRoot extends AppCompatActivity {
+public class CubeRoot extends BaseActivity {
     // Removed AdView field; result screen uses dynamic native or banner fallback via helper
     int ex=0;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,back;

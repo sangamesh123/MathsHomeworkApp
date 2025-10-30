@@ -2,7 +2,6 @@ package com.infovsn.homework;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -10,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class PrimeNumbers extends AppCompatActivity {
+public class PrimeNumbers extends BaseActivity {
     // Keypad buttons
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
     ImageButton bsp, beq;

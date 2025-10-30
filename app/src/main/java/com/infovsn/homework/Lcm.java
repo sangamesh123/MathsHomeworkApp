@@ -2,7 +2,6 @@ package com.infovsn.homework;
 
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Lcm extends AppCompatActivity {
+public class Lcm extends BaseActivity {
     // Removed AdView; division screen now uses dynamic native helper with banner fallback
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // numeric + clear
     TextView et;

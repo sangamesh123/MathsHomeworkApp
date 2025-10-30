@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Hcf extends AppCompatActivity {
+public class Hcf extends BaseActivity {
     // Removed AdView; division screen now uses dynamic native helper with banner fallback
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr;
     TextView et;

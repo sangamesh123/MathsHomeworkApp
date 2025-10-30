@@ -2,7 +2,6 @@ package com.infovsn.homework;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
 
-public class Tables extends AppCompatActivity {
+public class Tables extends BaseActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr; // badd & back removed
     TextView et;
@@ -23,9 +22,7 @@ public class Tables extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tables);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+
         FontUtils.applyToActivity(this);
 
         b1=(Button) findViewById(R.id.one);

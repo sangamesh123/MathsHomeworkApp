@@ -17,7 +17,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-public class DecrOrder extends AppCompatActivity {
+public class DecrOrder extends BaseActivity {
     private AdView mAdView;
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,bclr,back;
     TextView et;
@@ -29,7 +29,9 @@ public class DecrOrder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decr_order);
         FontUtils.applyToActivity(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
 

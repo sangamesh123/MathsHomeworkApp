@@ -24,8 +24,9 @@ import android.text.style.ReplacementSpan;
 import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import com.google.android.material.appbar.MaterialToolbar;
 
-public class Multiplication extends AppCompatActivity {
+public class Multiplication extends BaseActivity {
     private AdView mAdView;
     Button b1, b2, b3, b4, b5, b6, b7, b8, b9, b0, badd, bclr, back, bdot; // add dot
     TextView et;
@@ -281,6 +282,9 @@ public class Multiplication extends AppCompatActivity {
 
                 setContentView(R.layout.added);
                 isShowingResult = true;
+                // Set result toolbar title for Multiplication
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m4);
                 FontUtils.applyToActivity(Multiplication.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
