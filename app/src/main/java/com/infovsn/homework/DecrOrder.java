@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +178,9 @@ public class DecrOrder extends BaseActivity {
 
                 setContentView(R.layout.added);
                 isShowingResult = true; // now in result layout
+                // Set toolbar title for Descending Order result
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m7);
                 FontUtils.applyToActivity(DecrOrder.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
@@ -203,6 +207,7 @@ public class DecrOrder extends BaseActivity {
                     String toParse = fn;
                     if (toParse.endsWith(".")) toParse = toParse + "0";
 
+                    // Validate numeric format (integer or decimal)
                     if (!toParse.matches("\\d+(\\.\\d+)?")) {
                         at.setText("Invalid number format\n");
                         trick=true;

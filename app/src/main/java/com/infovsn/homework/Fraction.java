@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,6 +189,9 @@ public class Fraction extends BaseActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
+                // Set toolbar title for Ascending Order result
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m6);
                 FontUtils.applyToActivity(Fraction.this);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());

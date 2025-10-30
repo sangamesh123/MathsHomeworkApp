@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class Division extends BaseActivity {
     private AdView mAdView;
@@ -192,6 +193,9 @@ public class Division extends BaseActivity {
             public void onClick(View v) {
                 setContentView(R.layout.division);
                 isShowingResult = true; // now in result view
+                // Set result toolbar title for Division
+                MaterialToolbar tb = findViewById(R.id.toolbar);
+                if (tb != null) tb.setTitle(R.string.m5);
                 // Apply Roboto Mono to all TextViews in result layout
                 FontUtils.applyToActivity(Division.this);
                 at=(TextView) findViewById(R.id.txtScr);
