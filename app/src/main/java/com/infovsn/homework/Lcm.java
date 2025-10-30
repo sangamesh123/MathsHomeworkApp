@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -100,6 +102,7 @@ public class Lcm extends BaseActivity {
                     isShowingResult = true;
                     setContentView(R.layout.added);
                     FontUtils.applyToActivity(Lcm.this);
+                    setToolbarTitle(R.string.m8);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     // Load adaptive in-flow ad
@@ -115,6 +118,7 @@ public class Lcm extends BaseActivity {
                     isShowingResult = true;
                     setContentView(R.layout.added);
                     FontUtils.applyToActivity(Lcm.this);
+                    setToolbarTitle(R.string.m8);
                     TextView at = findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     // Load adaptive in-flow ad
@@ -129,6 +133,7 @@ public class Lcm extends BaseActivity {
                 isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Lcm.this);
+                setToolbarTitle(R.string.m8);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive in-flow ad
@@ -145,6 +150,7 @@ public class Lcm extends BaseActivity {
                 isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Lcm.this);
+                setToolbarTitle(R.string.m8);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive in-flow ad
@@ -230,6 +236,11 @@ public class Lcm extends BaseActivity {
     }
 
     private void appendDigit(String d) { et.append(d); }
+
+    private void setToolbarTitle(int titleRes) {
+        MaterialToolbar tb = findViewById(R.id.toolbar);
+        if (tb != null) tb.setTitle(titleRes);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -15,6 +15,8 @@ import android.view.ViewTreeObserver;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 public class Addition extends BaseActivity {
     Button b1,b2,b3,b4,b5,b6,b7,b8,b9,b0,badd,bclr,bdot;
     ImageButton bsp, beq;
@@ -408,5 +410,10 @@ public class Addition extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void setToolbarTitle(int titleRes) {
+        MaterialToolbar tb = findViewById(R.id.toolbar);
+        if (tb != null) tb.setTitle(titleRes);
     }
 }

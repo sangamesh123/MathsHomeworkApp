@@ -20,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -107,6 +109,7 @@ public class Hcf extends BaseActivity {
                 isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
+                setToolbarTitle(R.string.m9);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive in-flow native ad for result
@@ -120,6 +123,7 @@ public class Hcf extends BaseActivity {
                 isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
+                setToolbarTitle(R.string.m9);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive in-flow native ad for result
@@ -134,6 +138,7 @@ public class Hcf extends BaseActivity {
                 isShowingResult = true;
                 setContentView(R.layout.added);
                 FontUtils.applyToActivity(Hcf.this);
+                setToolbarTitle(R.string.m9);
                 TextView at = findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive in-flow native ad for result
@@ -148,6 +153,7 @@ public class Hcf extends BaseActivity {
             isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
+            setToolbarTitle(R.string.m9);
             TextView at = findViewById(R.id.txtScr);
             at.setMovementMethod(new ScrollingMovementMethod());
             // Load adaptive in-flow native ad for result
@@ -164,6 +170,7 @@ public class Hcf extends BaseActivity {
             isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
+            setToolbarTitle(R.string.m9);
             TextView at = findViewById(R.id.txtScr);
             at.setMovementMethod(new ScrollingMovementMethod());
             // Load adaptive in-flow native ad for result
@@ -191,6 +198,7 @@ public class Hcf extends BaseActivity {
             isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
+            setToolbarTitle(R.string.m9);
             TextView at = findViewById(R.id.txtScr);
             at.setMovementMethod(new ScrollingMovementMethod());
             // Load adaptive in-flow native ad for result
@@ -212,6 +220,7 @@ public class Hcf extends BaseActivity {
             isShowingResult = true;
             setContentView(R.layout.added);
             FontUtils.applyToActivity(Hcf.this);
+            setToolbarTitle(R.string.m9);
             TextView at = findViewById(R.id.txtScr);
             at.setMovementMethod(new ScrollingMovementMethod());
             // Load adaptive in-flow native ad for result
@@ -294,6 +303,11 @@ public class Hcf extends BaseActivity {
         // Attach dynamic native ad replaced by adaptive in-flow above
     }
 
+    private void setToolbarTitle(int titleRes) {
+        MaterialToolbar tb = findViewById(R.id.toolbar);
+        if (tb != null) tb.setTitle(titleRes);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -352,7 +366,7 @@ public class Hcf extends BaseActivity {
     private static String buildChain(List<Long> primes) {
         if (primes.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
-        final String times = " × ";
+        final String times = " \u00d7 ";
         for (int i = 0; i < primes.size(); i++) {
             if (i > 0) sb.append(times);
             sb.append(primes.get(i));
