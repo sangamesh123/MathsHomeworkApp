@@ -16,14 +16,11 @@ public class TableDisplayActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table);
 
-        // Setup MaterialToolbar for title and Up navigation
+        // Setup MaterialToolbar for navigation only
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.m1);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
+            toolbar.setNavigationOnClickListener(v -> finish());
+            // Title is now set via custom TextView in XML layout
         }
 
         FontUtils.applyToActivity(this);
