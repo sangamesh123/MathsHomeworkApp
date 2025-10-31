@@ -282,10 +282,10 @@ public class Multiplication extends BaseActivity {
 
                 setContentView(R.layout.added);
                 isShowingResult = true;
-                // Set result toolbar title for Multiplication
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m4);
                 FontUtils.applyToActivity(Multiplication.this);
+                // Set toolbar title for Multiplication result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m4);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Multiplication.this));

@@ -138,10 +138,10 @@ public class Cube extends BaseActivity {
                 String cc = inputBuffer.toString();
                 setContentView(R.layout.added);
                 isShowingResult = true;
-                // Set result toolbar title for Cube
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m11);
                 FontUtils.applyToActivity(Cube.this);
+                // Set toolbar title for Cube result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m11);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Attach dynamic native-or-banner ad at bottom

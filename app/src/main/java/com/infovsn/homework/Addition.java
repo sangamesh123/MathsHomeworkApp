@@ -140,6 +140,9 @@ public class Addition extends BaseActivity {
                     setContentView(R.layout.added);
                     isShowingResult = true;
                     FontUtils.applyToActivity(Addition.this);
+                    // Set toolbar title for Addition result
+                    TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                    if (toolbarTitle != null) toolbarTitle.setText(R.string.m2);
                     at= findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Addition.this));
@@ -223,6 +226,9 @@ public class Addition extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(Addition.this);
+                // Set toolbar title for Addition result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m2);
                 at= findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Addition.this));

@@ -141,10 +141,10 @@ public class Square extends BaseActivity {
                 String cc = inputBuffer.toString();
                 setContentView(R.layout.added);
                 isShowingResult = true;
-                // Set result toolbar title for Square
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m10);
                 FontUtils.applyToActivity(Square.this);
+                // Set toolbar title for Square result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m10);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
 

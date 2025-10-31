@@ -25,6 +25,7 @@ public class Fraction extends BaseActivity {
     TextView et;
     ImageButton bsp,badd,beq;
     TextView at;
+    private boolean isShowingResult = false; // track if showing result layout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -189,10 +190,11 @@ public class Fraction extends BaseActivity {
             public void onClick(View v) {
 
                 setContentView(R.layout.added);
-                // Set toolbar title for Ascending Order result
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m6);
+                isShowingResult = true;
                 FontUtils.applyToActivity(Fraction.this);
+                // Set toolbar title for Fraction result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m6);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Fraction.this));

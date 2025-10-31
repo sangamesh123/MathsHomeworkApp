@@ -177,11 +177,11 @@ public class DecrOrder extends BaseActivity {
                 String txt = et.getText()+"";
 
                 setContentView(R.layout.added);
-                isShowingResult = true; // now in result layout
-                // Set toolbar title for Descending Order result
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m7);
+                isShowingResult = true;
                 FontUtils.applyToActivity(DecrOrder.this);
+                // Set toolbar title for Descending Order result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m7);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(DecrOrder.this));

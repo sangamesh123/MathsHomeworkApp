@@ -263,10 +263,10 @@ public class Subtraction extends BaseActivity {
                     // Integer branch with correct borrow alignment
                     setContentView(R.layout.added);
                     isShowingResult = true;
-                    // Set result toolbar title for Subtraction
-                    MaterialToolbar tb = findViewById(R.id.toolbar);
-                    if (tb != null) tb.setTitle(R.string.m3);
                     FontUtils.applyToActivity(Subtraction.this);
+                    // Set toolbar title for Subtraction result
+                    TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                    if (toolbarTitle != null) toolbarTitle.setText(R.string.m3);
                     at=(TextView) findViewById(R.id.txtScr);
                     at.setMovementMethod(new ScrollingMovementMethod());
                     at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
@@ -337,10 +337,10 @@ public class Subtraction extends BaseActivity {
                 // DECIMAL BRANCH (normalize display and compute with scaled integers)
                 setContentView(R.layout.added);
                 isShowingResult = true;
-                // Set result toolbar title for Subtraction
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m3);
                 FontUtils.applyToActivity(Subtraction.this);
+                // Set toolbar title for Subtraction result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m3);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 at.setTypeface(FontUtils.getRobotoMono(Subtraction.this));
