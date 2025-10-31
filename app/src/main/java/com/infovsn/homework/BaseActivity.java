@@ -112,3 +112,4 @@ public class BaseActivity extends AppCompatActivity {
         ViewCompat.requestApplyInsets(root);
     }
 }
+

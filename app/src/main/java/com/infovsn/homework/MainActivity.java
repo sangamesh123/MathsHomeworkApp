@@ -4,11 +4,38 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.graphics.Typeface;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.appbar.MaterialToolbar;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
+
+    private static String toTitleCase(String input) {
+        if (input == null || input.isEmpty()) return input;
+        String lower = input.toLowerCase(Locale.getDefault());
+        StringBuilder out = new StringBuilder(lower.length());
+        boolean capNext = true;
+        for (int i = 0; i < lower.length(); i++) {
+            char c = lower.charAt(i);
+            if (Character.isLetterOrDigit(c)) {
+                if (capNext) {
+                    out.append(Character.toTitleCase(c));
+                    capNext = false;
+                } else {
+                    out.append(c);
+                }
+            } else {
+                out.append(c);
+                capNext = true; // capitalize next word after any separator
+            }
+        }
+        return out.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +49,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                getSupportActionBar().setTitle(getString(R.string.app_name));
+                // We use a centered custom TextView in the toolbar; hide default title
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
+            // Use Roboto Mono for the pill title to keep a single app-wide font
+            TextView title = toolbar.findViewById(R.id.toolbarTitle);
+            if (title != null) {
+                title.setAllCaps(false);
+                title.setTypeface(FontUtils.getRobotoMono(this), Typeface.NORMAL);
+                title.setLetterSpacing(0.0f);
+                title.setIncludeFontPadding(false);
+            }
+        }
+
+        // Use dark status bar icons on light background for home screen
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (controller != null) {
+            controller.setAppearanceLightStatusBars(true);
         }
 
         // Initialize Mobile Ads SDK
@@ -64,6 +106,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         fifteen.setOnClickListener(this);
         Button sixteen = findViewById(R.id.button16);
         sixteen.setOnClickListener(this);
+
+        // Transform labels to Title Case and set bold RobotoMono just for the home menu
+        one.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        two.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        three.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        Four.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        Five.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        six.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        seven.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        eight.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        nine.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        ten.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        eleven.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        twelve.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        thirteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        fourteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        fifteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        sixteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+
     }
 
 

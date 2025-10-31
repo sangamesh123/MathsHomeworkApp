@@ -13,7 +13,7 @@
     <color name="backgroundLight">#FAFAFA</color> <!-- Keep light neutral background -->
     <color name="backgroundDark">#F1F1F3</color> <!-- Repurposed to a light neutral (was dark) -->
 
-    <!-- Interactive / button specific new tones -->
+    <!-- Interactive / button specific new tones (legacy pink for older screens) -->
     <color name="menuButtonBgStart">#FFF6F8</color>
     <color name="menuButtonBgEnd">#FFE7EE</color>
     <color name="menuButtonStroke">#FFD0DC</color>
@@ -41,4 +41,12 @@
 
     <!-- Native ad attribution badge colors -->
     <color name="adAttributionBg">#99000000</color>
+
+    <!-- Home-screen specific greys (used only on the main menu) -->
+    <color name="homeTopBarGrey">#424242</color>        <!-- Material Grey 800 -->
+    <color name="homeTopBarGreyDark">#1F1F1F</color>    <!-- Darker for contrast if needed -->
+    <color name="homeButtonBgStart">#F7F8F9</color>     <!-- subtle light grey -->
+    <color name="homeButtonBgEnd">#ECEEF1</color>       <!-- subtle gradient end -->
+    <color name="homeButtonStroke">#DADCE0</color>      <!-- light outline -->
+    <color name="homeButtonRipple">#1F000000</color>    <!-- 12% black ripple -->
 </resources>
