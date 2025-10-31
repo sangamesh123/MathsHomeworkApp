@@ -56,22 +56,22 @@
     <string name="enter">Enter</string>
     <string name="hintq2">To Separate Numbers press Enter(↲)</string>
 
-    <string name="m1">TABLES</string>
-    <string name="m2">ADDITION</string>
-    <string name="m3">SUBTRACTION</string>
-    <string name="m4">MULTIPLICATION</string>
-    <string name="m5">DIVISION</string>
-    <string name="m6">ASCENDING ORDER</string>
-    <string name="m7">DESCENDING ORDER</string>
+    <string name="m1">Tables</string>
+    <string name="m2">Addition</string>
+    <string name="m3">Subtraction</string>
+    <string name="m4">Multiplication</string>
+    <string name="m5">Division</string>
+    <string name="m6">Ascending Order</string>
+    <string name="m7">Descending Order</string>
     <string name="m8">LCM</string>
     <string name="m9">HCF/GCD</string>
-    <string name="m10">SQUARE</string>
-    <string name="m11">CUBE</string>
-    <string name="m12">SQUARE ROOT</string>
-    <string name="m13">CUBE ROOT</string>
-    <string name="m14">EVEN NUMBERS</string>
-    <string name="m15">ODD NUMBERS</string>
-    <string name="m16">PRIME NUMBERS</string>
+    <string name="m10">Square</string>
+    <string name="m11">Cube</string>
+    <string name="m12">Square Root</string>
+    <string name="m13">Cube Root</string>
+    <string name="m14">Even Numbers</string>
+    <string name="m15">Odd Numbers</string>
+    <string name="m16">Prime Numbers</string>
 
 
     <!-- Production AdMob banner unit id (release). Debug build overrides in app/src/debug/res/values/strings.xml -->

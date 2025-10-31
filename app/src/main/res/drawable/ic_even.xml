@@ -4,8 +4,15 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Two equal circles for even numbers -->
     <path
-        android:fillColor="#1976D2"
-        android:pathData="M5,8h4v2h-4v2h4v2h-4v2h5v-10h-5zM14,8h-4v8h4c1.1,0 2,-0.9 2,-2v-4c0,-1.1 -0.9,-2 -2,-2zM14,14h-2v-4h2v4z"/>
+        android:fillColor="#5F6368"
+        android:pathData="M8,12m-4,0a4,4 0,1,1 8,0a4,4 0,1,1 -8,0"/>
+    <path
+        android:fillColor="#5F6368"
+        android:pathData="M16,12m-4,0a4,4 0,1,1 8,0a4,4 0,1,1 -8,0"/>
+    <!-- Dividing line -->
+    <path
+        android:fillColor="#5F6368"
+        android:pathData="M11,11h2v2h-2z"/>
 </vector>
-

@@ -4,8 +4,15 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Clean cube root symbol with "3" -->
     <path
-        android:fillColor="#1976D2"
-        android:pathData="M9,4h13v2h-13z M2,6l2.5,7l2.5,-7h2l-3.5,9l-3.5,-9z M20,6h1.5v1.5h-1.5z"/>
+        android:strokeColor="#5F6368"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M6,14L8,18L10,10L22,10"/>
+    <!-- "3" digit moved further left, same height -->
+    <path
+        android:fillColor="#5F6368"
+        android:pathData="M5.5,9.2c0.8,-0.8 2.4,-0.8 2.4,0c0,0.6 -0.6,0.8 -1.2,0.8c0.6,0 1.2,0.2 1.2,0.8c0,0.8 -1.6,0.8 -2.4,0"/>
 </vector>
-

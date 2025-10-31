@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.graphics.Typeface;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -20,7 +19,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FontUtils.applyToActivity(this);
+
+        // REMOVED: FontUtils.applyToActivity(this);
+        // MainActivity now uses custom fonts from XML: Poppins SemiBold (header) and Inter Medium (buttons)
 
         // Setup MaterialToolbar as ActionBar (no Up on home)
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
@@ -31,12 +32,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 // We use a centered custom TextView in the toolbar; hide default title
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
-            // Use Roboto Mono for the pill title
+            // REMOVED: Roboto Mono override - now uses Poppins SemiBold from XML
             TextView title = toolbar.findViewById(R.id.toolbarTitle);
             if (title != null) {
                 title.setAllCaps(false);
-                title.setTypeface(FontUtils.getRobotoMono(this));
-                title.setLetterSpacing(0.0f);
+                // Custom font (Poppins SemiBold) is applied via XML fontFamily attribute
+                // title.setTypeface(FontUtils.getRobotoMono(this)); // REMOVED
+                // title.setLetterSpacing(0.0f); // REMOVED - letterSpacing set in XML to 0.05
                 title.setIncludeFontPadding(false);
             }
         }
@@ -86,26 +88,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         Button sixteen = findViewById(R.id.button16);
         sixteen.setOnClickListener(this);
 
-        // Transform labels to Title Case just for the home menu and set bold RobotoMono
-        //applyTitleCaseToButtons(one, two, three, Four, Five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen);
-        Typeface monoRegular = FontUtils.getRobotoMono(this);
-        one.setTypeface(monoRegular);
-        two.setTypeface(monoRegular);
-        three.setTypeface(monoRegular);
-        Four.setTypeface(monoRegular);
-        Five.setTypeface(monoRegular);
-        six.setTypeface(monoRegular);
-        seven.setTypeface(monoRegular);
-        eight.setTypeface(monoRegular);
-        nine.setTypeface(monoRegular);
-        ten.setTypeface(monoRegular);
-        eleven.setTypeface(monoRegular);
-        twelve.setTypeface(monoRegular);
-        thirteen.setTypeface(monoRegular);
-        fourteen.setTypeface(monoRegular);
-        fifteen.setTypeface(monoRegular);
-        sixteen.setTypeface(monoRegular);
+        // REMOVED: RobotoMono font override for buttons
+        // All buttons now use Inter Medium font from XML (activity_main.xml)
+        // Typeface monoRegular = FontUtils.getRobotoMono(this);
+        // one.setTypeface(monoRegular); ... etc. - ALL REMOVED
 
+        // Removed marquee selection to improve button responsiveness
     }
 
 

@@ -4,8 +4,11 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Clean square root symbol using strokes -->
     <path
-        android:fillColor="#1976D2"
-        android:pathData="M7,4h14v2h-14z M3,8l3,8l3,-8h2l-4,10l-4,-10z"/>
+        android:strokeColor="#5F6368"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M5,14L7,18L9,10L22,10"/>
 </vector>
-
