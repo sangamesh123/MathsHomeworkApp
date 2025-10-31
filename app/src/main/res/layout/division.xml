@@ -8,12 +8,39 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:minHeight="64dp"
         android:layout_alignParentTop="true"
         android:background="@color/actionBarRed"
-        app:titleTextColor="@color/white"
-        app:navigationIconTint="@color/white"
-        app:title="@string/m5" />
+        android:elevation="0dp"
+        app:titleTextColor="@android:color/white"
+        app:navigationIconTint="@android:color/white"
+        app:titleCentered="true">
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:text="@string/m5"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textStyle="normal"
+            android:letterSpacing="0.05"
+            android:elevation="0dp"/>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:id="@+id/result_container"

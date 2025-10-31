@@ -135,7 +135,9 @@ public class SquareRoot extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(SquareRoot.this);
-                setToolbarTitle(R.string.m12);
+                // Set toolbar title for SquareRoot result
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m12);
                 at=(TextView) findViewById(R.id.txtScr);
                 at.setMovementMethod(new ScrollingMovementMethod());
                 // Load adaptive native ad in-flow
@@ -289,10 +291,5 @@ public class SquareRoot extends BaseActivity {
                 }
             }
         });
-    }
-
-    private void setToolbarTitle(int titleRes) {
-        MaterialToolbar tb = findViewById(R.id.toolbar);
-        if (tb != null) tb.setTitle(titleRes);
     }
 }

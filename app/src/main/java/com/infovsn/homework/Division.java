@@ -194,8 +194,8 @@ public class Division extends BaseActivity {
                 setContentView(R.layout.division);
                 isShowingResult = true; // now in result view
                 // Set result toolbar title for Division
-                MaterialToolbar tb = findViewById(R.id.toolbar);
-                if (tb != null) tb.setTitle(R.string.m5);
+                TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+                if (toolbarTitle != null) toolbarTitle.setText(R.string.m5);
                 // Apply Roboto Mono to all TextViews in result layout
                 FontUtils.applyToActivity(Division.this);
                 at=(TextView) findViewById(R.id.txtScr);
