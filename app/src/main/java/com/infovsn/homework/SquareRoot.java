@@ -135,6 +135,17 @@ public class SquareRoot extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(SquareRoot.this);
+
+                // Set up the toolbar for the result screen
+                MaterialToolbar toolbar = findViewById(R.id.toolbar);
+                if (toolbar != null) {
+                    setSupportActionBar(toolbar);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setDisplayShowTitleEnabled(false);
+                    }
+                }
+
                 // Set toolbar title for SquareRoot result
                 TextView toolbarTitle = findViewById(R.id.toolbarTitle);
                 if (toolbarTitle != null) toolbarTitle.setText(R.string.m12);

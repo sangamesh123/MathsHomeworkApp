@@ -240,6 +240,20 @@ public class Hcf extends BaseActivity {
         isShowingResult = true;
         setContentView(R.layout.hcf_division);
         FontUtils.applyToActivity(Hcf.this);
+
+        // Set up the toolbar for the result screen
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
+        // Set the custom title text
+        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        if (toolbarTitle != null) toolbarTitle.setText(R.string.m9);
+
         hcfTable = findViewById(R.id.hcfTable);
         headingTv = findViewById(R.id.txtHeading);
         answerTv = findViewById(R.id.txtAnswer);
@@ -304,8 +318,18 @@ public class Hcf extends BaseActivity {
     }
 
     private void setToolbarTitle(int titleRes) {
-        MaterialToolbar tb = findViewById(R.id.toolbar);
-        if (tb != null) tb.setTitle(titleRes);
+        // Set up the toolbar for the result screen
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
+        // Set the custom title text
+        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        if (toolbarTitle != null) toolbarTitle.setText(titleRes);
     }
 
     @Override

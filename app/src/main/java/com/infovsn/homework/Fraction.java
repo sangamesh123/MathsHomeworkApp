@@ -192,6 +192,17 @@ public class Fraction extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(Fraction.this);
+
+                // Set up the toolbar for the result screen
+                MaterialToolbar toolbar = findViewById(R.id.toolbar);
+                if (toolbar != null) {
+                    setSupportActionBar(toolbar);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setDisplayShowTitleEnabled(false);
+                    }
+                }
+
                 // Set toolbar title for Fraction result
                 TextView toolbarTitle = findViewById(R.id.toolbarTitle);
                 if (toolbarTitle != null) toolbarTitle.setText(R.string.m6);
@@ -278,11 +289,25 @@ public class Fraction extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
+                if (isShowingResult) {
+                    isShowingResult = false;
+                    recreate(); // Return to input layout
+                } else {
+                    finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingResult) {
+            isShowingResult = false;
+            recreate();
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -318,3 +343,4 @@ public class Fraction extends BaseActivity {
         });
     }
 }
+

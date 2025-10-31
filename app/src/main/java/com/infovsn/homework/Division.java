@@ -193,6 +193,17 @@ public class Division extends BaseActivity {
             public void onClick(View v) {
                 setContentView(R.layout.division);
                 isShowingResult = true; // now in result view
+
+                // Set up the toolbar for the result screen
+                MaterialToolbar toolbar = findViewById(R.id.toolbar);
+                if (toolbar != null) {
+                    setSupportActionBar(toolbar);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setDisplayShowTitleEnabled(false);
+                    }
+                }
+
                 // Set result toolbar title for Division
                 TextView toolbarTitle = findViewById(R.id.toolbarTitle);
                 if (toolbarTitle != null) toolbarTitle.setText(R.string.m5);

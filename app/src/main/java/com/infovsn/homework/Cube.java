@@ -139,6 +139,17 @@ public class Cube extends BaseActivity {
                 setContentView(R.layout.added);
                 isShowingResult = true;
                 FontUtils.applyToActivity(Cube.this);
+
+                // Set up the toolbar for the result screen
+                MaterialToolbar toolbar = findViewById(R.id.toolbar);
+                if (toolbar != null) {
+                    setSupportActionBar(toolbar);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setDisplayShowTitleEnabled(false);
+                    }
+                }
+
                 // Set toolbar title for Cube result
                 TextView toolbarTitle = findViewById(R.id.toolbarTitle);
                 if (toolbarTitle != null) toolbarTitle.setText(R.string.m11);

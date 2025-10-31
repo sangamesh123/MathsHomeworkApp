@@ -170,6 +170,20 @@ public class Lcm extends BaseActivity {
             isShowingResult = true;
             setContentView(R.layout.lcm_division);
             FontUtils.applyToActivity(Lcm.this);
+
+            // Set up the toolbar for the result screen
+            MaterialToolbar toolbar = findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                setSupportActionBar(toolbar);
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    getSupportActionBar().setDisplayShowTitleEnabled(false);
+                }
+            }
+            // Set the custom title text
+            TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+            if (toolbarTitle != null) toolbarTitle.setText(R.string.m8);
+
             lcmTable = findViewById(R.id.lcmTable);
             headingTv = findViewById(R.id.txtHeading);
             answerTv = findViewById(R.id.txtAnswer);
@@ -238,8 +252,18 @@ public class Lcm extends BaseActivity {
     private void appendDigit(String d) { et.append(d); }
 
     private void setToolbarTitle(int titleRes) {
-        MaterialToolbar tb = findViewById(R.id.toolbar);
-        if (tb != null) tb.setTitle(titleRes);
+        // Set up the toolbar for the result screen
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
+        // Set the custom title text
+        TextView toolbarTitle = findViewById(R.id.toolbarTitle);
+        if (toolbarTitle != null) toolbarTitle.setText(titleRes);
     }
 
     @Override
