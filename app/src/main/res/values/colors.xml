@@ -8,9 +8,17 @@
     <color name="actionBarRed">#F44336</color>
     <color name="actionBarRedDark">#D32F2F</color>
 
+    <!-- Material 3 Gmail/YouTube-inspired colors -->
+    <color name="primaryBlue">#1976D2</color>
+    <color name="primaryBlueDark">#1565C0</color>
+    <color name="secondaryAmber">#FFC107</color>
+    <color name="backgroundLight">#F9FAFB</color>
+    <color name="backgroundWhite">#FFFFFF</color>
+    <color name="surfaceWhite">#FFFFFF</color>
+    <color name="accentBlueLight">#E3F2FD</color>
+
     <!-- Core neutrals / surfaces -->
     <color name="white">#FFFFFF</color>
-    <color name="backgroundLight">#FAFAFA</color> <!-- Keep light neutral background -->
     <color name="backgroundDark">#F1F1F3</color> <!-- Repurposed to a light neutral (was dark) -->
 
     <!-- Interactive / button specific new tones (legacy pink for older screens) -->
@@ -41,6 +49,16 @@
 
     <!-- Native ad attribution badge colors -->
     <color name="adAttributionBg">#99000000</color>
+
+    <!-- Material 3 Main Menu Colors -->
+    <color name="menuCardBackground">#FFFFFF</color>
+    <color name="menuCardStroke">#E0E0E0</color>
+    <color name="menuCardRipple">#1A1976D2</color> <!-- 10% primary blue -->
+    <color name="menuIconTint">#1976D2</color>
+    <color name="menuTextPrimary">#202124</color>
+    <color name="menuTextSecondary">#5F6368</color>
+    <color name="appBarBackground">#FFFFFF</color>
+    <color name="appBarStroke">#E0E0E0</color>
 
     <!-- Home-screen specific greys (used only on the main menu) -->
     <color name="homeTopBarGrey">#424242</color>        <!-- Material Grey 800 -->

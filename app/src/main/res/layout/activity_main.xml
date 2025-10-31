@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundDark"
+    android:background="@color/backgroundLight"
     tools:context="com.infovsn.homework.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -14,8 +14,8 @@
         android:minHeight="72dp"
         android:layout_alignParentTop="true"
         android:background="@android:color/transparent"
-        app:titleTextColor="@color/textPrimary"
-        app:navigationIconTint="@color/textPrimary"
+        app:titleTextColor="@color/menuTextPrimary"
+        app:navigationIconTint="@color/menuTextPrimary"
         app:titleCentered="true">
 
         <TextView
@@ -26,19 +26,20 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:gravity="center"
-            android:background="@drawable/toolbar_pill_bg"
+            android:background="@drawable/toolbar_pill_bg_modern"
             android:paddingStart="28dp"
             android:paddingEnd="28dp"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            android:minHeight="48dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:minHeight="52dp"
             android:maxLines="1"
             android:ellipsize="end"
-            android:includeFontPadding="true"
+            android:includeFontPadding="false"
             android:text="@string/app_name"
-            android:textColor="@color/textPrimary"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif-medium"/>
+            android:textColor="@color/menuTextPrimary"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="2dp"/>
     </com.google.android.material.appbar.MaterialToolbar>
 
     <ScrollView
@@ -47,47 +48,272 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_above="@id/adView"
-        android:fadeScrollbars="false">
+        android:fadeScrollbars="false"
+        android:clipToPadding="false"
+        android:paddingTop="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
-            <!-- Button Grid Rows -->
-            <!-- Each row: two HomeMenuButton styled buttons -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button1" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m1" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button2" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m2" android:layout_marginStart="8dp" />
+            <!-- Row 1: Tables + Addition -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button1"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m1"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_table"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button2"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m2"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_addition"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button3" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m3" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button4" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m4" android:layout_marginStart="8dp" />
+
+            <!-- Row 2: Subtraction + Multiplication -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button3"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m3"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_subtraction"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button4"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m4"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_multiplication"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button5" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m5" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button6" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m6" android:layout_marginStart="8dp" />
+
+            <!-- Row 3: Division + Ascending Order -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button5"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m5"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_division"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button6"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m6"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_ascending"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button16" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m7" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button7" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m8" android:layout_marginStart="8dp" />
+
+            <!-- Row 4: Descending Order + LCM -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button16"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m7"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_descending"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button7"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m8"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_lcm"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button8" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m9" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button9" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m10" android:layout_marginStart="8dp" />
+
+            <!-- Row 5: HCF/GCD + Square -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button8"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m9"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_hcf"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button9"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m10"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_square"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button10" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m11" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button11" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m12" android:layout_marginStart="8dp" />
+
+            <!-- Row 6: Cube + Square Root -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button10"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m11"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_cube"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button11"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m12"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_square_root"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button12" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m13" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button13" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m14" android:layout_marginStart="8dp" />
+
+            <!-- Row 7: Cube Root + Even Numbers -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button12"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m13"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_cube_root"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button13"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m14"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_even"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="14dp">
-                <Button android:id="@+id/button14" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m15" android:layout_marginEnd="8dp" />
-                <Button android:id="@+id/button15" style="@style/HomeMenuButton.Grey" android:layout_width="0dp" android:layout_weight="1" android:text="@string/m16" android:layout_marginStart="8dp" />
+
+            <!-- Row 8: Odd Numbers + Prime Numbers -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button14"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m15"
+                    android:layout_marginEnd="6dp"
+                    app:icon="@drawable/ic_odd"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button15"
+                    style="@style/Material3MenuButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/m16"
+                    android:layout_marginStart="6dp"
+                    app:icon="@drawable/ic_prime"
+                    app:iconGravity="start"
+                    app:iconPadding="16dp"
+                    app:iconTint="@color/menuIconTint"
+                    app:iconSize="24dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

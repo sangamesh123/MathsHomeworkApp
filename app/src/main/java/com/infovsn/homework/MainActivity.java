@@ -15,27 +15,6 @@ import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
-    private static String toTitleCase(String input) {
-        if (input == null || input.isEmpty()) return input;
-        String lower = input.toLowerCase(Locale.getDefault());
-        StringBuilder out = new StringBuilder(lower.length());
-        boolean capNext = true;
-        for (int i = 0; i < lower.length(); i++) {
-            char c = lower.charAt(i);
-            if (Character.isLetterOrDigit(c)) {
-                if (capNext) {
-                    out.append(Character.toTitleCase(c));
-                    capNext = false;
-                } else {
-                    out.append(c);
-                }
-            } else {
-                out.append(c);
-                capNext = true; // capitalize next word after any separator
-            }
-        }
-        return out.toString();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +31,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 // We use a centered custom TextView in the toolbar; hide default title
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
-            // Use Roboto Mono for the pill title to keep a single app-wide font
+            // Use Roboto Mono for the pill title
             TextView title = toolbar.findViewById(R.id.toolbarTitle);
             if (title != null) {
                 title.setAllCaps(false);
-                title.setTypeface(FontUtils.getRobotoMono(this), Typeface.NORMAL);
+                title.setTypeface(FontUtils.getRobotoMono(this));
                 title.setLetterSpacing(0.0f);
                 title.setIncludeFontPadding(false);
             }
@@ -107,23 +86,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         Button sixteen = findViewById(R.id.button16);
         sixteen.setOnClickListener(this);
 
-        // Transform labels to Title Case and set bold RobotoMono just for the home menu
-        one.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        two.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        three.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        Four.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        Five.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        six.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        seven.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        eight.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        nine.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        ten.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        eleven.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        twelve.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        thirteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        fourteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        fifteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
-        sixteen.setTypeface(FontUtils.getRobotoMono(this), Typeface.BOLD);
+        // Transform labels to Title Case just for the home menu and set bold RobotoMono
+        //applyTitleCaseToButtons(one, two, three, Four, Five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen);
+        Typeface monoRegular = FontUtils.getRobotoMono(this);
+        one.setTypeface(monoRegular);
+        two.setTypeface(monoRegular);
+        three.setTypeface(monoRegular);
+        Four.setTypeface(monoRegular);
+        Five.setTypeface(monoRegular);
+        six.setTypeface(monoRegular);
+        seven.setTypeface(monoRegular);
+        eight.setTypeface(monoRegular);
+        nine.setTypeface(monoRegular);
+        ten.setTypeface(monoRegular);
+        eleven.setTypeface(monoRegular);
+        twelve.setTypeface(monoRegular);
+        thirteen.setTypeface(monoRegular);
+        fourteen.setTypeface(monoRegular);
+        fifteen.setTypeface(monoRegular);
+        sixteen.setTypeface(monoRegular);
 
     }
 
