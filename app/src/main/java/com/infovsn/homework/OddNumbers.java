@@ -33,11 +33,11 @@ public class OddNumbers extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_odd_numbers);
         FontUtils.applyToActivity(this);
-        // Setup MaterialToolbar navigation and title
+        // Setup MaterialToolbar navigation
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(v -> finish());
-            toolbar.setTitle(R.string.m15); // Odd Numbers title
+            // Title is now set via custom TextView in XML layout
         }
 
         // Ensure OS keyboard never shows up; we only use the in-app keypad

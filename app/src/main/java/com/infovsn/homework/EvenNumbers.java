@@ -29,11 +29,11 @@ public class EvenNumbers extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_even_numbers);
         FontUtils.applyToActivity(this);
-        // Setup MaterialToolbar navigation and title
+        // Setup MaterialToolbar navigation
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(v -> finish());
-            toolbar.setTitle(R.string.m14); // Even Numbers title
+            // Title is now set via custom TextView in XML layout
         }
 
         startScreen = findViewById(R.id.startScreen);
