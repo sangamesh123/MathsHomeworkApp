@@ -360,21 +360,13 @@ public class Multiplication extends BaseActivity {
                 String mulCarryRow = new String(mulCarry);
                 // Do not append yet; we will decide after building partials
 
-                // Build partial products (include zeros except trailing fractional zeros)
+                // Build partial products (include zeros; keep zeros after decimal)
                 List<String> partials = new ArrayList<>();
                 List<String> displayPartials = new ArrayList<>();
-                int fracLenB = bf.length();
-                int trailingFracZeros = 0;
-                for (int i = bf.length() - 1; i >= 0; i--) {
-                    if (bf.charAt(i) == '0') trailingFracZeros++; else break;
-                }
                 if (bLen > 0) {
                     for (int idx = bLen - 1, shift = 0; idx >= 0; idx--, shift++) {
                         int d = bScaled.charAt(idx) - '0';
-                        boolean inFraction = (fracLenB > 0 && shift < fracLenB);
-                        boolean isTrailingFracZero = inFraction && (shift < trailingFracZeros) && d == 0;
-                        if (isTrailingFracZero) continue;
-                        BigInteger p = A.multiply(BigInteger.valueOf(Math.max(0, d)));
+                        BigInteger p = A.multiply(BigInteger.valueOf(d));
                         String ps = p.toString();
                         String shifted = padRightZeros(ps, shift);
                         partials.add(shifted);
@@ -430,7 +422,7 @@ public class Multiplication extends BaseActivity {
                     at.append(acr);
                 }
 
-                // Final result with decimal point (no left-padding; apply digit+dot compression; replace trailing frac 0 with NBSP)
+                // Final result with decimal point (no left-padding; apply digit+dot compression)
                 String rs = prod.toString();
                 if (resultFrac > 0) {
                     while (rs.length() <= resultFrac) rs = "0" + rs;
@@ -439,15 +431,9 @@ public class Multiplication extends BaseActivity {
                 }
                 // Build spannable and compress digit+dot as one cell
                 SpannableString blue;
-                int dp = rs.indexOf('.')
-                        ;
+                int dp = rs.indexOf('.');
                 if (dp > 0 && Character.isDigit(rs.charAt(dp-1))) {
-                    // Optionally replace trailing fractional 0 with NBSP so "2." shows when needed
-                    if (dp < rs.length()-1 && rs.charAt(rs.length()-1) == '0') {
-                        char[] rc = rs.toCharArray();
-                        rc[rc.length - 1] = NBSP;
-                        rs = new String(rc);
-                    }
+                    // Keep any trailing fractional zeros — do not replace them with NBSP
                     blue = new SpannableString(rs);
                     blue.setSpan(new CombinedDigitDotSpan(), dp - 1, dp + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
