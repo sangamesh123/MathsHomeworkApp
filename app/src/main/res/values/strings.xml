@@ -78,7 +78,7 @@
     <string name="banner_ad_unit_id">ca-app-pub-5127203822190674/8442269216</string>
 
     <!-- Production native advanced ad unit id -->
-    <string name="native_ad_unit_id">ca-app-pub-5127203822190674/6122266781</string>
+    <string name="native_ad_unit_id">ca-app-pub-5127203822190674/6122206781</string>
 
     <string name="result_label">RESULT</string>
     <string name="send">Send</string>
