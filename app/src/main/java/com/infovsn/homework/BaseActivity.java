@@ -21,6 +21,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Try to enable Material's Edge-to-Edge helper if available (safe no-op otherwise)
+        EdgeToEdgeUtil.enableEdgeToEdgeIfAvailable(this);
+
         // Draw behind system bars
         Window window = getWindow();
         WindowCompat.setDecorFitsSystemWindows(window, false);
@@ -112,4 +116,3 @@ public class BaseActivity extends AppCompatActivity {
         ViewCompat.requestApplyInsets(root);
     }
 }
-
