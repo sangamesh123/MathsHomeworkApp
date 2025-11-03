@@ -29,9 +29,8 @@ public class BaseActivity extends AppCompatActivity {
         Window window = getWindow();
         WindowCompat.setDecorFitsSystemWindows(window, false);
 
-        // Make bars transparent; theme also sets these, but ensure at runtime
-        window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
-        window.setNavigationBarColor(android.graphics.Color.TRANSPARENT);
+        // Theme sets system bar colors to transparent; avoid using the deprecated
+        // Window.setStatusBarColor / setNavigationBarColor APIs at runtime.
 
         // Prefer light navigation bar icons (dark content) on light backgrounds
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
