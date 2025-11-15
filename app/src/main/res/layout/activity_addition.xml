@@ -183,11 +183,16 @@
                 android:text="@string/dot" />
             <ImageButton
                 android:id="@+id/equal"
-                style="@style/KeypadResultButton"
+                style="@style/KeypadResultButton.RedCircle"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:contentDescription="@string/send"
-                android:src="@drawable/ic_result_arrow" />
+                android:src="@drawable/ic_equals_white" />
+            <View
+                android:id="@+id/equal_spacer_add"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>

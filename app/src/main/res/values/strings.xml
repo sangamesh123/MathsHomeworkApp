@@ -29,7 +29,7 @@
     <string name="clear">C</string>
     <string name="add">+</string>
     <string name="minus">-</string>
-    <string name="mult">x</string>
+    <string name="mult">×</string>
     <string name="div">/</string>
     <!-- Send-style arrow used instead of the word Result on equal buttons -->
     <string name="equal">➤</string>

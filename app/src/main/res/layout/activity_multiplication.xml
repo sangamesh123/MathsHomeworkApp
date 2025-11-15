@@ -65,34 +65,133 @@
         android:padding="@dimen/spacing_sm">
 
         <!-- Row 1 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/seven" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/seven" />
-            <Button android:id="@+id/eight" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/eight" />
-            <Button android:id="@+id/nine" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/nine" />
-            <Button android:id="@+id/clear" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/clear" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/seven"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/seven" />
+            <Button
+                android:id="@+id/eight"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/eight" />
+            <Button
+                android:id="@+id/nine"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/nine" />
+            <Button
+                android:id="@+id/clear"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/clear" />
         </LinearLayout>
 
         <!-- Row 2 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/four" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/four" />
-            <Button android:id="@+id/five" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/five" />
-            <Button android:id="@+id/six" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/six" />
-            <ImageButton android:id="@+id/backspace" style="@style/KeypadIconButton" android:layout_width="0dp" android:layout_weight="1" android:contentDescription="@string/backspace" android:src="@drawable/ic_backspace_black_24dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/keypad_row_spacing">
+            <Button
+                android:id="@+id/four"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/four" />
+            <Button
+                android:id="@+id/five"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/five" />
+            <Button
+                android:id="@+id/six"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/six" />
+            <ImageButton
+                android:id="@+id/backspace"
+                style="@style/KeypadIconButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/backspace"
+                android:src="@drawable/ic_backspace_black_24dp" />
         </LinearLayout>
 
         <!-- Row 3 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/one" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/one" />
-            <Button android:id="@+id/two" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/two" />
-            <Button android:id="@+id/three" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/three" />
-            <Button android:id="@+id/add" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/mult" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/keypad_row_spacing">
+            <Button
+                android:id="@+id/one"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/one" />
+            <Button
+                android:id="@+id/two"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/two" />
+            <Button
+                android:id="@+id/three"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/three" />
+            <Button
+                android:id="@+id/add"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/mult" />
         </LinearLayout>
 
         <!-- Row 4 -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/keypad_row_spacing">
-            <Button android:id="@+id/zero" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@integer/zero" />
-            <Button android:id="@+id/dot" style="@style/KeypadButton" android:layout_width="0dp" android:layout_weight="1" android:text="@string/dot" />
-            <ImageButton android:id="@+id/equal" style="@style/KeypadResultButton" android:layout_width="0dp" android:layout_weight="2" android:contentDescription="@string/send" android:src="@drawable/ic_result_arrow" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/keypad_row_spacing">
+            <Button
+                android:id="@+id/zero"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@integer/zero" />
+            <Button
+                android:id="@+id/dot"
+                style="@style/KeypadButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/dot" />
+            <!-- Make '=' key occupy only one column so it aligns under '3' -->
+            <ImageButton
+                android:id="@+id/equal"
+                style="@style/KeypadResultButton.RedCircle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/send"
+                android:src="@drawable/ic_equals_white" />
+            <!-- Spacer to keep 4 columns and preserve row width -->
+            <View
+                android:id="@+id/equal_spacer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

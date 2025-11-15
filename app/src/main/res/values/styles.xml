@@ -110,6 +110,19 @@
         <item name="android:elevation">0dp</item>
     </style>
 
+    <!-- Red Circle Result Button - White icon on red rounded background -->
+    <style name="KeypadResultButton.RedCircle" parent="KeypadIconButton">
+        <item name="android:background">@drawable/result_button_bg_red_circle</item>
+        <item name="android:tint">@android:color/white</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:adjustViewBounds">false</item>
+    </style>
+
+    <!-- Modern Result Button Styles with filled backgrounds -->
+
     <!-- Home menu button style updated for light background -->
     <style name="HomeMenuButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_height">56dp</item>

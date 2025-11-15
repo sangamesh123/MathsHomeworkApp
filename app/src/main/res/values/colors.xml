@@ -67,4 +67,24 @@
     <color name="homeButtonBgEnd">#F1F3F4</color>
     <color name="homeButtonStroke">#DADCE0</color>
     <color name="homeButtonRipple">#1F000000</color>
+
+    <!-- Result Button Colors - Multiple style options -->
+    <!-- Option 1: Primary Blue (Recommended - Material Design) -->
+    <color name="resultButtonBg">#FF9955</color>
+    <color name="resultButtonRipple">#33FF9955</color>
+
+    <!-- Option 2: Success Green -->
+    <color name="resultButtonBgGreen">#1E8E3E</color>
+    <color name="resultButtonRippleGreen">#331E8E3E</color>
+
+    <!-- Option 3: Brand Red (matches toolbar) -->
+    <color name="resultButtonBgRed">#FF0000</color>
+    <color name="resultButtonRippleRed">#33FF0000</color>
+
+    <!-- Option 4: Gradient colors -->
+    <color name="resultButtonGradientStart">#FF9955</color>
+    <color name="resultButtonGradientEnd">#FF7722</color>
+
+    <!-- Orange color for equals button -->
+    <color name="orangeEquals">#FF9955</color>
 </resources>
