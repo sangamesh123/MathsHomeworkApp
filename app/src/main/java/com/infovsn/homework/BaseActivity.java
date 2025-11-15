@@ -21,16 +21,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Try to enable Material's Edge-to-Edge helper if available (safe no-op otherwise)
-        EdgeToEdgeUtil.enableEdgeToEdgeIfAvailable(this);
-
         // Draw behind system bars
         Window window = getWindow();
         WindowCompat.setDecorFitsSystemWindows(window, false);
 
-        // Theme sets system bar colors to transparent; avoid using the deprecated
-        // Window.setStatusBarColor / setNavigationBarColor APIs at runtime.
+        // Make bars transparent; theme also sets these, but ensure at runtime
+        window.setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        window.setNavigationBarColor(android.graphics.Color.TRANSPARENT);
 
         // Prefer light navigation bar icons (dark content) on light backgrounds
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
@@ -115,3 +112,4 @@ public class BaseActivity extends AppCompatActivity {
         ViewCompat.requestApplyInsets(root);
     }
 }
+
